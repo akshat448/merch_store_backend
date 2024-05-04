@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     "corsheaders",
     'import_export',
-    'django_celery_results'
+
+    'login'
 ]
 
 MIDDLEWARE = [
@@ -90,7 +91,7 @@ REST_FRAMEWORK = {
     ]
 }
 
-#AUTH_USER_MODEL = 'login.User'
+AUTH_USER_MODEL = "login.CustomUser"
 
 
 # Database
