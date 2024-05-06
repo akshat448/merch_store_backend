@@ -5,8 +5,6 @@ from django.contrib.auth.models import auth
 from django.contrib import messages
 from .models import CustomUser as User
 
-
-
 def login(request):
     '''login'''
     if request.method == 'POST':
@@ -63,8 +61,7 @@ def change_pass(request):
 
 def register(request):
     if request.method == 'POST':
-        fname = request.POST['fname']
-        lname = request.POST['lname']
+        name = request.POST['name']
         email = request.POST['emailid']
         mobile_num = request.POST['mobile_num']
         password = request.POST['password']
@@ -80,7 +77,7 @@ def register(request):
             messages.info(request , "This mobile number is already registered.")
             return redirect('/register')                                ##
         else:
-            User.objects.create_user(password=password , email=email, Phone_Num = mobile_num , First_Name = fname , Last_Name = lname)
+            User.objects.create_user(password=password , email=email, Phone_Num = mobile_num , name = name)
             messages.info(request , "User registered successfully!!")
             return redirect('/login')                                   ##
     else:

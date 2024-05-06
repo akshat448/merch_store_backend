@@ -47,8 +47,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     "corsheaders",
     'import_export',
-
-    'login'
+    'login',
+    'products',
 ]
 
 MIDDLEWARE = [
@@ -67,7 +67,7 @@ ROOT_URLCONF = "backend.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / 'templates'],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -164,3 +164,4 @@ CELERY_RESULT_BACKEND = 'django-db'
 
 CORS_ALLOWED_ALL_ORIGINS = True
 
+STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')

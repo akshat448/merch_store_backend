@@ -17,10 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path , include
 
+
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("" , include("login.urls"))
-]
+    #path("admin/", admin.site.urls),
+    path("login/" , include("login.urls")),
+    path("order/", include("order.urls")),
+    #path('', include('products.urls')),
+    
+    ]
 
 """from django.contrib import admin
 from django.urls import path, include
