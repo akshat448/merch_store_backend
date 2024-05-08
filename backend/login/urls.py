@@ -3,8 +3,9 @@ from django.contrib import admin
 from . import views
 
 urlpatterns = [
-    path('register' , views.register , name='register'),
-    path('login' , views.login , name='login'),
-    path('logout' , views.logout , name='logout'),
-    path("change_password",views.change_pass , name='change_password')
+    path('login/', views.LoginView.as_view()),
+    path('change-password/', views.ChangePassword.as_view()),
+    path('logout/', views.LogoutView.as_view()),
+    path('user/', views.UserDetails.as_view()),
+    path('register/',views.RegisterView.as_view())
 ]
