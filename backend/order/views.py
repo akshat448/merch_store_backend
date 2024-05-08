@@ -8,7 +8,8 @@ from django.urls import reverse
 from .models import Order, OrderItem
 from products.models import CartItem
 from .serializers import OrderSerializer
-
+from .utils import generate_qr_code
+from django.shortcuts import render
 from datetime import datetime
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -72,3 +73,10 @@ class PlaceOrder(APIView):
             return Response({'session_url': checkout_session.url}, status=status.HTTP_200_OK)
         except stripe.error.StripeError as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+"""
+def order_confirmation(request, order_id):
+    order = Order.objects.get(id=order_id)
+    generate_qr_code(order)
+    return render(request, 'order_confirmation.html', {'order': order})
+"""
