@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
 from products.models import Product
-from login.models import User
+from login.models import CustomUser as User
 
 class Order(models.Model):
     id = models.AutoField(primary_key=True)

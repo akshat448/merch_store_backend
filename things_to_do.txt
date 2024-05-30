@@ -1,0 +1,4 @@
+1. Handle the auth/users endpoint:
+    have to fix the postion field in models.py and serializers.py and registrations views
+
+2. 

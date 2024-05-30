@@ -24,7 +24,7 @@ class ProductView(APIView):
     def get(self, request, product_id):
         user = request.user
         product = Product.objects.filter(id=product_id).first()
-        if product is None or user.is_authenticated and user.position not in product.for_user_positions or product.is_visible == False:
+        if product is None or user.is_authenticated and user.position not in product.for_user_positions or not product.is_visible:
             return Response(status=status.HTTP_400_BAD_REQUEST)
         serializer = ProductSerializer(product, context={'user': user})
         return Response(serializer.data, status=status.HTTP_200_OK)

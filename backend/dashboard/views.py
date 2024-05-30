@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 from django.core.files.storage import default_storage
 from django.views.decorators.http import require_POST
 from django.contrib import messages
+from django.db.models import Sum, Count
 
 from order.models import Order, OrderItem, Payment
 from products.models import Product, CartItem
@@ -27,13 +28,11 @@ class ListItem:
 
 @staff_member_required
 def dashboard(request):
-    amount_received = 0
-    all_orders = Order.objects.filter(is_verified=True).all()
-    for order in all_orders:
-        amount_received += int(float(order.amount))
+    amount_received = Order.objects.filter(is_verified=True).aggregate(total=Sum('amount'))['total'] or 0
     unsuccessful_orders = Order.objects.filter(is_verified=False).count()
     pending_orders = Order.objects.filter(is_verified=None).count()
-    items_ordered = 0
+    items_ordered = OrderItem.objects.all().aggregate(total=Sum('quantity'))['total'] or 0
+
     items = []
     products = Product.objects.all()
     for product in products:
@@ -45,38 +44,23 @@ def dashboard(request):
             'orders_count': orders_count
         }
         items.append(item)
-        items_ordered += orders_count
+
+    users = CustomUser.objects.all()
+    user_orders = {user: Order.objects.filter(user=user) for user in users}
+    payments = Payment.objects.all()
+
     context = {
         'amount_received': amount_received,
         'items_ordered': items_ordered,
         'unsuccessful_orders': unsuccessful_orders,
         'pending_orders': pending_orders,
         'items': items,
-        'productsCount': len(items)
-    }
-    return render(request, 'dashboard/dashboard.html', context=context)
-
-
-@staff_member_required
-def payment_records(request):
-    payments = Payment.objects.all()
-    context = {
+        'productsCount': len(items),
+        'user_orders': user_orders,
         'payments': payments
     }
-    return render(request, 'dashboard/payment_records.html', context=context)
 
-
-@staff_member_required
-def user_details(request, user_id):
-    user = CustomUser.objects.filter(id=user_id).first()
-    if user is None:
-        raise Http404
-    orders = Order.objects.filter(user=user)
-    context = {
-        'user': user,
-        'orders': orders
-    }
-    return render(request, 'dashboard/user_details.html', context=context)
+    return render(request, 'dashboard/dashboard.html', context=context)
 
 
 @staff_member_required
@@ -85,8 +69,8 @@ def import_users_from_login(request):
     User = get_user_model()
     imported_users_count = 0
     for login_user in login_users:
-        if not User.objects.filter(email=login_user.email).exists():
-            User.objects.create_user(email=login_user.email, Phone_Num=login_user.Phone_Num, name=login_user.name)
+        user, created = User.objects.get_or_create(email=login_user.email, defaults={'Phone_Num': login_user.Phone_Num, 'name': login_user.name})
+        if created:
             imported_users_count += 1
     messages.success(request, f"{imported_users_count} users imported from LOGIN app successfully.")
     return redirect('admin_dashboard')

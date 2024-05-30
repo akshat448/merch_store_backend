@@ -5,6 +5,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from django.urls import reverse
+from django.db import transaction
+from rest_framework.exceptions import APIException
 from .models import Order, OrderItem
 from products.models import CartItem
 from .serializers import OrderSerializer
@@ -41,6 +43,7 @@ class OrderView(APIView):
 class PlaceOrder(APIView):
     permission_classes = [IsAuthenticated]
 
+    @transaction.atomic
     def post(self, request):
         user = request.user
         cart_items = CartItem.objects.filter(user=user)
@@ -69,10 +72,15 @@ class PlaceOrder(APIView):
                 cancel_url=request.build_absolute_uri(reverse('checkout_cancel')),
             )
 
+            # Create an Order instance
+            order = Order.objects.create(user=user, amount=total_amount)
+
             # Return the session URL to the frontend
             return Response({'session_url': checkout_session.url}, status=status.HTTP_200_OK)
         except stripe.error.StripeError as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            raise APIException(str(e))
 
 """
 def order_confirmation(request, order_id):
