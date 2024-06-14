@@ -1,22 +1,20 @@
-import stripe
-from django.conf import settings
+from django.shortcuts import get_object_or_404, redirect
+from .models import Order, OrderItem
+from discounts.models import DiscountCode
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from django.urls import reverse
-from django.db import transaction
 from rest_framework.exceptions import APIException
-from .models import Order, OrderItem
-from products.models import CartItem
 from .serializers import OrderSerializer
-from .utils import generate_qr_code
-from django.shortcuts import render
-from datetime import datetime
+from django.db import transaction
+import stripe
+from django.conf import settings
+from products.models import CartItem
+from django.urls import reverse
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
-# Create your views here.
 
 class AllOrders(APIView):
     permission_classes = [IsAuthenticated]
@@ -40,6 +38,29 @@ class OrderView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+class ApplyDiscountCode(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, order_id):
+        user = request.user
+        order = get_object_or_404(Order, id=order_id, user=user)
+        code = request.data.get('discount_code')
+
+        try:
+            discount = DiscountCode.objects.get(code=code)
+            if discount.is_valid():
+                order.discount_code = discount
+                order.save()
+                discount.uses += 1
+                discount.save()
+                return Response({'detail': 'Discount code applied successfully!'}, status=status.HTTP_200_OK)
+            else:
+                return Response({'detail': 'Invalid or expired discount code.'}, status=status.HTTP_400_BAD_REQUEST)
+        except DiscountCode.DoesNotExist:
+            return Response({'detail': 'Discount code does not exist.'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
 class PlaceOrder(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -52,6 +73,18 @@ class PlaceOrder(APIView):
             return Response({'error': 'Cart is empty'}, status=status.HTTP_400_BAD_REQUEST)
 
         total_amount = sum(float(item.product.price) for item in cart_items)
+
+        # Check if a discount code is applied
+        discount_code = request.data.get('discount_code')
+        if discount_code:
+            try:
+                discount = DiscountCode.objects.get(code=discount_code)
+                if discount.is_valid():
+                    total_amount -= total_amount * (discount.discount_percentage / 100)
+                    discount.uses += 1
+                    discount.save()
+            except DiscountCode.DoesNotExist:
+                return Response({'error': 'Discount code not found'}, status=status.HTTP_400_BAD_REQUEST)
 
         # Create a Stripe checkout session
         try:
@@ -74,13 +107,16 @@ class PlaceOrder(APIView):
 
             # Create an Order instance
             order = Order.objects.create(user=user, amount=total_amount)
+            for item in cart_items:
+                OrderItem.objects.create(order=order, product=item.product, printing_name=item.printing_name, size=item.size, image_url=item.image_url)
+            cart_items.delete()  # Clear cart after order is placed
 
-            # Return the session URL to the frontend
             return Response({'session_url': checkout_session.url}, status=status.HTTP_200_OK)
         except stripe.error.StripeError as e:
             return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             raise APIException(str(e))
+
 
 """
 def order_confirmation(request, order_id):

@@ -14,7 +14,7 @@ class RegisterView(APIView):
     def post(self, request):
         name = request.data.get('name')
         email = request.data.get('email')
-        mobile_num = request.data.get('mobile_num')
+        mobile_num = request.data.get('phone_no')
         position = request.data.get('position')
         password = request.data.get('password')
         password2 = request.data.get('password2')

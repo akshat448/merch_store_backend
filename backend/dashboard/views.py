@@ -1,15 +1,16 @@
-from django.shortcuts import render, redirect
-from django.http import Http404, StreamingHttpResponse, HttpResponseBadRequest, FileResponse, HttpResponse, HttpResponseNotFound
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import Http404, StreamingHttpResponse
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import get_user_model
-from django.core.files.storage import default_storage
 from django.views.decorators.http import require_POST
 from django.contrib import messages
-from django.db.models import Sum, Count
+from django.db.models import Sum
 
 from order.models import Order, OrderItem, Payment
 from products.models import Product, CartItem
 from login.models import CustomUser
+from discounts.models import DiscountCode
+from .forms import DiscountCodeForm
 
 import csv
 import qrcode
@@ -74,6 +75,37 @@ def import_users_from_login(request):
             imported_users_count += 1
     messages.success(request, f"{imported_users_count} users imported from LOGIN app successfully.")
     return redirect('admin_dashboard')
+
+
+@staff_member_required
+def list_discount_codes(request):
+    discount_codes = DiscountCode.objects.all()
+    return render(request, 'dashboard/list_discount_codes.html', {'discount_codes': discount_codes})
+
+@staff_member_required
+def create_discount_code(request):
+    if request.method == 'POST':
+        form = DiscountCodeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Discount code created successfully.')
+            return redirect('list_discount_codes')
+    else:
+        form = DiscountCodeForm()
+    return render(request, 'dashboard/discount_code_form.html', {'form': form})
+
+@staff_member_required
+def edit_discount_code(request, code_id):
+    discount_code = get_object_or_404(DiscountCode, id=code_id)
+    if request.method == 'POST':
+        form = DiscountCodeForm(request.POST, instance=discount_code)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Discount code updated successfully.')
+            return redirect('list_discount_codes')
+    else:
+        form = DiscountCodeForm(instance=discount_code)
+    return render(request, 'dashboard/discount_code_form.html', {'form': form})
 
 
 class Echo:
