@@ -1,15 +1,13 @@
 from rest_framework import serializers
-
-from .models import Product, CartItem
+from .models import Product
 from order.models import OrderItem
-
+from .models import CartItem
 
 class ProductSerializer(serializers.ModelSerializer):
-
     status = serializers.SerializerMethodField()
 
     def get_status(self, obj):
-        user  = self.context.get('user')
+        user = self.context.get('user')
         if user is None or user.is_anonymous or not obj.accept_orders:
             return "forbidden"
         if OrderItem.objects.filter(product=obj, order__user=user).exclude(order__is_verified=False).exists():
@@ -17,7 +15,7 @@ class ProductSerializer(serializers.ModelSerializer):
         if CartItem.objects.filter(product=obj, user=user).exists():
             return "incart"
         return "allowed"
-    
+
     class Meta:
         model = Product
         fields = ['id', 'name', 'description', 'price', 'is_name_required', 'is_size_required', 'is_image_required', 'image1', 'image2', 'status', 'size_chart_image']
