@@ -1207,3 +1207,115 @@ LINE 1: ...omuser"."last_login", "login_customuser"."email", "login_cus...
                                                              ^
 
 [13/Jun/2024 19:35:04] ERROR [django.server:212] "POST /auth/register/ HTTP/1.1" 500 181877
+[19/Jun/2024 14:35:39] ERROR [django.request:241] Internal Server Error: /admin/login/
+Traceback (most recent call last):
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\template\response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\template\response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\template\loader.py", line 47, in select_template
+    raise TemplateDoesNotExist(", ".join(template_name_list), chain=chain)
+django.template.exceptions.TemplateDoesNotExist: dashboard/login.html
+[19/Jun/2024 14:35:39] ERROR [django.server:212] "GET /admin/login/?next=/discount-codes/create/ HTTP/1.1" 500 88068
+[19/Jun/2024 14:41:57] ERROR [django.request:241] Internal Server Error: /admin/login/
+Traceback (most recent call last):
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\template\response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\template\response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\template\loader.py", line 47, in select_template
+    raise TemplateDoesNotExist(", ".join(template_name_list), chain=chain)
+django.template.exceptions.TemplateDoesNotExist: dashboard/login.html
+[19/Jun/2024 14:41:57] ERROR [django.server:212] "GET /admin/login/?next=/admin/ HTTP/1.1" 500 87972
+[19/Jun/2024 15:01:37] ERROR [django.request:241] Internal Server Error: /admin/login/
+Traceback (most recent call last):
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\template\response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\template\response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\template\loader.py", line 47, in select_template
+    raise TemplateDoesNotExist(", ".join(template_name_list), chain=chain)
+django.template.exceptions.TemplateDoesNotExist: dashboard/login.html
+[19/Jun/2024 15:01:37] ERROR [django.server:212] "GET /admin/login/?next=/admin/discount-code/create HTTP/1.1" 500 88092
+[19/Jun/2024 15:01:42] ERROR [django.request:241] Internal Server Error: /admin/login/
+Traceback (most recent call last):
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\template\response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\template\response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\template\loader.py", line 47, in select_template
+    raise TemplateDoesNotExist(", ".join(template_name_list), chain=chain)
+django.template.exceptions.TemplateDoesNotExist: dashboard/login.html
+[19/Jun/2024 15:01:42] ERROR [django.server:212] "GET /admin/login/?next=/admin/discount-code/create/ HTTP/1.1" 500 88098
+[19/Jun/2024 15:43:23] ERROR [django.request:241] Internal Server Error: /admin/login/
+Traceback (most recent call last):
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\template\response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\template\response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\template\loader.py", line 47, in select_template
+    raise TemplateDoesNotExist(", ".join(template_name_list), chain=chain)
+django.template.exceptions.TemplateDoesNotExist: dashboard/login.html
+[19/Jun/2024 15:43:23] ERROR [django.server:212] "GET /admin/login/?next=/discount-codes/create/ HTTP/1.1" 500 86017
+[19/Jun/2024 15:44:53] ERROR [django.request:241] Internal Server Error: /admin/login/
+Traceback (most recent call last):
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\template\response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\template\response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\template\loader.py", line 47, in select_template
+    raise TemplateDoesNotExist(", ".join(template_name_list), chain=chain)
+django.template.exceptions.TemplateDoesNotExist: dashboard/login.html
+[19/Jun/2024 15:44:53] ERROR [django.server:212] "GET /admin/login/?next=/discount-codes/create/ HTTP/1.1" 500 86017
+[19/Jun/2024 15:50:53] ERROR [django.request:241] Internal Server Error: /admin/login/
+Traceback (most recent call last):
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\base.py", line 220, in _get_response
+    response = response.render()
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\template\response.py", line 114, in render
+    self.content = self.rendered_content
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\template\response.py", line 90, in rendered_content
+    template = self.resolve_template(self.template_name)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\template\response.py", line 72, in resolve_template
+    return select_template(template, using=self.using)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\template\loader.py", line 47, in select_template
+    raise TemplateDoesNotExist(", ".join(template_name_list), chain=chain)
+django.template.exceptions.TemplateDoesNotExist: dashboard/login.html
+[19/Jun/2024 15:50:53] ERROR [django.server:212] "GET /admin/login/?next=/discount-codes/create/ HTTP/1.1" 500 86440

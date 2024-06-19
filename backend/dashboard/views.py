@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import Http404, StreamingHttpResponse
+from django.http import Http404, StreamingHttpResponse, JsonResponse
 from django.contrib.admin.views.decorators import staff_member_required
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import get_user_model
 from django.views.decorators.http import require_POST
 from django.contrib import messages
@@ -13,6 +14,7 @@ from discounts.models import DiscountCode
 from .forms import DiscountCodeForm
 
 import csv
+import json
 import qrcode
 from io import BytesIO
 from datetime import datetime
@@ -82,6 +84,9 @@ def list_discount_codes(request):
     discount_codes = DiscountCode.objects.all()
     return render(request, 'dashboard/list_discount_codes.html', {'discount_codes': discount_codes})
 
+
+"""
+USE THIS WITH THE TEMPLATE U CREATE 
 @staff_member_required
 def create_discount_code(request):
     if request.method == 'POST':
@@ -93,6 +98,51 @@ def create_discount_code(request):
     else:
         form = DiscountCodeForm()
     return render(request, 'dashboard/discount_code_form.html', {'form': form})
+"""
+
+@csrf_exempt  # Temporarily exempt from CSRF protection for testing purposes
+def create_discount_code(request):
+    if request.method == 'POST':
+        # Parse JSON data from request body
+        data = json.loads(request.body)
+        
+        # Extract fields from JSON data
+        code = data.get('code')
+        discount_percentage = data.get('discount_percentage')
+        max_uses = data.get('max_uses')
+        expiry_date_str = data.get('expiry_date')
+        custom = data.get('custom', False)
+        roles_allowed = data.get('roles_allowed', [])
+        
+        # Parse expiry date as datetime
+        try:
+            expiry_date = datetime.strptime(expiry_date_str, '%Y-%m-%dT%H:%M:%SZ')
+        except ValueError:
+            return JsonResponse({'error': 'Invalid expiry date format. Use ISO 8601 format.'}, status=400)
+        
+        # Create DiscountCode instance
+        discount_code = DiscountCode(
+            code=code,
+            discount_percentage=discount_percentage,
+            max_uses=max_uses,
+            expiry_date=expiry_date,
+            custom=custom
+        )
+        
+        # Save the DiscountCode
+        try:
+            discount_code.full_clean()  # Perform model validation
+            discount_code.save()
+            # Add roles_allowed if provided
+            if roles_allowed:
+                discount_code.roles_allowed.add(*roles_allowed)
+            return JsonResponse({'message': 'Discount code created successfully.'}, status=201)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+    
+    # Handle non-POST methods
+    return JsonResponse({'error': 'POST request required.'}, status=400)
+
 
 @staff_member_required
 def edit_discount_code(request, code_id):
