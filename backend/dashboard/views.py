@@ -75,26 +75,36 @@ def dashboard(request):
 
 
 @staff_member_required
-def import_users_from_login(request):
-    login_users = CustomUser.objects.all()
-    User = get_user_model()
-    imported_users_count = 0
-    for login_user in login_users:
-        user, created = User.objects.get_or_create(
-            email=login_user.email,
-            defaults={"Phone_Num": login_user.Phone_Num, "name": login_user.name},
-        )
-        if created:
-            imported_users_count += 1
-    messages.success(
-        request, f"{imported_users_count} users imported from LOGIN app successfully."
-    )
-    return redirect("admin_dashboard")
+def import_users_from_csv(request):
+    if request.method == "GET":
+        return render(request, "dashboard/import_users.html")
+    csv_file = request.FILES["file"]
+    if not csv_file.name.endswith(".csv"):
+        messages.error(request, "File is not a CSV file.")
+        return redirect("/dashboard/")
+    users = []
+    try:
+        decoded_file = csv_file.read().decode("utf-8").splitlines()
+        reader = csv.DictReader(decoded_file)
+        for row in reader:
+            user = get_user_model()(
+                email=row["email"],
+                phone_no=row["phone_no"],
+                name=row["name"],
+                position=row["position"],
+            )
+            users.append(user)
+    except Exception as e:
+        messages.error(request, f"Error reading CSV file: {e}")
+        return redirect("/dashboard/")
+    get_user_model().objects.bulk_create(users)
+    messages.success(request, "Users imported successfully.")
+    return redirect("/dashboard/")
 
 
 @staff_member_required
 def discount_codes(request):
-    discount_codes = DiscountCode.objects.all()
+    discount_codes = DiscountCode.objects.all().order_by("-created_at")
     return render(
         request,
         "dashboard/discount_codes.html",
@@ -125,54 +135,6 @@ def create_discount_code(request):
 
         form = DiscountCodeForm()
     return render(request, "dashboard/discount_codes.html", {"form": form})
-
-
-# @csrf_exempt  # Temporarily exempt from CSRF protection for testing purposes
-# def create_discount_code(request):
-#     if request.method == "POST":
-#         # Parse JSON data from request body
-#         data = request.POST
-#         # Extract fields from JSON data
-# code = data.get("code")
-# discount_percentage = data.get("discount_percentage")
-# max_uses = data.get("max_uses")
-# expiry_date_str = data.get("expiry_date")
-# custom = data.get("custom", False)
-# roles_allowed = data.get("roles_allowed", [])
-
-#         # Parse expiry date as datetime
-#         try:
-#             expiry_date = datetime.strptime(expiry_date_str, "%Y-%m-%dT%H:%M:%SZ")
-#         except ValueError:
-#             return JsonResponse(
-#                 {"error": "Invalid expiry date format. Use ISO 8601 format."},
-#                 status=400,
-#             )
-
-#         # Create DiscountCode instance
-#         discount_code = DiscountCode(
-#             code=code,
-#             discount_percentage=discount_percentage,
-#             max_uses=max_uses,
-#             expiry_date=expiry_date,
-#             custom=custom,
-#         )
-
-#         # Save the DiscountCode
-#         try:
-#             discount_code.full_clean()  # Perform model validation
-#             discount_code.save()
-#             # Add roles_allowed if provided
-#             if roles_allowed:
-#                 discount_code.roles_allowed.add(*roles_allowed)
-#             return JsonResponse(
-#                 {"message": "Discount code created successfully."}, status=201
-#             )
-#         except Exception as e:
-#             return JsonResponse({"error": str(e)}, status=400)
-
-#     # Handle non-POST methods
-#     return JsonResponse({"error": "POST request required."}, status=400)
 
 
 @staff_member_required
@@ -267,6 +229,33 @@ def stopOrders(request):
         cart_item.delete()
     messages.success(request, "Stopped receiving orders and cleared all carts")
     return redirect("/dashboard")
+
+
+@staff_member_required
+def products(request):
+    products = Product.objects.all()
+    return render(request, "dashboard/products.html", {"products": products})
+
+
+@staff_member_required
+def create_product(request):
+    if request.method == "POST":
+        name = request.POST.get("name")
+        price = request.POST.get("price")
+        is_size_required = request.POST.get("is_size_required") == "on"
+        is_name_required = request.POST.get("is_name_required") == "on"
+        is_image_required = request.POST.get("is_image_required") == "on"
+        product = Product(
+            name=name,
+            price=price,
+            is_size_required=is_size_required,
+            is_name_required=is_name_required,
+            is_image_required=is_image_required,
+        )
+        product.save()
+        messages.success(request, "Product created successfully.")
+        return redirect("/products")
+    return render(request, "dashboard/create_product.html")
 
 
 """
