@@ -53,6 +53,13 @@ INSTALLED_APPS = [
     "discounts",
 ]
 
+AUTHENTICATION_BACKENDS = [
+    "login.backends.SSOAuthenticationBackend",
+    "django.contrib.auth.backends.ModelBackend",  # Keep the default authentication backend
+]
+
+JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -90,6 +97,9 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.TokenAuthentication",
+    ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
     ],
 }
 

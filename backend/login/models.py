@@ -16,6 +16,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     phone_no = models.CharField(max_length=15, null=True, default=None, blank=True)
     name = models.CharField(max_length=100, null=True, default=None, blank=True)
     position = models.CharField(max_length=2, choices=USER_POSITION_CHOICES, default='MB')
+    token = models.CharField(max_length=500, null=True, blank=True)
     
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
