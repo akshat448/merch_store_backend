@@ -242,20 +242,63 @@ def create_product(request):
     if request.method == "POST":
         name = request.POST.get("name")
         price = request.POST.get("price")
-        is_size_required = request.POST.get("is_size_required") == "on"
-        is_name_required = request.POST.get("is_name_required") == "on"
-        is_image_required = request.POST.get("is_image_required") == "on"
+        is_size_required = request.POST.get("is_size_required", False) == "on"
+        is_name_required = request.POST.get("is_name_required", False) == "on"
+        is_image_required = request.POST.get("is_image_required", False) == "on"
+        accept_orders = request.POST.get("accept_orders", False) == "on"
+        description = request.POST.get("description")
+        image1 = request.FILES.get("image1")
+        image2 = request.FILES.get("image2")
+        size_chart_image = request.FILES.get("size_chart_image")
+
         product = Product(
             name=name,
             price=price,
             is_size_required=is_size_required,
             is_name_required=is_name_required,
             is_image_required=is_image_required,
+            accept_orders=accept_orders,
+            description=description,
+            image1=image1,
+            image2=image2,
+            size_chart_image=size_chart_image,
         )
         product.save()
         messages.success(request, "Product created successfully.")
         return redirect("/products")
-    return render(request, "dashboard/create_product.html")
+    return render(request, "dashboard/products.html")
+
+
+@staff_member_required
+def edit_product(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    if request.method == "POST":
+        print(request.POST)
+        product.name = request.POST.get("name")
+        product.price = request.POST.get("price")
+        product.is_size_required = request.POST.get("is_size_required", False) == "on"
+        product.is_name_required = request.POST.get("is_name_required", False) == "on"
+        product.is_image_required = request.POST.get("is_image_required", False) == "on"
+        product.accept_orders = request.POST.get("accept_orders", False) == "on"
+        product.description = request.POST.get("description")
+        product.image1 = request.FILES.get("image1") or product.image1
+        product.image2 = request.FILES.get("image2") or product.image2
+        product.size_chart_image = (
+            request.FILES.get("size_chart_image") or product.size_chart_image
+        )
+
+        product.save()
+        messages.success(request, "Product updated successfully.")
+        return redirect("/products")
+    return render(request, "dashboard/products.html")
+
+
+@staff_member_required
+def delete_product(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    product.delete()
+    messages.success(request, "Product deleted successfully.")
+    return redirect("/products")
 
 
 """
