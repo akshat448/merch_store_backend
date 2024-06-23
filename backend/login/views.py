@@ -3,13 +3,62 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
-from .models import CustomUser as User
-from django.contrib.auth import authenticate
-from django.contrib.auth.hashers import check_password
+from django.contrib.auth import login
+from django.conf import settings
 
 from .serializers import UserSerializer
+from .models import CustomUser as User
+from .backend import SSOAuthenticationBackend
 
-class RegisterView(APIView):
+from dotenv import load_dotenv
+load_dotenv()
+
+
+class LoginTokenView(APIView):
+    def post(self, request):
+        sso_token = request.data.get('token')
+        if not sso_token:
+            return Response({'error': 'Token not found'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        backend = SSOAuthenticationBackend()
+        user = backend.authenticate(request, sso_token=sso_token)
+        
+        if user is None:
+            return Response({'error': 'Invalid Token'}, status=status.HTTP_400_BAD_REQUEST)
+
+        login(request, user)
+
+        token, _ = Token.objects.get_or_create(user=user)
+
+        data = {
+            'key': token.key,
+            'name': user.name,
+            'email': user.email
+        }
+
+        return Response(data, status=status.HTTP_200_OK)
+
+class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        token = request.auth
+        token.delete()
+        return Response(status=status.HTTP_200_OK)
+
+
+class UserDetails(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        serializer = UserSerializer(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    
+    
+    
+"""class RegisterView(APIView):
 
     def post(self, request):
         name = request.data.get('name')
@@ -63,39 +112,4 @@ class LoginView(APIView):
             'email': user.email
         }
 
-        return Response(data, status=status.HTTP_200_OK)
-
-
-class ChangePassword(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request):
-        old_password = request.data.get('old_password')
-        new_password = request.data.get('new_password')
-        new_password2 = request.data.get('new_password2')
-        user = request.user
-        if not check_password(old_password, user.password):
-            return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
-        if new_password != new_password2:
-            return Response({"new_password": ["New passwords must match."]}, status=status.HTTP_400_BAD_REQUEST)
-        user.set_password(new_password)
-        user.save()
-        return Response(status=status.HTTP_200_OK)
-
-
-class LogoutView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request):
-        token = Token.objects.get(user=request.user)
-        token.delete()
-        return Response(status=status.HTTP_200_OK)
-
-
-class UserDetails(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        user = request.user
-        serializer = UserSerializer(user)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(data, status=status.HTTP_200_OK)"""
