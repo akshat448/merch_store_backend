@@ -38,7 +38,7 @@
                 <a class="btn btn-primary" href="/dashboard">
                     Back to Dashboard
                 </a>
-                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addDiscountModal">
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addProductModal">
                     Add Product
                 </button>
             </div>
@@ -65,8 +65,20 @@
                             <td>{{product.price}}</td>
                             <td>{{product.accept_orders}}</td>
                             <td>
-                                <a href="/dashboard/products/edit/{{product.id}}" class="btn btn-warning">Edit</a>
-                                <a href="/dashboard/products/delete/{{product.id}}" class="btn btn-danger">Delete</a>
+                                <button type="button" class="btn btn-warning" data-toggle="modal"
+                                    data-id="{{product.id}}" data-name="{{product.name}}"
+                                    data-description="{{product.description}}" data-price="{{product.price}}"
+                                    data-accept_orders="{{product.accept_orders}}"
+                                    data-is_name_required="{{product.is_name_required}}"
+                                    data-is_size_required="{{product.is_size_required}}"
+                                    data-is_image_required="{{product.is_image_required}}"
+                                    data-image1="{{product.image1}}" data-image2="{{product.image2}}"
+                                    data-size_chart_image="{{product.size_chart_image}}"
+                                    data-target="#editProductModal">
+                                    Edit
+                                </button>
+                                <a onclick="return confirm('Are you sure you want to delete Product: {{ product.name }}?')"
+                                    href="{% url 'delete_product' product.id %}" class="btn btn-danger">Delete</a>
                             </td>
                         </tr>
                         {% endfor %}
@@ -75,5 +87,181 @@
             </div>
         </div>
     </div>
+
+    <!-- Add Product Modal -->
+    <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="addProductModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addProductModalLabel">Add Product</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'create_product' %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="name">Product Name</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Product Description</label>
+                            <input type="text" class="form-control" id="description" name="description" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="price">Product Price</label>
+                            <input type="number" class="form-control" id="price" name="price" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="is_name_required">Is Name Required?</label>
+                            <input type="checkbox" class="form-control" id="is_name_required" name="is_name_required">
+                        </div>
+                        <div class="form-group">
+                            <label for="is_size_required">Is Size Required?</label>
+                            <input type="checkbox" class="form-control" id="is_size_required" name="is_size_required">
+                        </div>
+                        <div class="form-group">
+                            <label for="is_image_required">Is Image Required?</label>
+                            <input type="checkbox" class="form-control" id="is_image_required" name="is_image_required">
+                        </div>
+                        <div class="form-group">
+                            <label for="accept_orders">Accept Orders</label>
+                            <input type="checkbox" class="form-control" id="accept_orders" name="accept_orders">
+                        </div>
+                        <div class="form-group">
+                            <label for="image1">Product Image URL 1</label>
+                            <input type="file" class="form-control" id="image1" name="image1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="image2">Product Image URL 2</label>
+                            <input type="file" class="form-control" id="image2" name="image2">
+                        </div>
+                        <div class="form-group">
+                            <label for="size_chart_image">Product Size Chart URL</label>
+                            <input type="file" class="form-control" id="size_chart_image" name="size_chart_image">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Product</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Product Modal -->
+    <div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="editProductModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editProductModalLabel">Edit Product</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'edit_product' 0 %}" method="POST" id="editProductForm"
+                        enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="edit_name">Product Name</label>
+                            <input type="text" class="form-control" id="edit_name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_description">Product Description</label>
+                            <input type="text" class="form-control" id="edit_description" name="description" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_price">Product Price</label>
+                            <input type="number" class="form-control" id="edit_price" name="price" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_is_name_required">Is Name Required?</label>
+                            <input type="checkbox" class="form-control" id="edit_is_name_required"
+                                name="is_name_required">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_is_size_required">Is Size Required?</label>
+                            <input type="checkbox" class="form-control" id="edit_is_size_required"
+                                name="is_size_required">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_is_image_required">Is Image Required?</label>
+                            <input type="checkbox" class="form-control" id="edit_is_image_required"
+                                name="is_image_required">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_accept_orders">Accept Orders</label>
+                            <input type="checkbox" class="form-control" id="edit_accept_orders" name="accept_orders">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_image1">Product Image URL 1</label>
+                            <input type="file" class="form-control" id="edit_image1" name="image1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_image2">Product Image URL 2</label>
+                            <input type="file" class="form-control" id="edit_image2" name="image2">
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_size_chart_image">Product Size Chart URL</label>
+                            <input type="file" class="form-control" id="edit_size_chart_image" name="size_chart_image">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Edit Product</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"></script>
+<script>
+    $('#editProductModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var id = button.data('id');
+        var name = button.data('name');
+        var description = button.data('description');
+        var price = button.data('price');
+        var accept_orders = button.data('accept_orders') === 'True';
+        var is_name_required = button.data('is_name_required') === 'True';
+        var is_size_required = button.data('is_size_required') === 'True';
+        var is_image_required = button.data('is_image_required') === 'True';
+        var image1 = button.data('image1');
+        var image2 = button.data('image2');
+        var size_chart_image = button.data('size_chart_image');
+
+        var modal = $(this);
+        var form = modal.find('#editProductForm');
+        form.attr('action', "{% url 'edit_product' 0 %}".replace('0', id));
+        modal.find('.modal-body #edit_id').val(id);
+        modal.find('.modal-body #edit_name').val(name);
+        modal.find('.modal-body #edit_description').val(description);
+        modal.find('.modal-body #edit_price').val(price);
+        modal.find('.modal-body #edit_accept_orders').prop('checked', accept_orders);
+        modal.find('.modal-body #edit_is_name_required').prop('checked', is_name_required);
+        modal.find('.modal-body #edit_is_size_required').prop('checked', is_size_required);
+        modal.find('.modal-body #edit_is_image_required').prop('checked', is_image_required);
+        modal.find('.modal-body #edit_image1').val(image1);
+        modal.find('.modal-body #edit_image2').val(image2);
+        modal.find('.modal-body #edit_size_chart_image').val(size_chart_image);
+
+        console.log('editProductModal', id, name, description, price, accept_orders, is_name_required, is_size_required, is_image_required, image1, image2, size_chart_image);
+    });
+
+    // log all changes
+    $('#editProductModal input').on('change', function () {
+        console.log('change', $(this).attr('id'), $(this).val(), $(this).is(':checked'));
+    });
+
+    // Ensure checkbox values are correctly set before form submission
+    $('#editProductForm').on('submit', function () {
+        $('#edit_is_name_required').val($('#edit_is_name_required').is(':checked') ? 'on' : 'off');
+        $('#edit_is_size_required').val($('#edit_is_size_required').is(':checked') ? 'on' : 'off');
+        $('#edit_is_image_required').val($('#edit_is_image_required').is(':checked') ? 'on' : 'off');
+        $('#edit_accept_orders').val($('#edit_accept_orders').is(':checked') ? 'on' : 'off');
+    });
+</script>
 
 </html>
