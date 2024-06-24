@@ -18,14 +18,11 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-# SECURITY WARNING: keep the secret key used in production secret!
-# SECURITY WARNING: don't run with debug turned on in production!
-
 SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = os.getenv('DEBUG')
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(',')
+
+JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
 
 SECRET_KEY = "django-insecure-%yh*4ox!m*+q8+ig6drp!ip@=cnrs8u!=5qj1p61s51o8hq7u#"
 DEBUG = True
@@ -55,11 +52,9 @@ INSTALLED_APPS = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-    'login.backends.SSOAuthenticationBackend',
-    'django.contrib.auth.backends.ModelBackend',  # Keep the default authentication backend
+    'login.backend.SSOAuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend',
 ]
-
-JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -99,9 +94,6 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ],
 }
 
 AUTH_USER_MODEL = "login.CustomUser"
@@ -120,14 +112,7 @@ DATABASES = {
         'PORT': os.getenv('POSTGRES_PORT'),
     }
 }
-'''
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-'''
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -183,9 +168,9 @@ CELERY_RESULT_BACKEND = 'django-db'
 #CORS_ALLOWED_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000", 
-    "https://afdf4f9210fa6944a341186299ea9128.serveo.net",
-    "http://127.0.0.1:3000",
-    "http://localhost:3000"
+    #"https://afdf4f9210fa6944a341186299ea9128.serveo.net",
+    #"http://127.0.0.1:3000",
+    #"http://localhost:3000"
 ]
 
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')

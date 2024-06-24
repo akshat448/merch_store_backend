@@ -1,9 +1,9 @@
-# backends.py
 import jwt
+from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
 from django.conf import settings
-from rest_framework.response import Response
-from rest_framework import status
 from django.contrib.auth.backends import BaseBackend
+from rest_framework import status
+from rest_framework.response import Response
 from .models import CustomUser as User
 
 class SSOAuthenticationBackend(BaseBackend):
@@ -14,16 +14,16 @@ class SSOAuthenticationBackend(BaseBackend):
 
         user_info = self.validate_sso_token(sso_token)
 
-        if user_info:
+        if user_info and not isinstance(user_info, Response):
             try:
                 user = User.objects.get(email=user_info['email'])
             except User.DoesNotExist:
                 user = User.objects.create(
+                    id=user_info['_id'],
                     email=user_info['email'],
                     name=user_info['name'],
                     phone_no=user_info['phone'],
                     position=user_info['roles'][0].get('role'),
-                    roll_no=user_info['rollNo'],
                 )
                 user.set_unusable_password()
                 user.save()
@@ -38,10 +38,11 @@ class SSOAuthenticationBackend(BaseBackend):
 
     def validate_sso_token(self, sso_token):
         jwt_secret = settings.JWT_SECRET_KEY
+        
         try:
             payload = jwt.decode(sso_token, jwt_secret, algorithms=['HS256'])
             return payload
-        except jwt.ExpiredSignatureError:
-            return None
-        except jwt.InvalidTokenError:
-            return None
+        except ExpiredSignatureError:
+            return Response({'error': 'Token Expired'}, status=status.HTTP_400_BAD_REQUEST)
+        except InvalidTokenError:
+            return Response({'error': 'Invalid Cred'}, status=status.HTTP_400_BAD_REQUEST)
