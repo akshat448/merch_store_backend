@@ -2,20 +2,13 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 from .managers import CustomUserManager
 
-USER_POSITION_CHOICES = [
-    ('MB', 'Member'),
-    ('CR', 'Core'),
-    ('JS', 'Joint Secretary'),
-    ('FS', 'Finance Secretary'),
-    ('GS', 'General Secretary'),
-]
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
-    id = models.CharField(max_length=24,primary_key=True) 
+    id = models.CharField(max_length=9,primary_key=True) 
     email = models.EmailField(unique=True, blank=False, null=False)
     phone_no = models.CharField(max_length=15, null=True, default=None, blank=True)
     name = models.CharField(max_length=100, null=True, default=None, blank=True)
-    position = models.CharField(max_length=20,choices=USER_POSITION_CHOICES, default='MB')
+    position = models.CharField(max_length=20, default='user')
 
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)

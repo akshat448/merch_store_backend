@@ -18,12 +18,17 @@ class SSOAuthenticationBackend(BaseBackend):
             try:
                 user = User.objects.get(email=user_info['email'])
             except User.DoesNotExist:
+                user_role = 'user'
+                for role in user_info['roles']:
+                    if role['role'].lower() != 'user':
+                        user_role = role['role']
+                        break
                 user = User.objects.create(
-                    id=user_info['_id'],
+                    id=user_info['rollNo'],
                     email=user_info['email'],
                     name=user_info['name'],
                     phone_no=user_info['phone'],
-                    position=user_info['roles'][0].get('role'),
+                    position=user_role,
                 )
                 user.set_unusable_password()
                 user.save()
@@ -45,4 +50,4 @@ class SSOAuthenticationBackend(BaseBackend):
         except ExpiredSignatureError:
             return Response({'error': 'Token Expired'}, status=status.HTTP_400_BAD_REQUEST)
         except InvalidTokenError:
-            return Response({'error': 'Invalid Cred'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'Invalid Token'}, status=status.HTTP_400_BAD_REQUEST)

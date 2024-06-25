@@ -6,11 +6,9 @@ from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import authenticate, login, logout
 
 from .serializers import UserSerializer
-from .backend import SSOAuthenticationBackend
 from .models import CustomUser as User
 
 from dotenv import load_dotenv
-import os, requests
 load_dotenv()
 
 
