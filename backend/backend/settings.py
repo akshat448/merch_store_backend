@@ -19,11 +19,11 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv('SECRET_KEY')
-DEBUG = os.getenv('DEBUG')
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(',')
+SECRET_KEY = os.getenv("SECRET_KEY")
+DEBUG = os.getenv("DEBUG")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",")
 
-JWT_SECRET_KEY = os.getenv('JWT_SECRET_KEY')
+JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
 
 SECRET_KEY = "django-insecure-%yh*4ox!m*+q8+ig6drp!ip@=cnrs8u!=5qj1p61s51o8hq7u#"
 DEBUG = True
@@ -51,20 +51,21 @@ INSTALLED_APPS = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-    'login.backend.SSOAuthenticationBackend',
-    'django.contrib.auth.backends.ModelBackend',
+    "login.backend.SSOAuthenticationBackend",
+    "django.contrib.auth.backends.ModelBackend",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "corsheaders.middleware.CorsMiddleware",
 ]
+
 
 ROOT_URLCONF = "backend.urls"
 
@@ -167,10 +168,10 @@ CELERY_RESULT_BACKEND = "django-db"
 
 # CORS_ALLOWED_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8000", 
-    #"https://afdf4f9210fa6944a341186299ea9128.serveo.net",
-    #"http://127.0.0.1:3000",
-    #"http://localhost:3000"
+    "http://localhost:8000",
+    # "https://afdf4f9210fa6944a341186299ea9128.serveo.net",
+    # "http://127.0.0.1:3000",
+    "http://localhost:3000",
 ]
 
 STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
