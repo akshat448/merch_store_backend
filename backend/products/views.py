@@ -8,6 +8,7 @@ from order.models import OrderItem
 from .serializers import ProductSerializer, CartItemSerializer
 from .permissions import IsAdmin
 
+
 class AllProductsView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -19,13 +20,6 @@ class AllProductsView(APIView):
         queryset = Product.objects.filter(for_user_positions__contains=[user_position], is_visible=True)
         serializer = ProductSerializer(queryset, many=True, context={'user': user})
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def post(self, request):
-        serializer = ProductSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ProductView(APIView):
@@ -45,7 +39,7 @@ class AddToCart(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        product_id = request.data.get('product_id')
+        product_id = request.data.get("product_id")
         product = Product.objects.filter(id=product_id).first()
         user = request.user
         user_position = user.position
@@ -78,7 +72,7 @@ class RemoveFromCart(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        cart_item_id = request.data.get('cart_item_id')
+        cart_item_id = request.data.get("cart_item_id")
         cart_item = CartItem.objects.filter(id=cart_item_id).first()
 
         if not cart_item or cart_item.user != request.user:
