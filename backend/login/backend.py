@@ -53,4 +53,4 @@ class SSOAuthenticationBackend(BaseBackend):
         except ExpiredSignatureError:
             return Response({'error': 'Token Expired'}, status=status.HTTP_400_BAD_REQUEST)
         except InvalidTokenError:
-            return Response({'error': 'Invalid Token'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'Invalid Cred'}, status=status.HTTP_400_BAD_REQUEST)
