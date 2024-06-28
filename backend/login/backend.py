@@ -18,8 +18,10 @@ class SSOAuthenticationBackend(BaseBackend):
             try:
                 user = User.objects.get(email=user_info['email'])
             except User.DoesNotExist:
+                roles = user_info.get('roles', [])
                 user_role = 'user'
-                for role in user_info['roles']:
+                is_member = any(role['role'].lower() != 'user' for role in roles)
+                for role in roles:
                     if role['role'].lower() != 'user':
                         user_role = role['role']
                         break
@@ -29,6 +31,7 @@ class SSOAuthenticationBackend(BaseBackend):
                     name=user_info['name'],
                     phone_no=user_info['phone'],
                     position=user_role,
+                    is_member=is_member,
                 )
                 user.set_unusable_password()
                 user.save()
