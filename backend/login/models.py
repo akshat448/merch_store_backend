@@ -9,6 +9,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     phone_no = models.CharField(max_length=15, null=True, default=None, blank=True)
     name = models.CharField(max_length=100, null=True, default=None, blank=True)
     position = models.CharField(max_length=20, default='user')
+    profilePic = models.URLField(max_length=500, null=True, blank=True, default=None)
+
 
     is_member = models.BooleanField(default=True)
     is_active = models.BooleanField(default=True)

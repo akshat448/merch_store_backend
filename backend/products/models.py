@@ -10,6 +10,7 @@ def productImageUploadPath(instance, filename):
 class Product(models.Model):
     name = models.CharField(max_length=100)
     price = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
+    max_quantity = models.IntegerField(default=1)
     
     is_name_required = models.BooleanField(default=False)
     is_size_required = models.BooleanField(default=False)
@@ -31,7 +32,8 @@ class Product(models.Model):
 
 class CartItem(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    product= models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
     created_at = models.DateTimeField(auto_now_add=True)
 
     printing_name = models.CharField(max_length=100, null=True, blank=True, default=None)

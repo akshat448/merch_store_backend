@@ -1,7 +1,6 @@
 from rest_framework import serializers
-from .models import Product
+from .models import Product, CartItem
 from order.models import OrderItem
-from .models import CartItem
 
 class ProductSerializer(serializers.ModelSerializer):
     status = serializers.SerializerMethodField()
@@ -18,7 +17,7 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ['id', 'name', 'description', 'price', 'is_name_required', 'is_size_required', 'is_image_required', 'image1', 'image2', 'status', 'size_chart_image']
+        fields = ['id', 'name', 'description', 'price', 'max_quantity', 'is_name_required', 'is_size_required', 'is_image_required', 'image1', 'image2', 'status', 'size_chart_image']
 
 
 class CartItemSerializer(serializers.ModelSerializer):
@@ -26,4 +25,4 @@ class CartItemSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = CartItem
-        fields = ['id', 'product', 'printing_name', 'size', 'image_url']
+        fields = ['id', 'product', 'quantity', 'printing_name', 'size', 'image_url']  # Added quantity field

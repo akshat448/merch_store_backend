@@ -43,9 +43,13 @@ class AddToCart(APIView):
         product = Product.objects.filter(id=product_id).first()
         user = request.user
         user_position = user.position
+        quantity = int(request.data.get('quantity', 1))
 
         if not product or user_position not in product.for_user_positions or CartItem.objects.filter(user=user, product=product).exists() or OrderItem.objects.filter(product=product, order__user=user).exclude(order__is_verified=False).exists() or not product.is_visible or not product.accept_orders:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+        
+        if quantity > product.max_quantity:
+            return Response({"error": "Quantity exceeds the maximum allowed."}, status=status.HTTP_400_BAD_REQUEST)
 
         printing_name = request.data.get('printing_name')
         size = request.data.get('size')
@@ -54,7 +58,7 @@ class AddToCart(APIView):
         if (product.is_name_required and printing_name is None) or (product.is_size_required and size is None) or (product.is_image_required and image_url is None):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-        cart_item = CartItem(product=product, user=user, printing_name=printing_name, size=size, image_url=image_url)
+        cart_item = CartItem(product=product, user=user, quantity=quantity, printing_name=printing_name, size=size, image_url=image_url)
         cart_item.save()
         return Response(status=status.HTTP_200_OK)
 

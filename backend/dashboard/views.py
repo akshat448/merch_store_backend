@@ -242,6 +242,7 @@ def create_product(request):
     if request.method == "POST":
         name = request.POST.get("name")
         price = request.POST.get("price")
+        max_quantity = request.POST.get("max_quantity")
         is_size_required = request.POST.get("is_size_required", False) == "on"
         is_name_required = request.POST.get("is_name_required", False) == "on"
         is_image_required = request.POST.get("is_image_required", False) == "on"
@@ -254,6 +255,7 @@ def create_product(request):
         product = Product(
             name=name,
             price=price,
+            max_quantity=max_quantity,
             is_size_required=is_size_required,
             is_name_required=is_name_required,
             is_image_required=is_image_required,
@@ -276,6 +278,7 @@ def edit_product(request, product_id):
         print(request.POST)
         product.name = request.POST.get("name")
         product.price = request.POST.get("price")
+        product.max_quantity = request.POST.get("max_quantity")
         product.is_size_required = request.POST.get("is_size_required", False) == "on"
         product.is_name_required = request.POST.get("is_name_required", False) == "on"
         product.is_image_required = request.POST.get("is_image_required", False) == "on"

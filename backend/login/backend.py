@@ -21,6 +21,7 @@ class SSOAuthenticationBackend(BaseBackend):
                 roles = user_info.get('roles', [])
                 user_role = 'user'
                 is_member = any(role['role'].lower() != 'user' for role in roles)
+                is_superuser = any(role['role'].lower() == 'exbo' for role in roles)  # Check if 'exbo' role is present
                 for role in roles:
                     if role['role'].lower() != 'user':
                         user_role = role['role']
@@ -31,7 +32,11 @@ class SSOAuthenticationBackend(BaseBackend):
                     name=user_info['name'],
                     phone_no=user_info['phone'],
                     position=user_role,
+                    profilePic=user_info.get('profilePic', None),
                     is_member=is_member,
+                    is_superuser=is_superuser,  # Set superuser status
+                    is_staff=is_superuser,  # Set staff status if superuser
+                    is_admin=is_superuser,  # Set admin status if superuser
                 )
                 user.set_unusable_password()
                 user.save()

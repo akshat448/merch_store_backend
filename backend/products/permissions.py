@@ -17,9 +17,5 @@ class IsAdmin(BasePermission):
             request.user.is_superuser = True
         else:
             request.user.is_superuser = False
-
-        """# Allow superusers and users with the GS position
-        if request.user.is_superuser or user_position == 'GS':
-            return True"""
         
         return False
