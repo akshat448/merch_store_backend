@@ -84,3 +84,17 @@ class RemoveFromCart(APIView):
 
         cart_item.delete()
         return Response(status=status.HTTP_200_OK)
+
+class UpdateCart(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        cart_items = request.data.get('cart_items', [])
+
+        for item_data in cart_items:
+            cart_item = CartItem.objects.filter(id=item_data['id'], user=request.user).first()
+            if cart_item:
+                cart_item.quantity = item_data['quantity']
+                cart_item.save()
+
+        return Response(status=status.HTTP_200_OK)

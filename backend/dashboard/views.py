@@ -243,6 +243,7 @@ def create_product(request):
         name = request.POST.get("name")
         price = request.POST.get("price")
         max_quantity = request.POST.get("max_quantity")
+        for_user_positions = request.POST.get("for_user_positions")
         is_size_required = request.POST.get("is_size_required", False) == "on"
         is_name_required = request.POST.get("is_name_required", False) == "on"
         is_image_required = request.POST.get("is_image_required", False) == "on"
@@ -252,6 +253,15 @@ def create_product(request):
         image2 = request.FILES.get("image2")
         size_chart_image = request.FILES.get("size_chart_image")
 
+        if for_user_positions == "user":
+            for_user_positions = ["user", "Member", "Core", "Exbo"]
+        elif for_user_positions == "Member":
+            for_user_positions = ["Member", "Core", "Exbo"]
+        elif for_user_positions == "Core":
+            for_user_positions = ["Core", "Exbo"]
+        elif for_user_positions == "Exbo":
+            for_user_positions = ["Exbo"]
+
         product = Product(
             name=name,
             price=price,
@@ -259,6 +269,7 @@ def create_product(request):
             is_size_required=is_size_required,
             is_name_required=is_name_required,
             is_image_required=is_image_required,
+            for_user_positions=for_user_positions,
             accept_orders=accept_orders,
             description=description,
             image1=image1,
@@ -279,16 +290,20 @@ def edit_product(request, product_id):
         product.name = request.POST.get("name")
         product.price = request.POST.get("price")
         product.max_quantity = request.POST.get("max_quantity")
+        product.for_user_positions = request.POST.get("for_user_positions")
+        if product.for_user_positions == "user":
+            product.for_user_positions = ["user", "Member", "Core", "Exbo"]
+        elif product.for_user_positions == "Member":
+            product.for_user_positions = ["Member", "Core", "Exbo"]
+        elif product.for_user_positions == "Core":
+            product.for_user_positions = ["Core", "Exbo"]
+        elif product.for_user_positions == "Exbo":
+            product.for_user_positions = ["Exbo"]
         product.is_size_required = request.POST.get("is_size_required", False) == "on"
         product.is_name_required = request.POST.get("is_name_required", False) == "on"
         product.is_image_required = request.POST.get("is_image_required", False) == "on"
         product.accept_orders = request.POST.get("accept_orders", False) == "on"
         product.description = request.POST.get("description")
-        product.image1 = request.FILES.get("image1") or product.image1
-        product.image2 = request.FILES.get("image2") or product.image2
-        product.size_chart_image = (
-            request.FILES.get("size_chart_image") or product.size_chart_image
-        )
 
         product.save()
         messages.success(request, "Product updated successfully.")

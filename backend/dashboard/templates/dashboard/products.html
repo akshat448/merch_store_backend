@@ -68,6 +68,8 @@
                                 <button type="button" class="btn btn-warning" data-toggle="modal"
                                     data-id="{{product.id}}" data-name="{{product.name}}"
                                     data-description="{{product.description}}" data-price="{{product.price}}"
+                                    data-max_quantity="{{product.max_quantity}}"
+                                    data-for_user_positions="{{product.for_user_positions.0}}"
                                     data-accept_orders="{{product.accept_orders}}"
                                     data-is_name_required="{{product.is_name_required}}"
                                     data-is_size_required="{{product.is_size_required}}"
@@ -115,6 +117,19 @@
                             <input type="number" class="form-control" id="price" name="price" required>
                         </div>
                         <div class="form-group">
+                            <label for="max_quantity">Max quantity per user</label>
+                            <input type="number" class="form-control" id="max_quantity" name="max_quantity" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="for_user_positions">For User Positions</label>
+                            <select class="form-control" id="for_user_positions" name="for_user_positions" required>
+                                <option value="Exbo">Executive Board Members</option>
+                                <option value="Core">Core Members</option>
+                                <option value="Member">Executive Members</option>
+                                <option value="user">Available to Anyone</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label for="is_name_required">Is Name Required?</label>
                             <input type="checkbox" class="form-control" id="is_name_required" name="is_name_required">
                         </div>
@@ -130,6 +145,9 @@
                             <label for="accept_orders">Accept Orders</label>
                             <input type="checkbox" class="form-control" id="accept_orders" name="accept_orders">
                         </div>
+                        <small class="text-danger">
+                            Product images/size chart once set cannot be updated.
+                        </small>
                         <div class="form-group">
                             <label for="image1">Product Image URL 1</label>
                             <input type="file" class="form-control" id="image1" name="image1" required>
@@ -177,6 +195,21 @@
                             <input type="number" class="form-control" id="edit_price" name="price" required>
                         </div>
                         <div class="form-group">
+                            <label for="edit_max_quantity">Max quantity per user</label>
+                            <input type="number" class="form-control" id="edit_max_quantity" name="max_quantity"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit_for_user_positions">For User Positions</label>
+                            <select class="form-control" id="edit_for_user_positions" name="for_user_positions"
+                                required>
+                                <option value="Exbo">Executive Board Members</option>
+                                <option value="Core">Core Members</option>
+                                <option value="Member">Executive Members</option>
+                                <option value="user">Available to Anyone</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label for="edit_is_name_required">Is Name Required?</label>
                             <input type="checkbox" class="form-control" id="edit_is_name_required"
                                 name="is_name_required">
@@ -195,18 +228,6 @@
                             <label for="edit_accept_orders">Accept Orders</label>
                             <input type="checkbox" class="form-control" id="edit_accept_orders" name="accept_orders">
                         </div>
-                        <div class="form-group">
-                            <label for="edit_image1">Product Image URL 1</label>
-                            <input type="file" class="form-control" id="edit_image1" name="image1" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="edit_image2">Product Image URL 2</label>
-                            <input type="file" class="form-control" id="edit_image2" name="image2">
-                        </div>
-                        <div class="form-group">
-                            <label for="edit_size_chart_image">Product Size Chart URL</label>
-                            <input type="file" class="form-control" id="edit_size_chart_image" name="size_chart_image">
-                        </div>
                         <button type="submit" class="btn btn-primary">Edit Product</button>
                     </form>
                 </div>
@@ -224,13 +245,12 @@
         var name = button.data('name');
         var description = button.data('description');
         var price = button.data('price');
+        var max_quantity = button.data('max_quantity');
+        var for_user_positions = button.data('for_user_positions');
         var accept_orders = button.data('accept_orders') === 'True';
         var is_name_required = button.data('is_name_required') === 'True';
         var is_size_required = button.data('is_size_required') === 'True';
         var is_image_required = button.data('is_image_required') === 'True';
-        var image1 = button.data('image1');
-        var image2 = button.data('image2');
-        var size_chart_image = button.data('size_chart_image');
 
         var modal = $(this);
         var form = modal.find('#editProductForm');
@@ -239,15 +259,13 @@
         modal.find('.modal-body #edit_name').val(name);
         modal.find('.modal-body #edit_description').val(description);
         modal.find('.modal-body #edit_price').val(price);
+        modal.find('.modal-body #edit_max_quantity').val(max_quantity);
+        modal.find('.modal-body #edit_for_user_positions').val(for_user_positions);
         modal.find('.modal-body #edit_accept_orders').prop('checked', accept_orders);
         modal.find('.modal-body #edit_is_name_required').prop('checked', is_name_required);
         modal.find('.modal-body #edit_is_size_required').prop('checked', is_size_required);
         modal.find('.modal-body #edit_is_image_required').prop('checked', is_image_required);
-        modal.find('.modal-body #edit_image1').val(image1);
-        modal.find('.modal-body #edit_image2').val(image2);
-        modal.find('.modal-body #edit_size_chart_image').val(size_chart_image);
 
-        console.log('editProductModal', id, name, description, price, accept_orders, is_name_required, is_size_required, is_image_required, image1, image2, size_chart_image);
     });
 
     // log all changes
