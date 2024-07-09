@@ -22,7 +22,8 @@ class ProductSerializer(serializers.ModelSerializer):
 
 class CartItemSerializer(serializers.ModelSerializer):
     product = ProductSerializer(read_only=True)
-    
+
     class Meta:
         model = CartItem
-        fields = ['id', 'product', 'quantity', 'printing_name', 'size', 'image_url']  # Added quantity field
+        fields = ['id', 'product', 'quantity', 'printing_name', 'size', 'image_url']
+

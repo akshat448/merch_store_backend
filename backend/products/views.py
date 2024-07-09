@@ -6,8 +6,7 @@ from rest_framework import status
 from .models import Product, CartItem
 from order.models import OrderItem
 from .serializers import ProductSerializer, CartItemSerializer
-from .permissions import IsAdmin
-
+from discounts.models import DiscountCode
 
 class AllProductsView(APIView):
     permission_classes = [IsAuthenticated]
@@ -85,16 +84,42 @@ class RemoveFromCart(APIView):
         cart_item.delete()
         return Response(status=status.HTTP_200_OK)
 
+
 class UpdateCart(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
         cart_items = request.data.get('cart_items', [])
+        discount_code = request.data.get('discount_code', None)
+        total_amount = 0
 
         for item_data in cart_items:
             cart_item = CartItem.objects.filter(id=item_data['id'], user=request.user).first()
             if cart_item:
                 cart_item.quantity = item_data['quantity']
                 cart_item.save()
+                total_amount += cart_item.product.price * cart_item.quantity
 
-        return Response(status=status.HTTP_200_OK)
+        updated_amount = total_amount
+        discount_percentage = 0
+
+        if discount_code:
+            try:
+                discount = DiscountCode.objects.get(code=discount_code)
+                if discount.is_valid() and request.user in discount.roles_allowed.all():
+                    discount_percentage = discount.discount_percentage
+                    updated_amount -= total_amount * (discount.discount_percentage / 100)
+                    discount.uses += 1
+                    discount.save()
+                else:
+                    return Response({"error": "Invalid or expired discount code."}, status=status.HTTP_400_BAD_REQUEST)
+            except DiscountCode.DoesNotExist:
+                return Response({"error": "Discount code not found."}, status=status.HTTP_400_BAD_REQUEST)
+
+        cart_items = CartItem.objects.filter(user=request.user)
+        serializer = CartItemSerializer(cart_items, many=True)
+
+        return Response({"cart_items": serializer.data,
+                        "total_amount": total_amount,
+                        "discount_percentage": discount_percentage,
+                        "updated_amount": updated_amount}, status=status.HTTP_200_OK)
