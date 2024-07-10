@@ -66,9 +66,31 @@ class ViewCart(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        queryset = CartItem.objects.filter(user=request.user)
-        serializer = CartItemSerializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        user = request.user
+        cart_items = CartItem.objects.filter(user=user)
+        total_amount = sum(item.product.price * item.quantity for item in cart_items)
+        discount_percentage = 0
+        updated_amount = total_amount
+
+        discount_code = request.query_params.get('discount_code', None)
+        if discount_code:
+            try:
+                discount = DiscountCode.objects.get(code=discount_code)
+                if discount.is_valid() and user in discount.roles_allowed.all():
+                    discount_percentage = discount.discount_percentage
+                    updated_amount -= total_amount * (discount.discount_percentage / 100)
+            except DiscountCode.DoesNotExist:
+                pass
+
+        serializer = CartItemSerializer(cart_items, many=True)
+        total_amount = int(total_amount)
+        updated_amount = int(updated_amount)
+        
+        return Response({
+            "items": serializer.data,
+            "total_amount": total_amount,
+            "discount_percentage": discount_percentage,
+            "updated_amount": updated_amount}, status=status.HTTP_200_OK)
 
 
 class RemoveFromCart(APIView):
@@ -118,8 +140,12 @@ class UpdateCart(APIView):
 
         cart_items = CartItem.objects.filter(user=request.user)
         serializer = CartItemSerializer(cart_items, many=True)
+        total_amount = int(total_amount)
+        updated_amount = int(updated_amount)
 
-        return Response({"cart_items": serializer.data,
-                        "total_amount": total_amount,
-                        "discount_percentage": discount_percentage,
-                        "updated_amount": updated_amount}, status=status.HTTP_200_OK)
+        
+        return Response({
+            "items": serializer.data,
+            "total_amount": total_amount,
+            "discount_percentage": discount_percentage,
+            "updated_amount": updated_amount }, status=status.HTTP_200_OK)

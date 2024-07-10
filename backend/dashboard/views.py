@@ -1,3 +1,4 @@
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404, StreamingHttpResponse, JsonResponse
 from django.contrib.admin.views.decorators import staff_member_required
@@ -12,6 +13,7 @@ from products.models import Product, CartItem
 from login.models import CustomUser
 from discounts.models import DiscountCode
 from .forms import DiscountCodeForm
+from .utils import get_for_user_positions
 
 import csv
 import json
@@ -253,14 +255,7 @@ def create_product(request):
         image2 = request.FILES.get("image2")
         size_chart_image = request.FILES.get("size_chart_image")
 
-        if for_user_positions == "user":
-            for_user_positions = ["user", "Member", "Core", "Exbo"]
-        elif for_user_positions == "Member":
-            for_user_positions = ["Member", "Core", "Exbo"]
-        elif for_user_positions == "Core":
-            for_user_positions = ["Core", "Exbo"]
-        elif for_user_positions == "Exbo":
-            for_user_positions = ["Exbo"]
+        for_user_positions = get_for_user_positions(for_user_positions)
 
         product = Product(
             name=name,
@@ -291,14 +286,9 @@ def edit_product(request, product_id):
         product.price = request.POST.get("price")
         product.max_quantity = request.POST.get("max_quantity")
         product.for_user_positions = request.POST.get("for_user_positions")
-        if product.for_user_positions == "user":
-            product.for_user_positions = ["user", "Member", "Core", "Exbo"]
-        elif product.for_user_positions == "Member":
-            product.for_user_positions = ["Member", "Core", "Exbo"]
-        elif product.for_user_positions == "Core":
-            product.for_user_positions = ["Core", "Exbo"]
-        elif product.for_user_positions == "Exbo":
-            product.for_user_positions = ["Exbo"]
+        
+        product.for_user_positions = get_for_user_positions(product.for_user_positions)
+        
         product.is_size_required = request.POST.get("is_size_required", False) == "on"
         product.is_name_required = request.POST.get("is_name_required", False) == "on"
         product.is_image_required = request.POST.get("is_image_required", False) == "on"
