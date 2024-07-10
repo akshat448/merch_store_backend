@@ -34,6 +34,9 @@ class CartItem(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
+    total_amount = models.DecimalField(default=0.00, max_digits=5, decimal_places=2)
+    discount_percentage = models.FloatField(default=0.00)
+    updated_amount = models.DecimalField(default=0.00, max_digits=5, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
 
     printing_name = models.CharField(max_length=100, null=True, blank=True, default=None)
