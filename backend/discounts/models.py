@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.postgres.fields import ArrayField
 from login.models import CustomUser as User
 from django.utils import timezone
 import string
@@ -10,9 +11,7 @@ class DiscountCode(models.Model):
     discount_percentage = models.FloatField()
     max_uses = models.IntegerField()
     expiry_date = models.DateTimeField()
-    roles_allowed = models.ManyToManyField(
-        User, related_name="discount_codes", blank=True
-    )
+    roles_allowed = ArrayField(models.CharField(max_length=50), blank=True, default=list)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     custom = models.BooleanField(default=False)  # when True, code is entered by admin

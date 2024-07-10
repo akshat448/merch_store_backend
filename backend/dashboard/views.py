@@ -117,26 +117,27 @@ def discount_codes(request):
 @staff_member_required
 def create_discount_code(request):
     if request.method == "POST":
-        post = request.POST.copy()
-        is_custom = post.get("custom", False)
-        if is_custom == "on":
-            post["custom"] = True
-        else:
-            post["custom"] = False
-            post["code"] = "custom"
-        request.POST = post
-        form = DiscountCodeForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Discount code created successfully.")
-        else:
-            messages.error(request, "Invalid data. Please correct the errors.")
+        code = request.POST.get("code")
+        discount_percentage = request.POST.get("discount_percentage")
+        max_uses = request.POST.get("max_uses")
+        expiry_date = request.POST.get("expiry_date")
+        for_user_positions = request.POST.get("for_user_positions")
+        custom = request.POST.get("custom", False) == "on"
+
+        roles_allowed = get_for_user_positions(for_user_positions)
+
+        discount_code = DiscountCode(
+            code=code,
+            discount_percentage=discount_percentage,
+            max_uses=max_uses,
+            expiry_date=expiry_date,
+            roles_allowed=roles_allowed,
+            custom=custom,
+        )
+        discount_code.save()
+        messages.success(request, "Discount code created successfully.")
         return redirect("/discount-codes")
-
-    else:
-
-        form = DiscountCodeForm()
-    return render(request, "dashboard/discount_codes.html", {"form": form})
+    return render(request, "dashboard/discount_codes.html")
 
 
 @staff_member_required
@@ -144,26 +145,26 @@ def edit_discount_code(request, code_id):
     discount_code = get_object_or_404(DiscountCode, id=code_id)
 
     if request.method == "POST":
-        post = request.POST.copy()
-        is_custom = post.get("custom", False)
-        if is_custom == "on":
-            post["custom"] = True
-        else:
-            post["custom"] = False
-            if not post["code"]:
-                post["code"] = "custom"
-        request.POST = post
-        form = DiscountCodeForm(request.POST, instance=discount_code)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Discount code updated successfully.")
-        else:
-            messages.error(request, "Invalid data. Please correct the errors.")
-        return redirect("/discount-codes")
+        code = request.POST.get("code")
+        discount_percentage = request.POST.get("discount_percentage")
+        max_uses = request.POST.get("max_uses")
+        expiry_date = request.POST.get("expiry_date")
+        for_user_positions = request.POST.get("for_user_positions")
+        custom = request.POST.get("custom", False) == "on"
 
-    else:
-        form = DiscountCodeForm(instance=discount_code)
-        return render(request, "dashboard/discount_codes.html", {"form": form})
+        roles_allowed = get_for_user_positions(for_user_positions)
+
+        discount_code.code = code
+        discount_code.discount_percentage = discount_percentage
+        discount_code.max_uses = max_uses
+        discount_code.expiry_date = expiry_date
+        discount_code.roles_allowed = roles_allowed
+        discount_code.custom = custom
+
+        discount_code.save()
+        messages.success(request, "Discount code updated successfully.")
+        return redirect("/discount-codes")
+    return render(request, "dashboard/discount_codes.html", {"discount_code": discount_code})
 
 
 @staff_member_required
