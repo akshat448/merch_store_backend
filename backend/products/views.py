@@ -6,8 +6,6 @@ from rest_framework import status
 from .models import Product, CartItem
 from order.models import OrderItem
 from .serializers import ProductSerializer, CartItemSerializer
-from discounts.models import DiscountCode
-
 
 class AllProductsView(APIView):
     permission_classes = [IsAuthenticated]
@@ -102,20 +100,6 @@ class ViewCart(APIView):
         user = request.user
         cart_items = CartItem.objects.filter(user=user)
         total_amount = sum(item.product.price * item.quantity for item in cart_items)
-        discount_percentage = 0
-        updated_amount = total_amount
-
-        discount_code = request.query_params.get("discount_code", None)
-        if discount_code:
-            try:
-                discount = DiscountCode.objects.get(code=discount_code)
-                if discount.is_valid() and user in discount.for_user_positions:
-                    discount_percentage = discount.discount_percentage
-                    updated_amount -= total_amount * (
-                        discount.discount_percentage / 100
-                    )
-            except DiscountCode.DoesNotExist:
-                pass
 
         serializer = CartItemSerializer(cart_items, many=True)
 
@@ -123,8 +107,6 @@ class ViewCart(APIView):
             {
                 "items": serializer.data,
                 "total_amount": int(total_amount),
-                "discount_percentage": discount_percentage,
-                "updated_amount": int(updated_amount),
             },
             status=status.HTTP_200_OK,
         )
@@ -149,7 +131,6 @@ class UpdateCart(APIView):
 
     def post(self, request):
         cart_items = request.data.get("cart_items", [])
-        discount_code = request.data.get("discount_code", None)
         total_amount = 0
 
         for item_data in cart_items:
@@ -161,23 +142,6 @@ class UpdateCart(APIView):
                 cart_item.save()
                 total_amount += cart_item.product.price * cart_item.quantity
 
-        updated_amount = total_amount
-        discount_percentage = 0
-
-        if discount_code:
-            try:
-                discount = DiscountCode.objects.get(code=discount_code)
-                if discount.is_valid() and request.user in discount.for_user_positions:
-                    discount_percentage = discount.discount_percentage
-                    updated_amount -= total_amount * (
-                        discount.discount_percentage / 100
-                    )
-            except DiscountCode.DoesNotExist:
-                return Response(
-                    {"error": "Discount code not found."},
-                    status=status.HTTP_400_BAD_REQUEST,
-                )
-
         cart_items = CartItem.objects.filter(user=request.user)
         serializer = CartItemSerializer(cart_items, many=True)
 
@@ -185,8 +149,6 @@ class UpdateCart(APIView):
             {
                 "items": serializer.data,
                 "total_amount": int(total_amount),
-                "discount_percentage": discount_percentage,
-                "updated_amount": int(updated_amount),
             },
             status=status.HTTP_200_OK,
         )
