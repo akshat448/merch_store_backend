@@ -174,8 +174,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
 
-STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY")
-
 LOGS_ROOT = os.path.join(BASE_DIR, "logs")
 
 LOGGING = {
