@@ -8,6 +8,7 @@ from order.models import OrderItem
 from .serializers import ProductSerializer, CartItemSerializer
 from discounts.models import DiscountCode
 
+
 class AllProductsView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -16,8 +17,10 @@ class AllProductsView(APIView):
         user_position = user.position
 
         # Filter products based on the user's position
-        queryset = Product.objects.filter(for_user_positions__contains=[user_position], is_visible=True)
-        serializer = ProductSerializer(queryset, many=True, context={'user': user})
+        queryset = Product.objects.filter(
+            for_user_positions__contains=[user_position], is_visible=True
+        )
+        serializer = ProductSerializer(queryset, many=True, context={"user": user})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -27,10 +30,17 @@ class ProductView(APIView):
         user_position = user.position
 
         product = Product.objects.filter(id=product_id).first()
-        if not product or (user.is_authenticated and user_position not in product.for_user_positions) or not product.is_visible:
+        if (
+            not product
+            or (
+                user.is_authenticated
+                and user_position not in product.for_user_positions
+            )
+            or not product.is_visible
+        ):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-        serializer = ProductSerializer(product, context={'user': user})
+        serializer = ProductSerializer(product, context={"user": user})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -42,22 +52,45 @@ class AddToCart(APIView):
         product = Product.objects.filter(id=product_id).first()
         user = request.user
         user_position = user.position
-        quantity = int(request.data.get('quantity', 1))
+        quantity = int(request.data.get("quantity", 1))
 
-        if not product or user_position not in product.for_user_positions or CartItem.objects.filter(user=user, product=product).exists() or OrderItem.objects.filter(product=product, order__user=user).exclude(order__is_verified=False).exists() or not product.is_visible or not product.accept_orders:
+        if (
+            not product
+            or user_position not in product.for_user_positions
+            or CartItem.objects.filter(user=user, product=product).exists()
+            or OrderItem.objects.filter(product=product, order__user=user)
+            .exclude(order__is_verified=False)
+            .exists()
+            or not product.is_visible
+            or not product.accept_orders
+        ):
             return Response(status=status.HTTP_400_BAD_REQUEST)
-        
+
         if quantity > product.max_quantity:
-            return Response({"error": "Quantity exceeds the maximum allowed."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"error": "Quantity exceeds the maximum allowed."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
-        printing_name = request.data.get('printing_name')
-        size = request.data.get('size')
-        image_url = request.data.get('image_url')
+        printing_name = request.data.get("printing_name")
+        size = request.data.get("size")
+        image_url = request.data.get("image_url")
 
-        if (product.is_name_required and printing_name is None) or (product.is_size_required and size is None) or (product.is_image_required and image_url is None):
+        if (
+            (product.is_name_required and printing_name is None)
+            or (product.is_size_required and size is None)
+            or (product.is_image_required and image_url is None)
+        ):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-        cart_item = CartItem(product=product, user=user, quantity=quantity, printing_name=printing_name, size=size, image_url=image_url)
+        cart_item = CartItem(
+            product=product,
+            user=user,
+            quantity=quantity,
+            printing_name=printing_name,
+            size=size,
+            image_url=image_url,
+        )
         cart_item.save()
         return Response(status=status.HTTP_200_OK)
 
@@ -72,25 +105,29 @@ class ViewCart(APIView):
         discount_percentage = 0
         updated_amount = total_amount
 
-        discount_code = request.query_params.get('discount_code', None)
+        discount_code = request.query_params.get("discount_code", None)
         if discount_code:
             try:
                 discount = DiscountCode.objects.get(code=discount_code)
-                if discount.is_valid() and user in discount.roles_allowed.all():
+                if discount.is_valid() and user in discount.for_user_positions:
                     discount_percentage = discount.discount_percentage
-                    updated_amount -= total_amount * (discount.discount_percentage / 100)
+                    updated_amount -= total_amount * (
+                        discount.discount_percentage / 100
+                    )
             except DiscountCode.DoesNotExist:
                 pass
 
         serializer = CartItemSerializer(cart_items, many=True)
-        total_amount = int(total_amount)
-        updated_amount = int(updated_amount)
-        
-        return Response({
-            "items": serializer.data,
-            "total_amount": total_amount,
-            "discount_percentage": discount_percentage,
-            "updated_amount": updated_amount}, status=status.HTTP_200_OK)
+
+        return Response(
+            {
+                "items": serializer.data,
+                "total_amount": int(total_amount),
+                "discount_percentage": discount_percentage,
+                "updated_amount": int(updated_amount),
+            },
+            status=status.HTTP_200_OK,
+        )
 
 
 class RemoveFromCart(APIView):
@@ -111,14 +148,16 @@ class UpdateCart(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        cart_items = request.data.get('cart_items', [])
-        discount_code = request.data.get('discount_code', None)
+        cart_items = request.data.get("cart_items", [])
+        discount_code = request.data.get("discount_code", None)
         total_amount = 0
 
         for item_data in cart_items:
-            cart_item = CartItem.objects.filter(id=item_data['id'], user=request.user).first()
+            cart_item = CartItem.objects.filter(
+                id=item_data["id"], user=request.user
+            ).first()
             if cart_item:
-                cart_item.quantity = item_data['quantity']
+                cart_item.quantity = item_data["quantity"]
                 cart_item.save()
                 total_amount += cart_item.product.price * cart_item.quantity
 
@@ -128,24 +167,26 @@ class UpdateCart(APIView):
         if discount_code:
             try:
                 discount = DiscountCode.objects.get(code=discount_code)
-                if discount.is_valid() and request.user in discount.roles_allowed.all():
+                if discount.is_valid() and request.user in discount.for_user_positions:
                     discount_percentage = discount.discount_percentage
-                    updated_amount -= total_amount * (discount.discount_percentage / 100)
-                    discount.uses += 1
-                    discount.save()
-                else:
-                    return Response({"error": "Invalid or expired discount code."}, status=status.HTTP_400_BAD_REQUEST)
+                    updated_amount -= total_amount * (
+                        discount.discount_percentage / 100
+                    )
             except DiscountCode.DoesNotExist:
-                return Response({"error": "Discount code not found."}, status=status.HTTP_400_BAD_REQUEST)
+                return Response(
+                    {"error": "Discount code not found."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
 
         cart_items = CartItem.objects.filter(user=request.user)
         serializer = CartItemSerializer(cart_items, many=True)
-        total_amount = int(total_amount)
-        updated_amount = int(updated_amount)
 
-        
-        return Response({
-            "items": serializer.data,
-            "total_amount": total_amount,
-            "discount_percentage": discount_percentage,
-            "updated_amount": updated_amount }, status=status.HTTP_200_OK)
+        return Response(
+            {
+                "items": serializer.data,
+                "total_amount": int(total_amount),
+                "discount_percentage": discount_percentage,
+                "updated_amount": int(updated_amount),
+            },
+            status=status.HTTP_200_OK,
+        )

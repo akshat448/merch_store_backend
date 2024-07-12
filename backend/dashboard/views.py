@@ -124,14 +124,14 @@ def create_discount_code(request):
         for_user_positions = request.POST.get("for_user_positions")
         custom = request.POST.get("custom", False) == "on"
 
-        roles_allowed = get_for_user_positions(for_user_positions)
+        for_user_positions = get_for_user_positions(for_user_positions)
 
         discount_code = DiscountCode(
             code=code,
             discount_percentage=discount_percentage,
             max_uses=max_uses,
             expiry_date=expiry_date,
-            roles_allowed=roles_allowed,
+            for_user_positions=for_user_positions,
             custom=custom,
         )
         discount_code.save()
@@ -152,13 +152,13 @@ def edit_discount_code(request, code_id):
         for_user_positions = request.POST.get("for_user_positions")
         custom = request.POST.get("custom", False) == "on"
 
-        roles_allowed = get_for_user_positions(for_user_positions)
+        for_user_positions = get_for_user_positions(for_user_positions)
 
         discount_code.code = code
         discount_code.discount_percentage = discount_percentage
         discount_code.max_uses = max_uses
         discount_code.expiry_date = expiry_date
-        discount_code.roles_allowed = roles_allowed
+        discount_code.for_user_positions = for_user_positions
         discount_code.custom = custom
 
         discount_code.save()

@@ -11,7 +11,7 @@ class DiscountCode(models.Model):
     discount_percentage = models.FloatField()
     max_uses = models.IntegerField()
     expiry_date = models.DateTimeField()
-    roles_allowed = ArrayField(models.CharField(max_length=50), blank=True, default=list)
+    for_user_positions = ArrayField(models.CharField(max_length=50), blank=True, default=list)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     custom = models.BooleanField(default=False)  # when True, code is entered by admin

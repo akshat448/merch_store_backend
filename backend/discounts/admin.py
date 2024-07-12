@@ -8,7 +8,7 @@ class DiscountCodeAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (None, {
-            'fields': ('code', 'discount_percentage', 'max_uses', 'expiry_date', 'roles_allowed', 'custom')
+            'fields': ('code', 'discount_percentage', 'max_uses', 'expiry_date', 'for_user_positions', 'custom')
         }),
     )
 

@@ -64,6 +64,7 @@
                                         data-target="#editDiscountModal" data-id="{{ code.id }}"
                                         data-code="{{ code.code }}"
                                         data-discount_percentage="{{ code.discount_percentage }}"
+                                        data-for_user_positions="{{code.for_user_positions.0}}"
                                         data-max_uses="{{ code.max_uses }}"
                                         data-expiry_date="{{ code.expiry_date|date:'Y-m-d\\TH:i' }}"
                                         data-uses="{{ code.uses }}" data-custom="{{ code.custom }}">
@@ -115,6 +116,15 @@
                             <input type="number" class="form-control" id="max_uses" name="max_uses" required>
                         </div>
                         <div class="form-group">
+                            <label for="for_user_positions">For User Positions</label>
+                            <select class="form-control" id="for_user_positions" name="for_user_positions" required>
+                                <option value="exbo">Executive Board Members</option>
+                                <option value="core">Core Members</option>
+                                <option value="member">Executive Members</option>
+                                <option value="user">Available to Anyone</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label for="expiry_date">Expiry Date</label>
                             <input type="datetime-local" class="form-control" id="expiry_date" name="expiry_date"
                                 required>
@@ -159,6 +169,16 @@
                             <input type="number" class="form-control" id="edit_max_uses" name="max_uses" required>
                         </div>
                         <div class="form-group">
+                            <label for="edit_for_user_positions">For User Positions</label>
+                            <select class="form-control" id="edit_for_user_positions" name="for_user_positions"
+                                required>
+                                <option value="exbo">Executive Board Members</option>
+                                <option value="core">Core Members</option>
+                                <option value="member">Executive Members</option>
+                                <option value="user">Available to Anyone</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label for="edit_expiry_date">Expiry Date</label>
                             <input type="datetime-local" class="form-control" id="edit_expiry_date" name="expiry_date"
                                 required>
@@ -182,6 +202,7 @@
                 var discountPercentage = button.data('discount_percentage');
                 var maxUses = button.data('max_uses');
                 var expiryDate = button.data('expiry_date');
+                var forUserPositions = button.data('for_user_positions');
                 var custom = button.data('custom') === 'True';
 
                 var modal = $(this);
@@ -190,6 +211,7 @@
                 modal.find('#edit_code').val(code);
                 modal.find('#edit_discount_percentage').val(discountPercentage);
                 modal.find('#edit_max_uses').val(maxUses);
+                modal.find('#edit_for_user_positions').val(forUserPositions);
                 modal.find('#edit_expiry_date').val(expiryDate);
                 modal.find('#edit_custom').prop('checked', custom);
                 modal.find('#edit_custom').val(custom ? 'on' : 'off');

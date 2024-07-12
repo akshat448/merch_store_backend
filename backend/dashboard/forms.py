@@ -11,7 +11,7 @@ class DiscountCodeForm(forms.ModelForm):
             "discount_percentage",
             "max_uses",
             "expiry_date",
-            "roles_allowed",
+            "for_user_positions",
             "custom",
         ]
 
