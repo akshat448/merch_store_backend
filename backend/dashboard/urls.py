@@ -6,6 +6,7 @@ urlpatterns = [
     path("import-users/", views.import_users_from_csv, name="import_users_from_csv"),
     path("orders-csv/<int:id>/", views.ordersCSV, name="orders_csv"),
     path("stop-orders/", views.stopOrders, name="stop_orders"),
+    path("start-orders/", views.startOrders, name="start_orders"),
     path("discount-codes/", views.discount_codes, name="discount_codes"),
     path(
         "discount-codes/create/",

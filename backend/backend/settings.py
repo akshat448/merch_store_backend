@@ -166,13 +166,15 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CELERY_RESULT_BACKEND = "django-db"
 
 
-# CORS_ALLOWED_ALL_ORIGINS = True
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8000",
-    # "https://afdf4f9210fa6944a341186299ea9128.serveo.net",
-    # "http://127.0.0.1:3000",
-    "http://localhost:3000",
-]
+CORS_ALLOWED_ALL_ORIGINS = True
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_HEADERS = ["*"]
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:8000",
+#     # "https://afdf4f9210fa6944a341186299ea9128.serveo.net",
+#     # "http://127.0.0.1:3000",
+#     "http://localhost:3000",
+# ]
 
 LOGS_ROOT = os.path.join(BASE_DIR, "logs")
 

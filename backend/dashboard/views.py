@@ -1,4 +1,3 @@
-
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import Http404, StreamingHttpResponse, JsonResponse
 from django.contrib.admin.views.decorators import staff_member_required
@@ -164,7 +163,9 @@ def edit_discount_code(request, code_id):
         discount_code.save()
         messages.success(request, "Discount code updated successfully.")
         return redirect("/discount-codes")
-    return render(request, "dashboard/discount_codes.html", {"discount_code": discount_code})
+    return render(
+        request, "dashboard/discount_codes.html", {"discount_code": discount_code}
+    )
 
 
 @staff_member_required
@@ -235,6 +236,17 @@ def stopOrders(request):
 
 
 @staff_member_required
+@require_POST
+def startOrders(request):
+    products = Product.objects.all()
+    for product in products:
+        product.accept_orders = True
+        product.save()
+    messages.success(request, "Started receiving orders")
+    return redirect("/dashboard")
+
+
+@staff_member_required
 def products(request):
     products = Product.objects.all()
     return render(request, "dashboard/products.html", {"products": products})
@@ -287,9 +299,9 @@ def edit_product(request, product_id):
         product.price = request.POST.get("price")
         product.max_quantity = request.POST.get("max_quantity")
         product.for_user_positions = request.POST.get("for_user_positions")
-        
+
         product.for_user_positions = get_for_user_positions(product.for_user_positions)
-        
+
         product.is_size_required = request.POST.get("is_size_required", False) == "on"
         product.is_name_required = request.POST.get("is_name_required", False) == "on"
         product.is_image_required = request.POST.get("is_image_required", False) == "on"
