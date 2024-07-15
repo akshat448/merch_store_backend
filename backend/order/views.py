@@ -31,6 +31,42 @@ class OrderView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+class ApplyDiscount(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        user = request.user
+        discount_code = request.data.get("discount_code", None)
+
+        if not discount_code:
+            return Response({"detail": "Discount code is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        cart_items = CartItem.objects.filter(user=user)
+
+        if not cart_items.exists():
+            return Response({"detail": "No items in cart."}, status=status.HTTP_400_BAD_REQUEST)
+
+        total_amount = sum(item.product.price * item.quantity for item in cart_items)
+
+        try:
+            discount = DiscountCode.objects.get(code=discount_code)
+            if discount.is_valid() and user in discount.roles_allowed.all():
+                discount_percentage = discount.discount_percentage
+                updated_amount = float(total_amount) - float(total_amount) * (discount_percentage / 100)
+                return Response(
+                    {
+                        "total_amount": total_amount,
+                        "discount_percentage": discount_percentage,
+                        "updated_amount": updated_amount,
+                    },
+                    status=status.HTTP_200_OK
+                )
+            else:
+                return Response({"detail": "Invalid or expired discount code."}, status=status.HTTP_400_BAD_REQUEST)
+        except DiscountCode.DoesNotExist:
+            return Response({"detail": "Discount code does not exist."}, status=status.HTTP_400_BAD_REQUEST)
+
+
 class Checkout(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -42,9 +78,9 @@ class Checkout(APIView):
             return Response({"detail": "No items in cart."}, status=status.HTTP_400_BAD_REQUEST)
 
         total_amount = sum(item.product.price * item.quantity for item in cart_items)
-        discount_code = request.data.get("discount_code", None)
-        discount_percentage = 0
         updated_amount = total_amount
+
+        discount_code = request.data.get("discount_code", None)
 
         if discount_code:
             try:
@@ -58,7 +94,7 @@ class Checkout(APIView):
                 return Response({"detail": "Discount code does not exist."}, status=status.HTTP_400_BAD_REQUEST)
 
         with transaction.atomic():
-            order = Order.objects.create(user=user, amount=total_amount)
+            order = Order.objects.create(user=user, amount=updated_amount)
             for item in cart_items:
                 OrderItem.objects.create(
                     order=order,
@@ -79,7 +115,7 @@ class Checkout(APIView):
                 "order": serializer.data,
                 "total_amount": total_amount,
                 "updated_amount": updated_amount,
-                "discount_percentage": discount_percentage,
+                "discount_percentage": discount.discount_percentage if discount_code else 0,
             },
             status=status.HTTP_201_CREATED
         )
