@@ -1253,3 +1253,371 @@ Traceback (most recent call last):
 django.db.utils.DataError: value too long for type character varying(5)
 
 [12/Jul/2024 20:11:00] ERROR [django.server:212] "POST /cart/add/ HTTP/1.1" 500 174955
+[16/Jul/2024 22:58:08] ERROR [django.request:241] Internal Server Error: /order/place/
+Traceback (most recent call last):
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ALL CODES\Professional work\CCS MERCH STORE\merch_store_backend\backend\order\views.py", line 115, in post
+    updated_amount -= total_amount * (discount_percentage / 100)
+                      ~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TypeError: unsupported operand type(s) for *: 'decimal.Decimal' and 'float'
+[16/Jul/2024 22:58:08] ERROR [django.server:212] "POST /order/place/ HTTP/1.1" 500 99040
+[16/Jul/2024 23:02:52] ERROR [django.request:241] Internal Server Error: /order/place/
+Traceback (most recent call last):
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ALL CODES\Professional work\CCS MERCH STORE\merch_store_backend\backend\order\views.py", line 115, in post
+    updated_amount -= total_amount * (discount_percentage / 100)
+                      ~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TypeError: unsupported operand type(s) for *: 'decimal.Decimal' and 'float'
+[16/Jul/2024 23:02:52] ERROR [django.server:212] "POST /order/place/ HTTP/1.1" 500 99010
+[16/Jul/2024 23:05:39] ERROR [django.request:241] Internal Server Error: /order/place/
+Traceback (most recent call last):
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ALL CODES\Professional work\CCS MERCH STORE\merch_store_backend\backend\order\views.py", line 115, in post
+    updated_amount -= float(total_amount) * (discount_percentage / 100)
+TypeError: unsupported operand type(s) for -=: 'decimal.Decimal' and 'float'
+[16/Jul/2024 23:05:39] ERROR [django.server:212] "POST /order/place/ HTTP/1.1" 500 99044
+[16/Jul/2024 23:11:47] ERROR [django.request:241] Internal Server Error: /order/place/
+Traceback (most recent call last):
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ALL CODES\Professional work\CCS MERCH STORE\merch_store_backend\backend\order\views.py", line 148, in post
+    "order": serializer.data,
+             ^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\serializers.py", line 571, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\serializers.py", line 249, in data
+    self._data = self.to_representation(self.instance)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\serializers.py", line 538, in to_representation
+    ret[field.field_name] = field.to_representation(attribute)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\fields.py", line 1872, in to_representation
+    return method(value)
+           ^^^^^^^^^^^^^
+  File "D:\ALL CODES\Professional work\CCS MERCH STORE\merch_store_backend\backend\order\serializers.py", line 33, in get_total_amount
+    return obj.total_amount
+           ^^^^^^^^^^^^^^^^
+  File "D:\ALL CODES\Professional work\CCS MERCH STORE\merch_store_backend\backend\order\models.py", line 22, in total_amount
+    discount = total * (self.discount_code.discount_percentage / 100)
+               ~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TypeError: unsupported operand type(s) for *: 'decimal.Decimal' and 'float'
+[16/Jul/2024 23:11:47] ERROR [django.server:212] "POST /order/place/ HTTP/1.1" 500 130504
+[16/Jul/2024 23:12:08] ERROR [django.request:241] Internal Server Error: /order/place/
+Traceback (most recent call last):
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ALL CODES\Professional work\CCS MERCH STORE\merch_store_backend\backend\order\views.py", line 148, in post
+    "order": serializer.data,
+             ^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\serializers.py", line 571, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\serializers.py", line 249, in data
+    self._data = self.to_representation(self.instance)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\serializers.py", line 538, in to_representation
+    ret[field.field_name] = field.to_representation(attribute)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\fields.py", line 1872, in to_representation
+    return method(value)
+           ^^^^^^^^^^^^^
+  File "D:\ALL CODES\Professional work\CCS MERCH STORE\merch_store_backend\backend\order\serializers.py", line 33, in get_total_amount
+    return obj.total_amount
+           ^^^^^^^^^^^^^^^^
+  File "D:\ALL CODES\Professional work\CCS MERCH STORE\merch_store_backend\backend\order\models.py", line 22, in total_amount
+    discount = total * (self.discount_code.discount_percentage / 100)
+               ~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TypeError: unsupported operand type(s) for *: 'decimal.Decimal' and 'float'
+[16/Jul/2024 23:12:08] ERROR [django.server:212] "POST /order/place/ HTTP/1.1" 500 130504
+[16/Jul/2024 23:13:41] ERROR [django.request:241] Internal Server Error: /order/place/
+Traceback (most recent call last):
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ALL CODES\Professional work\CCS MERCH STORE\merch_store_backend\backend\order\views.py", line 148, in post
+    "order": serializer.data,
+             ^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\serializers.py", line 571, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\serializers.py", line 249, in data
+    self._data = self.to_representation(self.instance)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\serializers.py", line 538, in to_representation
+    ret[field.field_name] = field.to_representation(attribute)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\fields.py", line 1872, in to_representation
+    return method(value)
+           ^^^^^^^^^^^^^
+  File "D:\ALL CODES\Professional work\CCS MERCH STORE\merch_store_backend\backend\order\serializers.py", line 33, in get_total_amount
+    return obj.total_amount
+           ^^^^^^^^^^^^^^^^
+  File "D:\ALL CODES\Professional work\CCS MERCH STORE\merch_store_backend\backend\order\models.py", line 22, in total_amount
+    discount = total * (self.discount_code.discount_percentage / 100)
+               ~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TypeError: unsupported operand type(s) for *: 'decimal.Decimal' and 'float'
+[16/Jul/2024 23:13:41] ERROR [django.server:212] "POST /order/place/ HTTP/1.1" 500 130504
+[16/Jul/2024 23:16:51] ERROR [django.request:241] Internal Server Error: /order/place/
+Traceback (most recent call last):
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ALL CODES\Professional work\CCS MERCH STORE\merch_store_backend\backend\order\views.py", line 148, in post
+    "order": serializer.data,
+             ^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\serializers.py", line 571, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\serializers.py", line 249, in data
+    self._data = self.to_representation(self.instance)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\serializers.py", line 538, in to_representation
+    ret[field.field_name] = field.to_representation(attribute)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\fields.py", line 1872, in to_representation
+    return method(value)
+           ^^^^^^^^^^^^^
+  File "D:\ALL CODES\Professional work\CCS MERCH STORE\merch_store_backend\backend\order\serializers.py", line 33, in get_total_amount
+    return obj.total_amount
+           ^^^^^^^^^^^^^^^^
+  File "D:\ALL CODES\Professional work\CCS MERCH STORE\merch_store_backend\backend\order\models.py", line 22, in total_amount
+    discount = total * (self.discount_code.discount_percentage / 100)
+               ~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TypeError: unsupported operand type(s) for *: 'decimal.Decimal' and 'float'
+[16/Jul/2024 23:16:51] ERROR [django.server:212] "POST /order/place/ HTTP/1.1" 500 130504
+[16/Jul/2024 23:18:25] ERROR [django.request:241] Internal Server Error: /order/place/
+Traceback (most recent call last):
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ALL CODES\Professional work\CCS MERCH STORE\merch_store_backend\backend\order\views.py", line 148, in post
+    "order": serializer.data,
+             ^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\serializers.py", line 571, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\serializers.py", line 249, in data
+    self._data = self.to_representation(self.instance)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\serializers.py", line 538, in to_representation
+    ret[field.field_name] = field.to_representation(attribute)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\fields.py", line 1872, in to_representation
+    return method(value)
+           ^^^^^^^^^^^^^
+  File "D:\ALL CODES\Professional work\CCS MERCH STORE\merch_store_backend\backend\order\serializers.py", line 33, in get_total_amount
+    return obj.total_amount
+           ^^^^^^^^^^^^^^^^
+  File "D:\ALL CODES\Professional work\CCS MERCH STORE\merch_store_backend\backend\order\models.py", line 22, in total_amount
+    discount = total * (self.discount_code.discount_percentage / 100)
+               ~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TypeError: unsupported operand type(s) for *: 'decimal.Decimal' and 'float'
+[16/Jul/2024 23:18:25] ERROR [django.server:212] "POST /order/place/ HTTP/1.1" 500 130504
+[16/Jul/2024 23:36:17] ERROR [django.request:241] Internal Server Error: /order/place/
+Traceback (most recent call last):
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ALL CODES\Professional work\CCS MERCH STORE\merch_store_backend\backend\order\views.py", line 153, in post
+    "order": serializer.data,
+             ^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\serializers.py", line 571, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\serializers.py", line 249, in data
+    self._data = self.to_representation(self.instance)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\serializers.py", line 538, in to_representation
+    ret[field.field_name] = field.to_representation(attribute)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\fields.py", line 1872, in to_representation
+    return method(value)
+           ^^^^^^^^^^^^^
+  File "D:\ALL CODES\Professional work\CCS MERCH STORE\merch_store_backend\backend\order\serializers.py", line 33, in get_total_amount
+    return obj.total_amount
+           ^^^^^^^^^^^^^^^^
+  File "D:\ALL CODES\Professional work\CCS MERCH STORE\merch_store_backend\backend\order\models.py", line 22, in total_amount
+    discount = total * (self.discount_code.discount_percentage / 100)
+               ~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+TypeError: unsupported operand type(s) for *: 'decimal.Decimal' and 'float'
+[16/Jul/2024 23:36:17] ERROR [django.server:212] "POST /order/place/ HTTP/1.1" 500 130570
