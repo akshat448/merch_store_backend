@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.db import models
 from products.models import Product
 from login.models import CustomUser as User
@@ -17,9 +18,9 @@ class Order(models.Model):
 
     @property
     def total_amount(self):
-        total = sum(item.product.price for item in self.order_items.all())
+        total = sum(Decimal(item.product.price) for item in self.order_items.all())
         if self.discount_code and self.discount_code.is_valid():
-            discount = total * (self.discount_code.discount_percentage / 100)
+            discount = total * (Decimal(self.discount_code.discount_percentage) / Decimal(100))
             total -= discount
         return total
 

@@ -1,14 +1,12 @@
 from django.db import models
-from django.contrib.postgres.fields import ArrayField
-from login.models import CustomUser as User
 from django.utils import timezone
+from django.contrib.postgres.fields import ArrayField
 import string
 import random
 
-
 class DiscountCode(models.Model):
     code = models.CharField(max_length=20, unique=True)
-    discount_percentage = models.FloatField()
+    discount_percentage = models.DecimalField(max_digits=5, decimal_places=2)
     max_uses = models.IntegerField()
     expiry_date = models.DateTimeField()
     for_user_positions = ArrayField(models.CharField(max_length=50), blank=True, default=list)

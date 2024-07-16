@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from .serializers import OrderSerializer
 from django.db import transaction
 from products.models import CartItem
+from decimal import Decimal
 
 
 class AllOrders(APIView):
@@ -112,7 +113,8 @@ class Checkout(APIView):
                 discount = DiscountCode.objects.get(code=discount_code)
                 if discount.is_valid() and user.position in discount.for_user_positions:
                     discount_percentage = discount.discount_percentage
-                    updated_amount -= total_amount * (discount_percentage / 100)
+                    # Using Decimal for precise financial calculations
+                    updated_amount = total_amount - (total_amount * Decimal(discount_percentage) / Decimal(100))
                 else:
                     return Response(
                         {"detail": "Invalid or expired discount code."},

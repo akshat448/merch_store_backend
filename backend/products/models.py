@@ -1,15 +1,14 @@
-from django.db import models
 from django.contrib.postgres.fields import ArrayField
+from decimal import Decimal
+from django.db import models
 from login.models import CustomUser
-
-# Create your models here.
 
 def productImageUploadPath(instance, filename):
     return f"product/{instance.name.replace(' ', '_')}/{filename.replace(' ', '_')}"
 
 class Product(models.Model):
     name = models.CharField(max_length=100)
-    price = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
+    price = models.DecimalField(default=Decimal('0.00'), max_digits=10, decimal_places=2)
     max_quantity = models.IntegerField(default=1)
     
     is_name_required = models.BooleanField(default=False)
@@ -34,9 +33,9 @@ class CartItem(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
-    total_amount = models.DecimalField(default=0.00, max_digits=5, decimal_places=2)
-    discount_percentage = models.FloatField(default=0.00)
-    updated_amount = models.DecimalField(default=0.00, max_digits=5, decimal_places=2)
+    total_amount = models.DecimalField(default=Decimal('0.00'), max_digits=10, decimal_places=2)
+    discount_percentage = models.DecimalField(default=Decimal('0.00'), max_digits=5, decimal_places=2)
+    updated_amount = models.DecimalField(default=Decimal('0.00'), max_digits=10, decimal_places=2)
     created_at = models.DateTimeField(auto_now_add=True)
 
     printing_name = models.CharField(max_length=100, null=True, blank=True, default=None)
