@@ -1621,3 +1621,138 @@ Traceback (most recent call last):
                ~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 TypeError: unsupported operand type(s) for *: 'decimal.Decimal' and 'float'
 [16/Jul/2024 23:36:17] ERROR [django.server:212] "POST /order/place/ HTTP/1.1" 500 130570
+[16/Jul/2024 23:47:54] ERROR [django.request:241] Internal Server Error: /order/place/
+Traceback (most recent call last):
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ALL CODES\Professional work\CCS MERCH STORE\merch_store_backend\backend\order\views.py", line 153, in post
+    "order": serializer.data,
+             ^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\serializers.py", line 571, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\serializers.py", line 249, in data
+    self._data = self.to_representation(self.instance)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\serializers.py", line 538, in to_representation
+    ret[field.field_name] = field.to_representation(attribute)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\fields.py", line 1872, in to_representation
+    return method(value)
+           ^^^^^^^^^^^^^
+  File "D:\ALL CODES\Professional work\CCS MERCH STORE\merch_store_backend\backend\order\serializers.py", line 33, in get_total_amount
+    return obj.total_amount
+           ^^^^^^^^^^^^^^^^
+AttributeError: 'Order' object has no attribute 'total_amount'
+[16/Jul/2024 23:47:54] ERROR [django.server:212] "POST /order/place/ HTTP/1.1" 500 126644
+[16/Jul/2024 23:49:54] ERROR [django.request:241] Internal Server Error: /order/place/
+Traceback (most recent call last):
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ALL CODES\Professional work\CCS MERCH STORE\merch_store_backend\backend\order\views.py", line 153, in post
+    "order": serializer.data,
+             ^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\serializers.py", line 571, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\serializers.py", line 249, in data
+    self._data = self.to_representation(self.instance)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\serializers.py", line 538, in to_representation
+    ret[field.field_name] = field.to_representation(attribute)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\fields.py", line 1871, in to_representation
+    method = getattr(self.parent, self.method_name)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'OrderSerializer' object has no attribute 'get_total_amount'
+[16/Jul/2024 23:49:54] ERROR [django.server:212] "POST /order/place/ HTTP/1.1" 500 120885
+[17/Jul/2024 00:00:36] ERROR [django.request:241] Internal Server Error: /order/place/
+Traceback (most recent call last):
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\ALL CODES\Professional work\CCS MERCH STORE\merch_store_backend\backend\order\views.py", line 153, in post
+    "order": serializer.data,
+             ^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\serializers.py", line 571, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\serializers.py", line 249, in data
+    self._data = self.to_representation(self.instance)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\serializers.py", line 538, in to_representation
+    ret[field.field_name] = field.to_representation(attribute)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Sakshham\AppData\Local\Programs\Python\Python312\Lib\site-packages\rest_framework\fields.py", line 1872, in to_representation
+    return method(value)
+           ^^^^^^^^^^^^^
+  File "D:\ALL CODES\Professional work\CCS MERCH STORE\merch_store_backend\backend\order\serializers.py", line 36, in get_total_amount
+    return obj.total_amount
+           ^^^^^^^^^^^^^^^^
+  File "D:\ALL CODES\Professional work\CCS MERCH STORE\merch_store_backend\backend\order\models.py", line 24, in total_amount
+    total = sum(
+            ^^^^
+  File "D:\ALL CODES\Professional work\CCS MERCH STORE\merch_store_backend\backend\order\models.py", line 25, in <genexpr>
+    Decimal(item.product.price) * Decimal(item.quantity)
+                                          ^^^^^^^^^^^^^
+AttributeError: 'OrderItem' object has no attribute 'quantity'
+[17/Jul/2024 00:00:36] ERROR [django.server:212] "POST /order/place/ HTTP/1.1" 500 134150

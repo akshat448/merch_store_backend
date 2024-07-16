@@ -1,4 +1,3 @@
-from decimal import Decimal
 from .models import Order, OrderItem
 from discounts.models import DiscountCode
 from rest_framework.views import APIView
@@ -52,15 +51,13 @@ class ApplyDiscount(APIView):
                 {"detail": "No items in cart."}, status=status.HTTP_400_BAD_REQUEST
             )
 
-        total_amount = sum(
-            Decimal(item.product.price) * item.quantity for item in cart_items
-        )
+        total_amount = sum(item.product.price * item.quantity for item in cart_items)
 
         if discount_code == "NO_DISCOUNT":
             return Response(
                 {
                     "total_amount": total_amount,
-                    "discount_percentage": Decimal("0.00"),
+                    "discount_percentage": 0,
                     "updated_amount": total_amount,
                 },
                 status=status.HTTP_200_OK,
@@ -69,9 +66,9 @@ class ApplyDiscount(APIView):
         try:
             discount = DiscountCode.objects.get(code=discount_code)
             if discount.is_valid() and user.position in discount.for_user_positions:
-                discount_percentage = Decimal(discount.discount_percentage)
-                updated_amount = total_amount - total_amount * (
-                    discount_percentage / Decimal("100.00")
+                discount_percentage = discount.discount_percentage
+                updated_amount = float(total_amount) - float(total_amount) * (
+                    discount_percentage / 100
                 )
                 return Response(
                     {
@@ -105,9 +102,7 @@ class Checkout(APIView):
                 {"detail": "No items in cart."}, status=status.HTTP_400_BAD_REQUEST
             )
 
-        total_amount = sum(
-            Decimal(item.product.price) * item.quantity for item in cart_items
-        )
+        total_amount = sum(item.product.price * item.quantity for item in cart_items)
         updated_amount = total_amount
 
         discount_code = request.data.get("discount_code", None)
@@ -116,10 +111,8 @@ class Checkout(APIView):
             try:
                 discount = DiscountCode.objects.get(code=discount_code)
                 if discount.is_valid() and user.position in discount.for_user_positions:
-                    discount_percentage = Decimal(discount.discount_percentage)
-                    updated_amount -= total_amount * (
-                        discount_percentage / Decimal("100.00")
-                    )
+                    discount_percentage = discount.discount_percentage
+                    updated_amount -= total_amount * (discount_percentage / 100)
                 else:
                     return Response(
                         {"detail": "Invalid or expired discount code."},
@@ -154,8 +147,16 @@ class Checkout(APIView):
                 "total_amount": total_amount,
                 "updated_amount": updated_amount,
                 "discount_percentage": (
-                    discount.discount_percentage if discount_code else Decimal("0.00")
+                    discount.discount_percentage if discount_code else 0
                 ),
             },
             status=status.HTTP_201_CREATED,
         )
+
+
+"""
+def order_confirmation(request, order_id):
+    order = Order.objects.get(id=order_id)
+    generate_qr_code(order)
+    return render(request, 'order_confirmation.html', {'order': order})
+"""
