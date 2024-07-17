@@ -7,7 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from .serializers import OrderSerializer
 from django.db import transaction
 from products.models import CartItem
-
+from products.serializers import ProductSerializer
 
 class AllOrders(APIView):
     permission_classes = [IsAuthenticated]
@@ -15,9 +15,8 @@ class AllOrders(APIView):
     def get(self, request):
         user = request.user
         queryset = Order.objects.filter(user=user)
-        serializer = OrderSerializer(queryset, many=True)
+        serializer = OrderSerializer(queryset, many=True, context={'user': user})
         return Response(serializer.data, status=status.HTTP_200_OK)
-
 
 class OrderView(APIView):
     permission_classes = [IsAuthenticated]
@@ -27,9 +26,8 @@ class OrderView(APIView):
         order = Order.objects.filter(id=order_id, user=user).first()
         if order is None:
             return Response(status=status.HTTP_400_BAD_REQUEST)
-        serializer = OrderSerializer(order)
+        serializer = OrderSerializer(order, context={'user': user})
         return Response(serializer.data, status=status.HTTP_200_OK)
-
 
 class ApplyDiscount(APIView):
     permission_classes = [IsAuthenticated]
@@ -89,7 +87,6 @@ class ApplyDiscount(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-
 class Checkout(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -142,7 +139,7 @@ class Checkout(APIView):
             order.discount_code = discount
             order.save()
 
-        serializer = OrderSerializer(order)
+        serializer = OrderSerializer(order, context={'user': user})
         return Response(
             {
                 "order": serializer.data,
@@ -154,6 +151,7 @@ class Checkout(APIView):
             },
             status=status.HTTP_201_CREATED,
         )
+
 
 
 """
