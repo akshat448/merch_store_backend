@@ -1,8 +1,11 @@
 from rest_framework import serializers
 from .models import Order, OrderItem
 from discounts.models import DiscountCode
+from products.serializers import ProductSerializer
 
 class OrderItemSerializer(serializers.ModelSerializer):
+    product = ProductSerializer(read_only=True)
+    
     class Meta:
         model = OrderItem
         fields = ['product', 'printing_name', 'size', 'image_url']
