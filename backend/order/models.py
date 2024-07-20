@@ -8,7 +8,7 @@ class Order(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    paid_amount = models.DecimalField(max_digits=10, decimal_places=2)
     is_verified = models.BooleanField(default=False)
     mail_added = models.BooleanField(default=False)
     discount_code = models.ForeignKey(DiscountCode, null=True, blank=True, on_delete=models.SET_NULL)
@@ -18,7 +18,9 @@ class Order(models.Model):
 
     @property
     def total_amount(self):
-        total = sum(Decimal(item.product.price) for item in self.order_items.all())
+        
+        total = sum(Decimal(item.product.price * item.quantity) for item in self.order_items.all())
+        
         if self.discount_code and self.discount_code.is_valid():
             discount = total * (Decimal(self.discount_code.discount_percentage) / Decimal(100))
             total -= discount
@@ -30,6 +32,7 @@ class OrderItem(models.Model):
     printing_name = models.CharField(max_length=100, null=True, blank=True)
     size = models.CharField(max_length=5, null=True, blank=True)
     image_url = models.URLField(max_length=5000, null=True, blank=True)
+    quantity = models.PositiveIntegerField(default=1)
 
     def __str__(self):
         return f"{self.order.id}_{self.product.name}"

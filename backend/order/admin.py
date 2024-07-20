@@ -12,7 +12,7 @@ class OrderResource(ModelResource):
 class OrderAdmin(ExportMixin, admin.ModelAdmin):
     resource_class = OrderResource
 
-    list_display = ('id', 'user', 'amount', 'is_verified', 'items_count')
+    list_display = ('id', 'user', 'paid_amount', 'is_verified', 'items_count')
     search_fields = ('id', 'user__email')
     list_filter = ('is_verified', )
     list_editable = ('is_verified', )

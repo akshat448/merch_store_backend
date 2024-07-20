@@ -124,7 +124,7 @@ class Checkout(APIView):
                 )
 
         with transaction.atomic():
-            order = Order.objects.create(user=user, amount=updated_amount)
+            order = Order.objects.create(user=user, paid_amount=updated_amount)
             for item in cart_items:
                 OrderItem.objects.create(
                     order=order,
@@ -132,6 +132,7 @@ class Checkout(APIView):
                     printing_name=item.printing_name,
                     size=item.size,
                     image_url=item.image_url,
+                    quantity=item.quantity,
                 )
             cart_items.delete()
 
