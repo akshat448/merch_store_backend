@@ -21,7 +21,13 @@ class OrderSerializer(serializers.ModelSerializer):
     is_verified = serializers.SerializerMethodField()
     discount_code = DiscountCodeSerializer(read_only=True)
     total_amount = serializers.SerializerMethodField()
-
+    #qr_code_url = serializers.SerializerMethodField()
+    
+    def get_qr_code_url(self, obj):
+        if obj.qr_code:
+            return obj.qr_code.url
+        return None
+    
     def get_created_at(self, obj):
         return obj.created_at.isoformat()
     
@@ -38,3 +44,4 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ['id', 'paid_amount', 'created_at', 'is_verified', 'order_items', 'discount_code', 'total_amount']
+        #fields = ['id', 'paid_amount', 'created_at', 'is_verified', 'order_items', 'discount_code', 'total_amount','qr_code_url']

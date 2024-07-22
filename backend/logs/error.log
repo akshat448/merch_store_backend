@@ -1814,3 +1814,132 @@ Traceback (most recent call last):
                                            ^^^^^^^^^^^^^^^^^^^^^^^
 TypeError: unsupported operand type(s) for *: 'float' and 'decimal.Decimal'
 [17/Jul/2024 15:02:34] ERROR [django.server:212] "POST /order/apply-discount/ HTTP/1.1" 500 98949
+[22/Jul/2024 20:26:47] ERROR [django.request:241] Internal Server Error: /dashboard/
+Traceback (most recent call last):
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+psycopg2.errors.UndefinedColumn: column order_order.paid_amount does not exist
+LINE 1: SELECT SUM("order_order"."paid_amount") AS "total" FROM "ord...
+                   ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\backend\dashboard\views.py", line 36, in dashboard
+    Order.objects.filter(is_verified=True).aggregate(total=Sum("paid_amount"))["total"]
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\db\models\query.py", line 592, in aggregate
+    return self.query.chain().get_aggregation(self.db, kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\db\models\sql\query.py", line 554, in get_aggregation
+    result = compiler.execute_sql(SINGLE)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\db\models\sql\compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+django.db.utils.ProgrammingError: column order_order.paid_amount does not exist
+LINE 1: SELECT SUM("order_order"."paid_amount") AS "total" FROM "ord...
+                   ^
+
+[22/Jul/2024 20:26:47] ERROR [django.server:212] "GET /dashboard/ HTTP/1.1" 500 129026
+[22/Jul/2024 20:28:23] ERROR [django.request:241] Internal Server Error: /dashboard/
+Traceback (most recent call last):
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+psycopg2.errors.UndefinedColumn: column order_order.paid_amount does not exist
+LINE 1: SELECT SUM("order_order"."paid_amount") AS "total" FROM "ord...
+                   ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\backend\dashboard\views.py", line 36, in dashboard
+    Order.objects.filter(is_verified=True).aggregate(total=Sum("paid_amount"))["total"]
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\db\models\query.py", line 592, in aggregate
+    return self.query.chain().get_aggregation(self.db, kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\db\models\sql\query.py", line 554, in get_aggregation
+    result = compiler.execute_sql(SINGLE)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\db\models\sql\compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+django.db.utils.ProgrammingError: column order_order.paid_amount does not exist
+LINE 1: SELECT SUM("order_order"."paid_amount") AS "total" FROM "ord...
+                   ^
+
+[22/Jul/2024 20:28:23] ERROR [django.server:212] "GET /dashboard/ HTTP/1.1" 500 129026
+[22/Jul/2024 20:30:19] ERROR [django.request:241] Internal Server Error: /dashboard/
+Traceback (most recent call last):
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+psycopg2.errors.UndefinedColumn: column order_order.paid_amount does not exist
+LINE 1: SELECT SUM("order_order"."paid_amount") AS "total" FROM "ord...
+                   ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\contrib\auth\decorators.py", line 23, in _wrapper_view
+    return view_func(request, *args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\backend\dashboard\views.py", line 36, in dashboard
+    Order.objects.filter(is_verified=True).aggregate(total=Sum("paid_amount"))["total"]
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\db\models\query.py", line 592, in aggregate
+    return self.query.chain().get_aggregation(self.db, kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\db\models\sql\query.py", line 554, in get_aggregation
+    result = compiler.execute_sql(SINGLE)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\db\models\sql\compiler.py", line 1562, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+django.db.utils.ProgrammingError: column order_order.paid_amount does not exist
+LINE 1: SELECT SUM("order_order"."paid_amount") AS "total" FROM "ord...
+                   ^
+
+[22/Jul/2024 20:30:19] ERROR [django.server:212] "GET /dashboard/ HTTP/1.1" 500 128709

@@ -1,6 +1,7 @@
 from .models import Order, OrderItem
 from discounts.models import DiscountCode
 from rest_framework.views import APIView
+from django.shortcuts import render, get_object_or_404
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
@@ -70,9 +71,9 @@ class ApplyDiscount(APIView):
                 )
                 return Response(
                     {
-                        "total_amount": total_amount,
-                        "discount_percentage": discount_percentage,
-                        "updated_amount": updated_amount,
+                        "total_amount": float(total_amount),
+                        "discount_percentage": float(discount_percentage),
+                        "updated_amount": float(updated_amount),
                     },
                     status=status.HTTP_200_OK,
                 )
@@ -124,7 +125,8 @@ class Checkout(APIView):
                 )
 
         with transaction.atomic():
-            order = Order.objects.create(user=user, paid_amount=updated_amount)
+            order = Order.objects.create(user=user, paid_amount=updated_amount, total_amount=total_amount)
+            #order.generate_qr_code()
             for item in cart_items:
                 OrderItem.objects.create(
                     order=order,
@@ -144,9 +146,9 @@ class Checkout(APIView):
         return Response(
             {
                 "order": serializer.data,
-                "total_amount": total_amount,
-                "updated_amount": updated_amount,
-                "discount_percentage": (
+                "total_amount": float(total_amount),
+                "updated_amount": float(updated_amount),
+                "discount_percentage": float(
                     discount.discount_percentage if discount_code else 0
                 ),
             },
@@ -154,10 +156,7 @@ class Checkout(APIView):
         )
 
 
-
-"""
-def order_confirmation(request, order_id):
-    order = Order.objects.get(id=order_id)
-    generate_qr_code(order)
+"""def order_confirmation(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
     return render(request, 'order_confirmation.html', {'order': order})
 """

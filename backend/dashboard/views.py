@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import Http404, StreamingHttpResponse, JsonResponse
+from django.http import Http404, StreamingHttpResponse
 from django.contrib.admin.views.decorators import staff_member_required
-from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import get_user_model
 from django.views.decorators.http import require_POST
 from django.contrib import messages
@@ -15,7 +14,6 @@ from .forms import DiscountCodeForm
 from .utils import get_for_user_positions
 
 import csv
-import json
 import qrcode
 from io import BytesIO
 from datetime import datetime
@@ -35,7 +33,7 @@ class ListItem:
 @staff_member_required
 def dashboard(request):
     amount_received = (
-        Order.objects.filter(is_verified=True).aggregate(total=Sum("amount"))["total"]
+        Order.objects.filter(is_verified=True).aggregate(total=Sum("paid_amount"))["total"]
         or 0
     )
     unsuccessful_orders = Order.objects.filter(is_verified=False).count()
@@ -73,34 +71,6 @@ def dashboard(request):
     }
 
     return render(request, "dashboard/dashboard.html", context=context)
-
-
-@staff_member_required
-def import_users_from_csv(request):
-    if request.method == "GET":
-        return render(request, "dashboard/import_users.html")
-    csv_file = request.FILES["file"]
-    if not csv_file.name.endswith(".csv"):
-        messages.error(request, "File is not a CSV file.")
-        return redirect("/dashboard/")
-    users = []
-    try:
-        decoded_file = csv_file.read().decode("utf-8").splitlines()
-        reader = csv.DictReader(decoded_file)
-        for row in reader:
-            user = get_user_model()(
-                email=row["email"],
-                phone_no=row["phone_no"],
-                name=row["name"],
-                position=row["position"],
-            )
-            users.append(user)
-    except Exception as e:
-        messages.error(request, f"Error reading CSV file: {e}")
-        return redirect("/dashboard/")
-    get_user_model().objects.bulk_create(users)
-    messages.success(request, "Users imported successfully.")
-    return redirect("/dashboard/")
 
 
 @staff_member_required
@@ -331,12 +301,40 @@ def scan_qr(request):
             order_id = int(scanned_qr_code)
             order = Order.objects.get(pk=order_id)
             # Mark the order as delivered
-            order.delivered = True
+            order.is_verified = True
             order.save()
-            return redirect('admin_dashboard')  # Redirect to admin dashboard after marking order as delivered
+            messages.success(request, "Order marked as completed.")
+            return redirect('dashboard')  # Redirect to admin dashboard after marking order as delivered
         except Order.DoesNotExist:
-            return HttpResponseNotFound("Order not found")
+            messages.error(request, "Order not found.")
         except ValueError:
-            return HttpResponseNotFound("Invalid QR code")
-    return render(request, 'scan_qr.html')
+            messages.error(request, "Invalid QR code.")
+    return render(request, 'dashboard/scan_qr.html')
 """
+
+@staff_member_required
+def import_users_from_csv(request):
+    if request.method == "GET":
+        return render(request, "dashboard/import_users.html")
+    csv_file = request.FILES["file"]
+    if not csv_file.name.endswith(".csv"):
+        messages.error(request, "File is not a CSV file.")
+        return redirect("/dashboard/")
+    users = []
+    try:
+        decoded_file = csv_file.read().decode("utf-8").splitlines()
+        reader = csv.DictReader(decoded_file)
+        for row in reader:
+            user = get_user_model()(
+                email=row["email"],
+                phone_no=row["phone_no"],
+                name=row["name"],
+                position=row["position"],
+            )
+            users.append(user)
+    except Exception as e:
+        messages.error(request, f"Error reading CSV file: {e}")
+        return redirect("/dashboard/")
+    get_user_model().objects.bulk_create(users)
+    messages.success(request, "Users imported successfully.")
+    return redirect("/dashboard/")
