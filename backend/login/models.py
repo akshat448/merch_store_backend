@@ -8,7 +8,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True, blank=False, null=False)
     phone_no = models.CharField(max_length=15, null=True, default=None, blank=True)
     name = models.CharField(max_length=100, null=True, default=None, blank=True)
-    position = models.CharField(max_length=20, default='user')
+    position = models.CharField(max_length=10, default='user')
     profilePic = models.URLField(max_length=500, null=True, blank=True, default=None)
 
 

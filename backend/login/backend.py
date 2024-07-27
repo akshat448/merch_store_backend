@@ -17,15 +17,18 @@ class SSOAuthenticationBackend(BaseBackend):
         if user_info and not isinstance(user_info, Response):
             try:
                 user = User.objects.get(email=user_info['email'])
+                
             except User.DoesNotExist:
                 roles = user_info.get('roles', [])
                 user_role = 'user'
+                # If any role other than user is present, set is_member to True
                 is_member = any(role['role'].lower() != 'user' for role in roles)
-                is_superuser = any(role['role'].lower() == 'exbo' for role in roles)  # Check if 'exbo' role is present
+                
                 for role in roles:
                     if role['role'].lower() != 'user':
                         user_role = role['role']
                         break
+                    
                 user = User.objects.create(
                     id=user_info['rollNo'],
                     email=user_info['email'],
@@ -34,9 +37,6 @@ class SSOAuthenticationBackend(BaseBackend):
                     position=user_role,
                     profilePic=user_info.get('profilePic', None),
                     is_member=is_member,
-                    is_superuser=is_superuser,  # Set superuser status
-                    is_staff=is_superuser,  # Set staff status if superuser
-                    is_admin=is_superuser,  # Set admin status if superuser
                 )
                 user.set_unusable_password()
                 user.save()

@@ -1943,3 +1943,49 @@ LINE 1: SELECT SUM("order_order"."paid_amount") AS "total" FROM "ord...
                    ^
 
 [22/Jul/2024 20:30:19] ERROR [django.server:212] "GET /dashboard/ HTTP/1.1" 500 128709
+[27/Jul/2024 14:12:07] ERROR [django.request:241] Internal Server Error: /admin/login/
+Traceback (most recent call last):
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\utils\decorators.py", line 46, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\contrib\admin\sites.py", line 441, in login
+    return LoginView.as_view(**defaults)(request)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\utils\decorators.py", line 46, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\decorators\debug.py", line 92, in sensitive_post_parameters_wrapper
+    return view(request, *args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\utils\decorators.py", line 46, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\utils\decorators.py", line 134, in _wrapper_view
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\utils\decorators.py", line 46, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\decorators\cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\contrib\auth\views.py", line 90, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\generic\base.py", line 143, in dispatch
+    return handler(request, *args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\generic\edit.py", line 152, in post
+    if form.is_valid():
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\forms\forms.py", line 201, in is_valid
+    return self.is_bound and not self.errors
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\forms\forms.py", line 196, in errors
+    self.full_clean()
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\forms\forms.py", line 434, in full_clean
+    self._clean_form()
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\forms\forms.py", line 455, in _clean_form
+    cleaned_data = self.clean()
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\contrib\auth\forms.py", line 256, in clean
+    self.confirm_login_allowed(self.user_cache)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\contrib\admin\forms.py", line 22, in confirm_login_allowed
+    if not user.is_staff:
+AttributeError: 'CustomUser' object has no attribute 'is_staff'
+[27/Jul/2024 14:12:07] ERROR [django.server:212] "POST /admin/login/?next=/dashboard/ HTTP/1.1" 500 156443
