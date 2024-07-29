@@ -176,6 +176,13 @@ CORS_ALLOW_HEADERS = ["*"]
 #     "http://localhost:3000",
 # ]
 
+
+PAYU_MERCHANT_KEY = os.getenv("PAYU_MERCHANT_KEY")
+PAYU_MERCHANT_SALT = os.getenv("PAYU_MERCHANT_SALT")
+PAYU_SUCCESS_URL = 'http://localhost:8000/payment/success/'
+PAYU_FAILURE_URL = 'http://localhost:8000/payment/failure/'
+
+
 LOGS_ROOT = os.path.join(BASE_DIR, "logs")
 
 LOGGING = {

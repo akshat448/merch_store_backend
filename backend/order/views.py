@@ -1,14 +1,20 @@
-from .models import Order, OrderItem
-from discounts.models import DiscountCode
+import hashlib
+import requests
+
 from rest_framework.views import APIView
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from .serializers import OrderSerializer
+from django.conf import settings
 from django.db import transaction
+
+from .models import Order, OrderItem, Payment
+from .serializers import OrderSerializer
+from discounts.models import DiscountCode
 from products.models import CartItem
 from products.serializers import ProductSerializer
+
 
 class AllOrders(APIView):
     permission_classes = [IsAuthenticated]
@@ -18,6 +24,7 @@ class AllOrders(APIView):
         queryset = Order.objects.filter(user=user)
         serializer = OrderSerializer(queryset, many=True, context={'user': user})
         return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class OrderView(APIView):
     permission_classes = [IsAuthenticated]
@@ -29,6 +36,7 @@ class OrderView(APIView):
             return Response(status=status.HTTP_400_BAD_REQUEST)
         serializer = OrderSerializer(order, context={'user': user})
         return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class ApplyDiscount(APIView):
     permission_classes = [IsAuthenticated]
@@ -88,6 +96,7 @@ class ApplyDiscount(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
+
 class Checkout(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -125,7 +134,7 @@ class Checkout(APIView):
                 )
 
         with transaction.atomic():
-            order = Order.objects.create(user=user, paid_amount=updated_amount, total_amount=total_amount)
+            order = Order.objects.create(user=user, updated_amount=updated_amount, total_amount=total_amount)
             #order.generate_qr_code()
             for item in cart_items:
                 OrderItem.objects.create(
@@ -155,6 +164,85 @@ class Checkout(APIView):
             status=status.HTTP_201_CREATED,
         )
 
+
+class PayuView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, order_id):
+        user = request.user
+        order = Order.objects.get(id=order_id, user=user)
+
+        if not order:
+            return Response({"detail": "Order not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        key = settings.PAYU_MERCHANT_KEY
+        txnid = str(order.id) + str(order.created_at.timestamp()).replace('.', '')
+        amount = str(order.updated_amount)
+        productinfo = "Order_" + str(order.id)
+        firstname = user.name.split()[0] if ' ' in user.name else user.name
+        email = user.email
+        phone = user.phone_no
+        surl = settings.PAYU_SUCCESS_URL
+        furl = settings.PAYU_FAILURE_URL
+
+        # Generating hash
+        hash_string = f"{key}|{txnid}|{amount}|{productinfo}|{firstname}|{email}|||||||||||{settings.PAYU_MERCHANT_SALT}"
+        hashh = hashlib.sha512(hash_string.encode('utf-8')).hexdigest().lower()
+
+        # PayU payload
+        payload = {
+            "key": key,
+            "txnid": txnid,
+            "amount": amount,
+            "productinfo": productinfo,
+            "firstname": firstname,
+            "email": email,
+            "phone": phone,
+            "surl": surl,
+            "furl": furl,
+            "hash": hashh,
+        }
+
+        # Redirecting to PayU payment page
+        response = requests.post("https://test.payu.in/_payment", data=payload)
+
+        # Create Payment instance
+        Payment.objects.create(order=order, transaction_id=txnid, paid_amount=order.updated_amount, status='pending')
+
+        return redirect(response.url)
+    
+
+class PayuSuccessView(APIView):
+    def post(self, request):
+        txnid = request.data.get('txnid')
+        status = request.data.get('status')
+        
+        try:
+            payment = Payment.objects.get(transaction_id=txnid)
+            payment.status = status
+            payment.save()
+
+            if status == 'success':
+                payment.order.is_verified = True
+                payment.order.save()
+
+            return Response({"detail": "Payment processed successfully."}, status=status.HTTP_200_OK)
+        except Payment.DoesNotExist:
+            return Response({"detail": "Payment record not found."}, status=status.HTTP_404_NOT_FOUND)
+
+
+class PayuFailureView(APIView):
+    def post(self, request):
+        txnid = request.data.get('txnid')
+        
+        try:
+            payment = Payment.objects.get(transaction_id=txnid)
+            payment.status = 'failure'
+            payment.save()
+
+            return Response({"detail": "Payment failed."}, status=status.HTTP_200_OK)
+        except Payment.DoesNotExist:
+            return Response({"detail": "Payment record not found."}, status=status.HTTP_404_NOT_FOUND)
 
 """def order_confirmation(request, order_id):
     order = get_object_or_404(Order, id=order_id)

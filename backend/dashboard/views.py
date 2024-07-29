@@ -33,7 +33,7 @@ class ListItem:
 @staff_member_required
 def dashboard(request):
     amount_received = (
-        Order.objects.filter(is_verified=True).aggregate(total=Sum("paid_amount"))["total"]
+        Order.objects.filter(is_verified=True).aggregate(total=Sum("updated_amount"))["total"]
         or 0
     )
     unsuccessful_orders = Order.objects.filter(is_verified=False).count()

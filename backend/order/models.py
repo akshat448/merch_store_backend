@@ -8,21 +8,19 @@ class Order(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
-    paid_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    updated_amount = models.DecimalField(max_digits=10, decimal_places=2)
     is_verified = models.BooleanField(default=False)
     mail_added = models.BooleanField(default=False)
     discount_code = models.ForeignKey(DiscountCode, null=True, blank=True, on_delete=models.SET_NULL)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    #qr_code = models.ImageField(upload_to='qr_codes/', blank=True, null=True)
+    # qr_code = models.ImageField(upload_to='qr_codes/', blank=True, null=True)
 
     def __str__(self):
         return str(self.id)
 
     @property
     def total_amount(self):
-        
         total = sum(Decimal(item.product.price * item.quantity) for item in self.order_items.all())
-        
         if self.discount_code and self.discount_code.is_valid():
             discount = total * (Decimal(self.discount_code.discount_percentage) / Decimal(100))
             total -= discount
@@ -41,7 +39,10 @@ class OrderItem(models.Model):
 
 class Payment(models.Model):
     order = models.OneToOneField(Order, on_delete=models.CASCADE, related_name='payment')
-    payment_intent_id = models.CharField(max_length=100)  # Store Stripe Payment Intent ID
+    transaction_id = models.CharField(max_length=100, unique=True)
+    paid_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.CharField(max_length=20)  # 'success', 'failure', 'pending'
+    payment_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"Payment for Order {self.order.id}"
