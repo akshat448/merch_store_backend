@@ -43,5 +43,5 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ['id', 'paid_amount', 'created_at', 'is_verified', 'order_items', 'discount_code', 'total_amount']
-        #fields = ['id', 'paid_amount', 'created_at', 'is_verified', 'order_items', 'discount_code', 'total_amount','qr_code_url']
+        fields = ['id', 'updated_amount', 'created_at', 'is_verified', 'order_items', 'discount_code', 'total_amount']
+        #fields = ['id', 'updated_amount', 'created_at', 'is_verified', 'order_items', 'discount_code', 'total_amount','qr_code_url']

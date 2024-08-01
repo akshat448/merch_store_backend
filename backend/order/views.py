@@ -1,6 +1,7 @@
 import hashlib
 import requests
-
+import time
+import urllib.parse
 from rest_framework.views import APIView
 from django.shortcuts import render, redirect, get_object_or_404
 from rest_framework.response import Response
@@ -13,7 +14,24 @@ from .models import Order, OrderItem, Payment
 from .serializers import OrderSerializer
 from discounts.models import DiscountCode
 from products.models import CartItem
-from products.serializers import ProductSerializer
+
+def generateHash(params, salt):
+        hashString = (
+            params["key"] + "|" +
+            params["txnid"] + "|" +
+            params["amount"] + "|" +
+            params["productinfo"] + "|" +
+            params["firstname"] + "|" +
+            params["email"] + "|" +
+            params.get("udf1", "") + "|" +
+            params.get("udf2", "") + "|" +
+            params.get("udf3", "") + "|" +
+            params.get("udf4", "") + "|" +
+            params.get("udf5", "") + "||||||" +
+            salt
+        )
+        return hashlib.sha512(hashString.encode('utf-8')).hexdigest().lower()
+
 
 
 class AllOrders(APIView):
@@ -134,7 +152,8 @@ class Checkout(APIView):
                 )
 
         with transaction.atomic():
-            order = Order.objects.create(user=user, updated_amount=updated_amount, total_amount=total_amount)
+            #order = Order.objects.create(user=user, updated_amount=updated_amount, total_amount=total_amount)
+            order = Order.objects.create(user=user, updated_amount=updated_amount)
             #order.generate_qr_code()
             for item in cart_items:
                 OrderItem.objects.create(
@@ -167,49 +186,74 @@ class Checkout(APIView):
 
 class PayuView(APIView):
     permission_classes = [IsAuthenticated]
-
+    
     def post(self, request, order_id):
         user = request.user
-        order = Order.objects.get(id=order_id, user=user)
-
-        if not order:
+        try:
+            order = Order.objects.get(id=order_id, user=user)
+        except Order.DoesNotExist:
             return Response({"detail": "Order not found."}, status=status.HTTP_404_NOT_FOUND)
 
         key = settings.PAYU_MERCHANT_KEY
-        txnid = str(order.id) + str(order.created_at.timestamp()).replace('.', '')
-        amount = str(order.updated_amount)
+        salt = settings.PAYU_MERCHANT_SALT
+        txnid = str(order.id) + str(int(time.time() * 1000))
+        amount = "{:.2f}".format(float(order.updated_amount))
         productinfo = "Order_" + str(order.id)
-        firstname = user.name.split()[0] if ' ' in user.name else user.name
-        email = user.email
-        phone = user.phone_no
-        surl = settings.PAYU_SUCCESS_URL
-        furl = settings.PAYU_FAILURE_URL
+        firstname = str(user.name.split()[0] if ' ' in user.name else user.name)
+        email = str(user.email)
+        phone = str(user.phone_no)
+        #surl = settings.PAYU_SUCCESS_URL
+        #furl = settings.PAYU_FAILURE_URL
+        surl = "http://127.0.0.1:8000/success"
+        furl = "http://127.0.0.1:8000/failure"
 
-        # Generating hash
-        hash_string = f"{key}|{txnid}|{amount}|{productinfo}|{firstname}|{email}|||||||||||{settings.PAYU_MERCHANT_SALT}"
-        hashh = hashlib.sha512(hash_string.encode('utf-8')).hexdigest().lower()
-
-        # PayU payload
+        # PayU payload as a dictionary
         payload = {
             "key": key,
             "txnid": txnid,
             "amount": amount,
-            "productinfo": productinfo,
             "firstname": firstname,
             "email": email,
             "phone": phone,
+            "productinfo": productinfo,
             "surl": surl,
             "furl": furl,
-            "hash": hashh,
+            "udf1": "","udf2": "","udf3": "","udf4": "","udf5": ""
+        }
+        
+        # Generate the hash
+        hashValue = generateHash(payload, salt)
+        
+        # Add the hash to the parameter map
+        payload["hash"] = hashValue
+        
+        # Encode the parameters for use in the URL
+        payload = urllib.parse.urlencode(payload)
+        
+        # Build the URL for the PayU API request
+        
+        headers = {
+            "Accept": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded"
         }
 
-        # Redirecting to PayU payment page
-        response = requests.post("https://test.payu.in/_payment", data=payload)
+        response = requests.post("https://test.payu.in/_payment", data=payload, headers=headers)
 
-        # Create Payment instance
-        Payment.objects.create(order=order, transaction_id=txnid, paid_amount=order.updated_amount, status='pending')
+        # Check if the response from PayU is successful
+        if response.status_code == 200:
+            response_content = response.text
 
-        return redirect(response.url)
+            # Check for known error indicators in the response content
+            if "Invalid amount" in response_content:
+                return Response({"detail": "Invalid amount error from PayU."}, status=status.HTTP_400_BAD_REQUEST)
+            elif "Some problem occurred" in response_content:
+                return Response({"detail": "Some problem occurred with PayU."}, status=status.HTTP_400_BAD_REQUEST)
+
+            # Create Payment instance
+            Payment.objects.create(order=order, transaction_id=txnid, paid_amount=order.updated_amount, status='pending')
+            return redirect(response.url)
+        else:
+            return Response({"detail": "Failed to initiate payment with PayU."}, status=status.HTTP_400_BAD_REQUEST)
     
 
 class PayuSuccessView(APIView):
