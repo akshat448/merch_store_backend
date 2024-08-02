@@ -184,7 +184,7 @@ class Checkout(APIView):
         )
 
 
-class PayuView(APIView):
+class Paymentiew(APIView):
     permission_classes = [IsAuthenticated]
     
     def post(self, request, order_id):
@@ -202,10 +202,8 @@ class PayuView(APIView):
         firstname = str(user.name.split()[0] if ' ' in user.name else user.name)
         email = str(user.email)
         phone = str(user.phone_no)
-        #surl = settings.PAYU_SUCCESS_URL
-        #furl = settings.PAYU_FAILURE_URL
-        surl = "http://127.0.0.1:8000/success"
-        furl = "http://127.0.0.1:8000/failure"
+        surl = settings.PAYU_SUCCESS_URL
+        furl = settings.PAYU_FAILURE_URL
 
         # PayU payload as a dictionary
         payload = {
@@ -227,6 +225,8 @@ class PayuView(APIView):
         # Add the hash to the parameter map
         payload["hash"] = hashValue
         
+        return Response(payload, status=status.HTTP_200_OK)
+        """
         # Encode the parameters for use in the URL
         payload = urllib.parse.urlencode(payload)
         
@@ -242,7 +242,7 @@ class PayuView(APIView):
         # Check if the response from PayU is successful
         if response.status_code == 200:
             response_content = response.text
-
+            print(response_content)
             # Check for known error indicators in the response content
             if "Invalid amount" in response_content:
                 return Response({"detail": "Invalid amount error from PayU."}, status=status.HTTP_400_BAD_REQUEST)
@@ -254,7 +254,7 @@ class PayuView(APIView):
             return redirect(response.url)
         else:
             return Response({"detail": "Failed to initiate payment with PayU."}, status=status.HTTP_400_BAD_REQUEST)
-    
+        """
 
 class PayuSuccessView(APIView):
     def post(self, request):
