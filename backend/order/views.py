@@ -1,7 +1,5 @@
 import hashlib
-import requests
 import time
-import urllib.parse
 from rest_framework.views import APIView
 from django.shortcuts import render, redirect, get_object_or_404
 from rest_framework.response import Response
@@ -11,9 +9,10 @@ from django.conf import settings
 from django.db import transaction
 
 from .models import Order, OrderItem, Payment
-from .serializers import OrderSerializer
+from .serializers import OrderSerializer, PaymentSerializer
 from discounts.models import DiscountCode
 from products.models import CartItem
+
 
 def generateHash(params, salt):
         hashString = (
@@ -33,13 +32,12 @@ def generateHash(params, salt):
         return hashlib.sha512(hashString.encode('utf-8')).hexdigest().lower()
 
 
-
 class AllOrders(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
         user = request.user
-        queryset = Order.objects.filter(user=user)
+        queryset = Order.objects.filter(user=user, is_verified=True)
         serializer = OrderSerializer(queryset, many=True, context={'user': user})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -152,7 +150,6 @@ class Checkout(APIView):
                 )
 
         with transaction.atomic():
-            #order = Order.objects.create(user=user, updated_amount=updated_amount, total_amount=total_amount)
             order = Order.objects.create(user=user, updated_amount=updated_amount)
             #order.generate_qr_code()
             for item in cart_items:
@@ -184,7 +181,7 @@ class Checkout(APIView):
         )
 
 
-class Paymentiew(APIView):
+class PaymentView(APIView):
     permission_classes = [IsAuthenticated]
     
     def post(self, request, order_id):
@@ -205,7 +202,6 @@ class Paymentiew(APIView):
         surl = settings.PAYU_SUCCESS_URL
         furl = settings.PAYU_FAILURE_URL
 
-        # PayU payload as a dictionary
         payload = {
             "key": key,
             "txnid": txnid,
@@ -219,76 +215,77 @@ class Paymentiew(APIView):
             "udf1": "","udf2": "","udf3": "","udf4": "","udf5": ""
         }
         
-        # Generate the hash
         hashValue = generateHash(payload, salt)
-        
-        # Add the hash to the parameter map
         payload["hash"] = hashValue
         
+        Payment.objects.create(order=order, transaction_id=txnid, paid_amount=order.updated_amount, status='pending')
+        
         return Response(payload, status=status.HTTP_200_OK)
-        """
-        # Encode the parameters for use in the URL
-        payload = urllib.parse.urlencode(payload)
-        
-        # Build the URL for the PayU API request
-        
-        headers = {
-            "Accept": "application/json",
-            "Content-Type": "application/x-www-form-urlencoded"
-        }
 
-        response = requests.post("https://test.payu.in/_payment", data=payload, headers=headers)
 
-        # Check if the response from PayU is successful
-        if response.status_code == 200:
-            response_content = response.text
-            print(response_content)
-            # Check for known error indicators in the response content
-            if "Invalid amount" in response_content:
-                return Response({"detail": "Invalid amount error from PayU."}, status=status.HTTP_400_BAD_REQUEST)
-            elif "Some problem occurred" in response_content:
-                return Response({"detail": "Some problem occurred with PayU."}, status=status.HTTP_400_BAD_REQUEST)
-
-            # Create Payment instance
-            Payment.objects.create(order=order, transaction_id=txnid, paid_amount=order.updated_amount, status='pending')
-            return redirect(response.url)
-        else:
-            return Response({"detail": "Failed to initiate payment with PayU."}, status=status.HTTP_400_BAD_REQUEST)
-        """
-
-class PayuSuccessView(APIView):
+class PaymentSuccessView(APIView):
+    permission_classes = [IsAuthenticated]
+    
     def post(self, request):
         txnid = request.data.get('txnid')
         status = request.data.get('status')
+        payment_id = request.data.get('mihpayid')
+        reason = request.data.get('field9')
         
         try:
             payment = Payment.objects.get(transaction_id=txnid)
             payment.status = status
+            payment.payment_id = payment_id
+            payment.reason = reason
             payment.save()
 
             if status == 'success':
                 payment.order.is_verified = True
                 payment.order.save()
+                redirect_url = f"http://localhost:3000/success/{txnid}"
+                return redirect(redirect_url)
 
-            return Response({"detail": "Payment processed successfully."}, status=status.HTTP_200_OK)
         except Payment.DoesNotExist:
             return Response({"detail": "Payment record not found."}, status=status.HTTP_404_NOT_FOUND)
 
 
-class PayuFailureView(APIView):
+class PaymentFailureView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request):
+        txnid = request.data.get('txnid')
+        status = request.data.get('status')
+        payment_id = request.data.get('mihpayid')
+        reason = request.data.get('field9')
+        
+        try:
+            payment = Payment.objects.get(transaction_id=txnid)
+            payment.status = status
+            payment.payment_id = payment_id
+            payment.reason = reason
+            payment.save()
+
+            if status == 'failure':
+                payment.order.is_verified = False
+                payment.order.save()
+                redirect_url = f"http://localhost:3000/failure/{txnid}"
+                return redirect(redirect_url)
+            
+        except Payment.DoesNotExist:
+            return Response({"detail": "Payment record not found."}, status=status.HTTP_404_NOT_FOUND)
+
+
+class PaymentVerifyView(APIView):
+    permission_classes = [IsAuthenticated]
+    
     def post(self, request):
         txnid = request.data.get('txnid')
         
         try:
             payment = Payment.objects.get(transaction_id=txnid)
-            payment.status = 'failure'
-            payment.save()
-
-            return Response({"detail": "Payment failed."}, status=status.HTTP_200_OK)
+            serializer = PaymentSerializer(payment)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
         except Payment.DoesNotExist:
             return Response({"detail": "Payment record not found."}, status=status.HTTP_404_NOT_FOUND)
-
-"""def order_confirmation(request, order_id):
-    order = get_object_or_404(Order, id=order_id)
-    return render(request, 'order_confirmation.html', {'order': order})
-"""
+        

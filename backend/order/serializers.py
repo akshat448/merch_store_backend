@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Order, OrderItem
+from .models import Order, OrderItem, Payment
 from discounts.models import DiscountCode
 from products.serializers import ProductSerializer
 
@@ -45,3 +45,8 @@ class OrderSerializer(serializers.ModelSerializer):
         model = Order
         fields = ['id', 'updated_amount', 'created_at', 'is_verified', 'order_items', 'discount_code', 'total_amount']
         #fields = ['id', 'updated_amount', 'created_at', 'is_verified', 'order_items', 'discount_code', 'total_amount','qr_code_url']
+        
+class PaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payment
+        fields = ['transaction_id', 'paid_amount', 'status', 'payment_date', 'payment_id', 'reason']

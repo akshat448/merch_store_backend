@@ -9,7 +9,7 @@ class Order(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_amount = models.DecimalField(max_digits=10, decimal_places=2)
-    is_verified = models.BooleanField(default=False)
+    is_verified = models.BooleanField(default=False)  # True if the payment of this order is verfied
     mail_added = models.BooleanField(default=False)
     discount_code = models.ForeignKey(DiscountCode, null=True, blank=True, on_delete=models.SET_NULL)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
@@ -39,10 +39,13 @@ class OrderItem(models.Model):
 
 class Payment(models.Model):
     order = models.OneToOneField(Order, on_delete=models.CASCADE, related_name='payment')
-    transaction_id = models.CharField(max_length=100, unique=True)
+    transaction_id = models.CharField(max_length=100, unique=True) # Our transaction ID
     paid_amount = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.CharField(max_length=20)  # 'success', 'failure', 'pending'
     payment_date = models.DateTimeField(auto_now_add=True)
+    payment_id = models.CharField(max_length=100, null=True, blank=True, unique=True)  # Payment gateway's payment ID
+    reason = models.TextField(null=True, blank=True)  # Reason for failure
+    
 
     def __str__(self):
         return f"Payment for Order {self.order.id}"
