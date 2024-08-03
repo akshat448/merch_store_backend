@@ -209,8 +209,6 @@ class PaymentView(APIView):
 
 
 class PaymentSuccessView(APIView):
-    permission_classes = [IsAuthenticated]
-
     def post(self, request):
         txnid = request.data.get('txnid')
         status = request.data.get('status')
@@ -236,7 +234,7 @@ class PaymentSuccessView(APIView):
                 # Remove items from the cart
                 CartItem.objects.filter(user=payment.order.user).delete()
 
-                redirect_url = f"http://localhost:3000/success/{txnid}"
+                redirect_url = f"http://localhost:3000/payment-status/{txnid}"
                 return redirect(redirect_url)
 
         except Payment.DoesNotExist:
@@ -244,8 +242,6 @@ class PaymentSuccessView(APIView):
 
 
 class PaymentFailureView(APIView):
-    permission_classes = [IsAuthenticated]
-
     def post(self, request):
         txnid = request.data.get('txnid')
         status = request.data.get('status')
@@ -262,7 +258,7 @@ class PaymentFailureView(APIView):
             if status == 'failure':
                 payment.order.is_verified = False
                 payment.order.save()
-                redirect_url = f"http://localhost:3000/failure/{txnid}"
+                redirect_url = f"http://localhost:3000/payment-status/{txnid}"
                 return redirect(redirect_url)
 
         except Payment.DoesNotExist:
