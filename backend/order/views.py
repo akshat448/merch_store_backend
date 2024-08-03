@@ -1,7 +1,7 @@
 import hashlib
 import time
 from rest_framework.views import APIView
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import redirect
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
@@ -38,6 +38,8 @@ class AllOrders(APIView):
     def get(self, request):
         user = request.user
         queryset = Order.objects.filter(user=user, is_verified=True)
+        if not queryset.exists():
+            return Response({"detail": "No orders found."}, status=status.HTTP_404_NOT_FOUND)
         serializer = OrderSerializer(queryset, many=True, context={'user': user})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -121,37 +123,26 @@ class Checkout(APIView):
         cart_items = CartItem.objects.filter(user=user)
 
         if not cart_items.exists():
-            return Response(
-                {"detail": "No items in cart."}, status=status.HTTP_400_BAD_REQUEST
-            )
+            return Response({"detail": "No items in cart."}, status=status.HTTP_400_BAD_REQUEST)
 
         total_amount = sum(item.product.price * item.quantity for item in cart_items)
         updated_amount = total_amount
 
-        discount_code = request.data.get("discount_code", None)
+        discount_code = request.data.get("discount_code")
 
         if discount_code:
             try:
                 discount = DiscountCode.objects.get(code=discount_code)
                 if discount.is_valid() and user.position in discount.for_user_positions:
                     discount_percentage = discount.discount_percentage
-                    updated_amount = (total_amount) - (total_amount) * (
-                        discount_percentage / 100
-                    )
+                    updated_amount = total_amount - total_amount * (discount_percentage / 100)
                 else:
-                    return Response(
-                        {"detail": "Invalid or expired discount code."},
-                        status=status.HTTP_400_BAD_REQUEST,
-                    )
+                    return Response({"detail": "Invalid or expired discount code."}, status=status.HTTP_400_BAD_REQUEST)
             except DiscountCode.DoesNotExist:
-                return Response(
-                    {"detail": "Discount code does not exist."},
-                    status=status.HTTP_400_BAD_REQUEST,
-                )
+                return Response({"detail": "Discount code does not exist."}, status=status.HTTP_400_BAD_REQUEST)
 
         with transaction.atomic():
             order = Order.objects.create(user=user, updated_amount=updated_amount)
-            #order.generate_qr_code()
             for item in cart_items:
                 OrderItem.objects.create(
                     order=order,
@@ -161,24 +152,18 @@ class Checkout(APIView):
                     image_url=item.image_url,
                     quantity=item.quantity,
                 )
-            cart_items.delete()
 
-        if discount_code:
-            order.discount_code = discount
-            order.save()
+            if discount_code:
+                order.discount_code = discount
+                order.save()
 
-        serializer = OrderSerializer(order, context={'user': user})
-        return Response(
-            {
-                "order": serializer.data,
-                "total_amount": float(total_amount),
-                "updated_amount": float(updated_amount),
-                "discount_percentage": float(
-                    discount.discount_percentage if discount_code else 0
-                ),
-            },
-            status=status.HTTP_201_CREATED,
-        )
+        serializer = OrderSerializer(order, context={'request': request})
+        return Response({
+            "order": serializer.data,
+            "total_amount": float(total_amount),
+            "updated_amount": float(updated_amount),
+            "discount_percentage": float(discount.discount_percentage if discount_code else 0),
+        }, status=status.HTTP_201_CREATED)
 
 
 class PaymentView(APIView):
@@ -225,13 +210,13 @@ class PaymentView(APIView):
 
 class PaymentSuccessView(APIView):
     permission_classes = [IsAuthenticated]
-    
+
     def post(self, request):
         txnid = request.data.get('txnid')
         status = request.data.get('status')
         payment_id = request.data.get('mihpayid')
         reason = request.data.get('field9')
-        
+
         try:
             payment = Payment.objects.get(transaction_id=txnid)
             payment.status = status
@@ -242,6 +227,15 @@ class PaymentSuccessView(APIView):
             if status == 'success':
                 payment.order.is_verified = True
                 payment.order.save()
+
+                # Increment the discount code uses if present
+                if payment.order.discount_code:
+                    payment.order.discount_code.uses += 1
+                    payment.order.discount_code.save()
+
+                # Remove items from the cart
+                CartItem.objects.filter(user=payment.order.user).delete()
+
                 redirect_url = f"http://localhost:3000/success/{txnid}"
                 return redirect(redirect_url)
 
@@ -251,13 +245,13 @@ class PaymentSuccessView(APIView):
 
 class PaymentFailureView(APIView):
     permission_classes = [IsAuthenticated]
-    
+
     def post(self, request):
         txnid = request.data.get('txnid')
         status = request.data.get('status')
         payment_id = request.data.get('mihpayid')
         reason = request.data.get('field9')
-        
+
         try:
             payment = Payment.objects.get(transaction_id=txnid)
             payment.status = status
@@ -270,7 +264,7 @@ class PaymentFailureView(APIView):
                 payment.order.save()
                 redirect_url = f"http://localhost:3000/failure/{txnid}"
                 return redirect(redirect_url)
-            
+
         except Payment.DoesNotExist:
             return Response({"detail": "Payment record not found."}, status=status.HTTP_404_NOT_FOUND)
 
@@ -280,12 +274,15 @@ class PaymentVerifyView(APIView):
     
     def post(self, request):
         txnid = request.data.get('txnid')
+        user = request.user
         
         try:
             payment = Payment.objects.get(transaction_id=txnid)
-            serializer = PaymentSerializer(payment)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            if payment.order.user == user:
+                serializer = PaymentSerializer(payment)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response({"detail": "You do not have permission to view this payment."}, status=status.HTTP_403_FORBIDDEN)
         
         except Payment.DoesNotExist:
             return Response({"detail": "Payment record not found."}, status=status.HTTP_404_NOT_FOUND)
-        
