@@ -23,5 +23,5 @@ def generate_qr_code(order):
     qr_base64 = base64.b64encode(qr_img_io.read()).decode('utf-8')
 
     # Save the Base64 string to the order
-    order.qr_code_base64 = qr_base64
+    order.qr_code_data = qr_base64
     order.save()

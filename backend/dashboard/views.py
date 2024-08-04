@@ -1,5 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import Http404, StreamingHttpResponse
+from django.http import (
+    Http404,
+    HttpResponse,
+    HttpResponseRedirect,
+    StreamingHttpResponse,
+)
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import get_user_model
 from django.views.decorators.http import require_POST
@@ -12,6 +17,7 @@ from login.models import CustomUser
 from discounts.models import DiscountCode
 from .forms import DiscountCodeForm
 from .utils import get_for_user_positions
+from django.views.decorators.csrf import csrf_exempt
 
 import csv
 import qrcode
@@ -33,7 +39,9 @@ class ListItem:
 @staff_member_required
 def dashboard(request):
     amount_received = (
-        Order.objects.filter(is_verified=True).aggregate(total=Sum("updated_amount"))["total"]
+        Order.objects.filter(is_verified=True).aggregate(total=Sum("updated_amount"))[
+            "total"
+        ]
         or 0
     )
     unsuccessful_orders = Order.objects.filter(is_verified=False).count()
@@ -293,27 +301,47 @@ def delete_product(request, product_id):
 
 
 @staff_member_required
+def render_qr_page(request):
+    return render(request, "dashboard/scan_qr.html")
+
+
+@csrf_exempt
+@staff_member_required
 def scan_qr(request):
-    if request.method == 'POST':
-        scanned_qr_code = request.POST.get('scanned_qr_code')
+    if request.method == "POST":
+        scanned_qr_code = request.POST.get("scanned_qr_code")
+        print(scanned_qr_code)
         try:
-            order_id, txnid = scanned_qr_code.split('|')
+            order_id, txnid = scanned_qr_code.split("|")
             order = Order.objects.get(pk=order_id)
             payment = Payment.objects.get(transaction_id=txnid)
 
             if payment.order == order:
-                messages.success(request, f"Order ID: {order.id}, User ID: {order.user.id}, Name: {order.user.name}, Order Amount: {order.total_amount}")
-                return redirect('dashboard')  # Redirect to admin dashboard after marking order as delivered
+                # messages.success(request, f"Order ID: {order.id}, User ID: {order.user.id}, Name: {order.user.name}, Order Amount: {order.total_amount}")
+                # return redirect('dashboard')  # Redirect to admin dashboard after marking order as delivered
+                response = HttpResponse(
+                    f"Order ID: {order.id}, User ID: {order.user.id}, Name: {order.user.name}, Order Amount: {order.total_amount}",
+                )
+                response.status_code = 200
+                return response
 
-            messages.error(request, "QR code verification failed.")
+            response = HttpResponse("QR code not found")
+            response.status_code = 400
+            return response
 
         except Order.DoesNotExist:
-            messages.error(request, "Order not found.")
+            response = HttpResponse("Order not found")
+            response.status_code = 400
+            return response
         except Payment.DoesNotExist:
-            messages.error(request, "Payment not found.")
+            response = HttpResponse("Payment not found")
+            response.status_code = 400
+            return response
         except ValueError:
-            messages.error(request, "Invalid QR code format.")
-    return render(request, 'dashboard/scan_qr.html')
+            response = HttpResponse("Invalid QR code")
+            response.status_code = 400
+            return response
+    # return render(request, 'dashboard/scan_qr.html')
 
 
 @staff_member_required

@@ -66,6 +66,10 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://1c3f-104-28-254-179.ngrok-free.app"
+]
+
 
 ROOT_URLCONF = "backend.urls"
 

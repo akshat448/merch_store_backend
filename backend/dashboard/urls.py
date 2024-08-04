@@ -29,5 +29,6 @@ urlpatterns = [
     path(
         "products/delete/<int:product_id>/", views.delete_product, name="delete_product"
     ),
-    # path('scan_qr/', views.scan_qr, name='dashboard_scan_qr'),
+    path('scan_qr/', views.render_qr_page, name='scan_qr_page'),
+    path('scan_qr/scan/', views.scan_qr, name='scan_qr'),
 ]
