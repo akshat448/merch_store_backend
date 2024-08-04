@@ -40,8 +40,8 @@ def dashboard(request):
     )
     unsuccessful_orders = Order.objects.filter(is_verified=False).count()
     pending_orders = Order.objects.filter(is_verified=None).count()
-    # items_ordered = OrderItem.objects.all().aggregate(total=Sum('quantity'))['total'] or 0
-    items_ordered = 0
+    items_ordered = OrderItem.objects.all().aggregate(total=Sum('quantity'))['total'] or 0
+    #items_ordered = 0
 
     items = []
     products = Product.objects.all()
@@ -49,9 +49,13 @@ def dashboard(request):
         orders_count = OrderItem.objects.filter(
             product=product, order__is_verified=True
         ).count()
+        quantity_count = OrderItem.objects.filter(
+            product=product, order__is_verified=True
+        ).aggregate(total=Sum('quantity'))['total'] or 0
         item = {
             "id": product.id,
             "name": product.name,
+            "quantity": quantity_count,
             "price": product.price,
             "orders_count": orders_count,
         }
@@ -371,3 +375,28 @@ def import_users_from_csv(request):
     get_user_model().objects.bulk_create(users)
     messages.success(request, "Users imported successfully.")
     return redirect("/dashboard/")
+
+
+def SuccessfulOrderCSV(request):
+    if request.method == "POST":
+        order_items = OrderItem.objects.filter(order__is_verified=True).all()
+        rows = []
+        first_row = ["Name", "email id", "Phone Number", "position", "Product Name", "Quantity", "Size", "Printing Name", "Image URL"]
+        
+        rows.append(first_row)
+        for item in order_items:
+            user = item.order.user
+            row = [user.name, user.email, user.Phone_Num, user.position]
+            row.append(item.product.name)
+            row.append(item.quantity)
+            row.append(item.size)
+            row.append(item.printing_name)
+            row.append(item.image_url)
+            rows.append(row)
+        psudo_buffers = Echo()
+        writer = csv.writer(psudo_buffers)
+        return StreamingHttpResponse(
+            (writer.writerow(row) for row in rows),
+            content_type="text/csv",
+            headers={"Content-Disposition": 'attachment; filename="Successful_orders.csv"'},
+        )
