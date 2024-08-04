@@ -21,11 +21,11 @@ class OrderSerializer(serializers.ModelSerializer):
     is_verified = serializers.SerializerMethodField()
     discount_code = DiscountCodeSerializer(read_only=True)
     total_amount = serializers.SerializerMethodField()
-    #qr_code_url = serializers.SerializerMethodField()
+    qr_code_data = serializers.SerializerMethodField()
     
-    def get_qr_code_url(self, obj):
-        if obj.qr_code:
-            return obj.qr_code.url
+    def get_qr_code_data(self, obj):
+        if obj.qr_code_data:
+            return obj.qr_code_data
         return None
     
     def get_created_at(self, obj):
@@ -43,10 +43,17 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ['id', 'updated_amount', 'created_at', 'is_verified', 'order_items', 'discount_code', 'total_amount']
-        #fields = ['id', 'updated_amount', 'created_at', 'is_verified', 'order_items', 'discount_code', 'total_amount','qr_code_url']
+        # fields = ['id', 'updated_amount', 'created_at', 'is_verified', 'order_items', 'discount_code', 'total_amount']
+        fields = ['id', 'updated_amount', 'created_at', 'is_verified', 'order_items', 'discount_code', 'total_amount','qr_code_data']
         
 class PaymentSerializer(serializers.ModelSerializer):
+    qr_code_data = serializers.SerializerMethodField()
+    
+    def get_qr_code_data(self, obj):
+        if obj.order.qr_code_data:
+            return obj.order.qr_code_data
+        return None
+    
     class Meta:
         model = Payment
-        fields = ['transaction_id', 'paid_amount', 'status', 'payment_date', 'payment_id', 'reason']
+        fields = ['transaction_id', 'paid_amount', 'status', 'payment_date', 'payment_id', 'reason', 'qr_code_data']

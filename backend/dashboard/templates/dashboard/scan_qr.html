@@ -71,26 +71,24 @@
                         csrfmiddlewaretoken: '{{ csrf_token }}'
                     },
                     success: function (data, textStatus, jqXHR) {
-                        if (jqXHR.status === 200) {
-                            var order_id = data.split(',')[0];
-                            var user_id = data.split(',')[1];
-                            var name = data.split(',')[2];
-                            var total_amount = data.split(',')[3];
-                            $('#msgbox').html(
-                                '<h3 class="alert alert-success">' +
-                                order_id + '<br>' +
-                                user_id + '<br>' +
-                                name + '<br>' +
-                                total_amount + '<br>' +
-                                '</h3>'
-                            );
-                        }
-                        else {
-                            $('#msgbox').html('<h3 class="alert alert-danger">Error: ' + data + '</h3>');
-                        }
+                        var order_id = data.split(',')[0];
+                        var user_id = data.split(',')[1];
+                        var name = data.split(',')[2];
+                        var total_amount = data.split(',')[3];
+                        var order_status = data.split(',')[4];
+                        $('#msgbox').html(
+                            '<h3 class="alert alert-success">' +
+                            order_id + '<br>' +
+                            user_id + '<br>' +
+                            name + '<br>' +
+                            total_amount + '<br>' +
+                            order_status +
+                            '</h3>'
+                        );
+
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
-                        $('#msgbox').html('<h3 class="alert alert-danger">Error: ' + errorThrown + '</h3>');
+                        $('#msgbox').html('<h3 class="alert alert-danger">Error: ' + jqXHR.responseText + '</h3>');
 
                     }
                 });

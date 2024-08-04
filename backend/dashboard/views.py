@@ -19,7 +19,6 @@ from .utils import get_for_user_positions
 import csv
 
 
-
 class ListItem:
     def __init__(self, id, name, price, orders_count):
         self.id = id
@@ -310,17 +309,23 @@ def scan_qr(request):
             order = Order.objects.get(pk=order_id)
             payment = Payment.objects.get(transaction_id=txnid)
 
-            if payment.order == order and payment.status == "success" and order.is_verified and not order.is_completed:
+            if (
+                payment.order == order
+                and payment.status == "success"
+                and order.is_verified
+                and not order.is_completed
+            ):
                 # messages.success(request, f"Order ID: {order.id}, User ID: {order.user.id}, Name: {order.user.name}, Order Amount: {order.total_amount}")
                 # return redirect('dashboard')  # Redirect to admin dashboard after marking order as delivered
                 order.is_completed = True
+                order.save()
                 response = HttpResponse(
                     f"Order ID: {order.id}, User ID: {order.user.id}, Name: {order.user.name}, Order Amount: {order.total_amount}, Order Status: {order.is_completed}",
                 )
                 response.status_code = 200
                 return response
 
-            response = HttpResponse("QR code not found")
+            response = HttpResponse("QR code already used or order not verified")
             response.status_code = 400
             return response
 
