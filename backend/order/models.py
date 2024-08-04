@@ -14,6 +14,7 @@ class Order(models.Model):
     discount_code = models.ForeignKey(DiscountCode, null=True, blank=True, on_delete=models.SET_NULL)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     qr_code_data = models.TextField(blank=True, null=True)
+    is_completed = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.id)

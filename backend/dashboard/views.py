@@ -316,11 +316,12 @@ def scan_qr(request):
             order = Order.objects.get(pk=order_id)
             payment = Payment.objects.get(transaction_id=txnid)
 
-            if payment.order == order:
+            if payment.order == order and payment.status == "success" and order.is_verified:
                 # messages.success(request, f"Order ID: {order.id}, User ID: {order.user.id}, Name: {order.user.name}, Order Amount: {order.total_amount}")
                 # return redirect('dashboard')  # Redirect to admin dashboard after marking order as delivered
+                order.is_completed = True
                 response = HttpResponse(
-                    f"Order ID: {order.id}, User ID: {order.user.id}, Name: {order.user.name}, Order Amount: {order.total_amount}",
+                    f"Order ID: {order.id}, User ID: {order.user.id}, Name: {order.user.name}, Order Amount: {order.total_amount}, Order Status: {order.is_completed}",
                 )
                 response.status_code = 200
                 return response
