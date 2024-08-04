@@ -143,7 +143,7 @@ class Checkout(APIView):
                 return Response({"detail": "Discount code does not exist."}, status=status.HTTP_400_BAD_REQUEST)
 
         with transaction.atomic():
-            order = Order.objects.create(user=user, updated_amount=updated_amount)
+            order = Order.objects.create(user=user, updated_amount=updated_amount, total_amount=total_amount)
             for item in cart_items:
                 OrderItem.objects.create(
                     order=order,

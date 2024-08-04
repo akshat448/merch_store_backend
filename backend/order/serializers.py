@@ -22,11 +22,15 @@ class OrderSerializer(serializers.ModelSerializer):
     discount_code = DiscountCodeSerializer(read_only=True)
     total_amount = serializers.SerializerMethodField()
     qr_code_data = serializers.SerializerMethodField()
+    is_completed = serializers.SerializerMethodField()
     
     def get_qr_code_data(self, obj):
         if obj.qr_code_data:
             return obj.qr_code_data
         return None
+    
+    def get_is_completed(self, obj):
+        return obj.is_completed
     
     def get_created_at(self, obj):
         return obj.created_at.isoformat()
@@ -43,8 +47,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        # fields = ['id', 'updated_amount', 'created_at', 'is_verified', 'order_items', 'discount_code', 'total_amount']
-        fields = ['id', 'updated_amount', 'created_at', 'is_verified', 'order_items', 'discount_code', 'total_amount','qr_code_data']
+        fields = ['id', 'updated_amount', 'created_at', 'is_verified', 'order_items', 'discount_code', 'total_amount','qr_code_data', 'is_completed']
         
 class PaymentSerializer(serializers.ModelSerializer):
     qr_code_data = serializers.SerializerMethodField()

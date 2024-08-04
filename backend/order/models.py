@@ -20,7 +20,7 @@ class Order(models.Model):
         return str(self.id)
 
     @property
-    def total_amount(self):
+    def calculated_total_amount(self):
         total = sum(Decimal(item.product.price * item.quantity) for item in self.order_items.all())
         if self.discount_code and self.discount_code.is_valid():
             discount = total * (Decimal(self.discount_code.discount_percentage) / Decimal(100))

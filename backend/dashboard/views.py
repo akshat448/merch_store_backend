@@ -319,8 +319,9 @@ def scan_qr(request):
                 # return redirect('dashboard')  # Redirect to admin dashboard after marking order as delivered
                 order.is_completed = True
                 order.save()
+                status = "Order Delivered"
                 response = HttpResponse(
-                    f"Order ID: {order.id}, User ID: {order.user.id}, Name: {order.user.name}, Order Amount: {order.total_amount}, Order Status: {order.is_completed}",
+                    f"Order ID: {order.id}, User ID: {order.user.id}, Name: {order.user.name}, Order Amount: {order.total_amount}, Order Status: {status}",
                 )
                 response.status_code = 200
                 return response
