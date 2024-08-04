@@ -10,6 +10,7 @@ from django.db import transaction
 
 from .models import Order, OrderItem, Payment
 from .serializers import OrderSerializer, PaymentSerializer
+from .utils import generate_qr_code
 from discounts.models import DiscountCode
 from products.models import CartItem
 
@@ -233,6 +234,9 @@ class PaymentSuccessView(APIView):
 
                 # Remove items from the cart
                 CartItem.objects.filter(user=payment.order.user).delete()
+
+                # Generate and save QR code
+                generate_qr_code(payment.order)
 
                 redirect_url = f"http://localhost:3000/payment-status/{txnid}"
                 return redirect(redirect_url)

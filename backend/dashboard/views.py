@@ -292,25 +292,29 @@ def delete_product(request, product_id):
     return redirect("/products")
 
 
-"""
 @staff_member_required
 def scan_qr(request):
     if request.method == 'POST':
         scanned_qr_code = request.POST.get('scanned_qr_code')
         try:
-            order_id = int(scanned_qr_code)
+            order_id, txnid = scanned_qr_code.split('|')
             order = Order.objects.get(pk=order_id)
-            # Mark the order as delivered
-            order.is_verified = True
-            order.save()
-            messages.success(request, "Order marked as completed.")
-            return redirect('dashboard')  # Redirect to admin dashboard after marking order as delivered
+            payment = Payment.objects.get(transaction_id=txnid)
+
+            if payment.order == order:
+                messages.success(request, f"Order ID: {order.id}, User ID: {order.user.id}, Name: {order.user.name}, Order Amount: {order.total_amount}")
+                return redirect('dashboard')  # Redirect to admin dashboard after marking order as delivered
+
+            messages.error(request, "QR code verification failed.")
+
         except Order.DoesNotExist:
             messages.error(request, "Order not found.")
+        except Payment.DoesNotExist:
+            messages.error(request, "Payment not found.")
         except ValueError:
-            messages.error(request, "Invalid QR code.")
+            messages.error(request, "Invalid QR code format.")
     return render(request, 'dashboard/scan_qr.html')
-"""
+
 
 @staff_member_required
 def import_users_from_csv(request):
