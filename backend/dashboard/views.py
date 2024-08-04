@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import (
     Http404,
     HttpResponse,
-    HttpResponseRedirect,
     StreamingHttpResponse,
 )
 from django.contrib.admin.views.decorators import staff_member_required
@@ -15,14 +14,10 @@ from order.models import Order, OrderItem, Payment
 from products.models import Product, CartItem
 from login.models import CustomUser
 from discounts.models import DiscountCode
-from .forms import DiscountCodeForm
 from .utils import get_for_user_positions
-from django.views.decorators.csrf import csrf_exempt
 
 import csv
-import qrcode
-from io import BytesIO
-from datetime import datetime
+
 
 
 class ListItem:
@@ -305,7 +300,6 @@ def render_qr_page(request):
     return render(request, "dashboard/scan_qr.html")
 
 
-@csrf_exempt
 @staff_member_required
 def scan_qr(request):
     if request.method == "POST":
@@ -316,7 +310,7 @@ def scan_qr(request):
             order = Order.objects.get(pk=order_id)
             payment = Payment.objects.get(transaction_id=txnid)
 
-            if payment.order == order and payment.status == "success" and order.is_verified:
+            if payment.order == order and payment.status == "success" and order.is_verified and not order.is_completed:
                 # messages.success(request, f"Order ID: {order.id}, User ID: {order.user.id}, Name: {order.user.name}, Order Amount: {order.total_amount}")
                 # return redirect('dashboard')  # Redirect to admin dashboard after marking order as delivered
                 order.is_completed = True
