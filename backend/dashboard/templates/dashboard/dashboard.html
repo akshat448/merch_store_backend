@@ -85,6 +85,7 @@
                     {% csrf_token %}
                     <button type="submit" class="btn btn-danger">Stop Accepting Orders</button>
                 </form>
+                <a href="/scan_qr" class="btn btn-warning">Scan QR Codes</a>
             </div>
         </div>
 
@@ -106,6 +107,7 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Orders Received</th>
+                                <th scope="col">Quantity Count</th>
                                 <th scope="col">Price</th>
                                 <th scope="col">CSV file</th>
                             </tr>
@@ -114,11 +116,19 @@
                             {% for item in items %}
                             <tr>
                                 <td>{{forloop.counter}}</td>
-                                <td>{{item.name}}</td>
+                                <td>{{item.name}} (ID: {{item.id}})</td>
                                 <td>{{item.orders_count}}</td>
+                                <td>{{item.quantity}}</td>
                                 <td>{{item.price}}</td>
                                 <td>
-                                    Todo
+                                    <form action="{% url 'export_csv' item.id %}" method="POST">
+                                        {% csrf_token %}
+                                        {% if item.orders_count > 0 %}
+                                        <button type="submit" class="btn btn-primary">Export CSV</button>
+                                        {% else %}
+                                        <button type="submit" class="btn btn-primary" disabled>Export CSV</button>
+                                        {% endif %}
+                                    </form>
                                 </td>
                             </tr>
                             {% endfor %}

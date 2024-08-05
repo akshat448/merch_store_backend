@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import (
     Http404,
     HttpResponse,
+    HttpResponseBadRequest,
     StreamingHttpResponse,
 )
 from django.contrib.admin.views.decorators import staff_member_required
@@ -376,27 +377,31 @@ def import_users_from_csv(request):
     messages.success(request, "Users imported successfully.")
     return redirect("/dashboard/")
 
-
-def SuccessfulOrderCSV(request):
+@staff_member_required
+def successful_order_csv(request, id):
     if request.method == "POST":
-        order_items = OrderItem.objects.filter(order__is_verified=True).all()
+
+        item = OrderItem.objects.filter(order__is_verified=True, pk=id).first()
+            
         rows = []
-        first_row = ["Name", "email id", "Phone Number", "position", "Product Name", "Quantity", "Size", "Printing Name", "Image URL"]
+        first_row = ["Name", "Email Id", "Phone Number", "Position", "Product Name", "Product ID", "Quantity", "Size", "Printing Name", "Image URL"]
         
         rows.append(first_row)
-        for item in order_items:
-            user = item.order.user
-            row = [user.name, user.email, user.Phone_Num, user.position]
-            row.append(item.product.name)
-            row.append(item.quantity)
-            row.append(item.size)
-            row.append(item.printing_name)
-            row.append(item.image_url)
-            rows.append(row)
-        psudo_buffers = Echo()
-        writer = csv.writer(psudo_buffers)
+        
+        user = item.order.user
+        row = [user.name, user.email, user.phone_no, user.position]
+        row.append(item.product.name)
+        row.append(item.product.pk)
+        row.append(item.quantity)
+        row.append(item.size)
+        row.append(item.printing_name)
+        row.append(item.image_url)
+        rows.append(row)
+        
+        pseudo_buffers = Echo()
+        writer = csv.writer(pseudo_buffers)
         return StreamingHttpResponse(
             (writer.writerow(row) for row in rows),
             content_type="text/csv",
-            headers={"Content-Disposition": 'attachment; filename="Successful_orders.csv"'},
+            headers={"Content-Disposition": f'attachment; filename="{item.product.name}_{item.product.pk}_successful_orders.csv"'},
         )
