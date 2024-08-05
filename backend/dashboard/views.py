@@ -19,7 +19,6 @@ from .utils import get_for_user_positions
 
 import csv
 
-
 class ListItem:
     def __init__(self, id, name, price, orders_count):
         self.id = id
@@ -27,9 +26,7 @@ class ListItem:
         self.price = price
         self.orders_count = orders_count
 
-
 # Create your views here.
-
 
 @staff_member_required
 def dashboard(request):
@@ -156,46 +153,6 @@ def delete_discount_code(request, code_id):
 class Echo:
     def write(self, value):
         return value
-
-
-@staff_member_required
-def ordersCSV(request, id):
-    if request.method == "GET":
-        raise Http404
-    product = Product.objects.filter(id=id).first()
-    if product is None:
-        raise Http404
-    order_items = OrderItem.objects.filter(
-        product=product, order__is_verified=True
-    ).all()
-    rows = []
-    first_row = ["Name", "email id", "Phone Number", "position"]
-    if product.is_size_required:
-        first_row.append("Size")
-    if product.is_name_required:
-        first_row.append("Printing Name")
-    if product.is_image_required:
-        first_row.append("Image URL")
-    rows.append(first_row)
-    for item in order_items:
-        user = item.order.user
-        row = [user.name, user.email, user.Phone_Num, user.position]
-        if product.is_size_required:
-            row.append(item.size)
-        if product.is_name_required:
-            row.append(item.printing_name)
-        if product.is_image_required:
-            row.append(item.image_url)
-        rows.append(row)
-    psudo_buffers = Echo()
-    writer = csv.writer(psudo_buffers)
-    return StreamingHttpResponse(
-        (writer.writerow(row) for row in rows),
-        content_type="text/csv",
-        headers={
-            "Content-Disposition": f'attachment; filename="{product.name}_orders.csv"'
-        },
-    )
 
 
 @staff_member_required
@@ -349,59 +306,70 @@ def scan_qr(request):
             return response
     # return render(request, 'dashboard/scan_qr.html')
 
-
-@staff_member_required
-def import_users_from_csv(request):
-    if request.method == "GET":
-        return render(request, "dashboard/import_users.html")
-    csv_file = request.FILES["file"]
-    if not csv_file.name.endswith(".csv"):
-        messages.error(request, "File is not a CSV file.")
-        return redirect("/dashboard/")
-    users = []
-    try:
-        decoded_file = csv_file.read().decode("utf-8").splitlines()
-        reader = csv.DictReader(decoded_file)
-        for row in reader:
-            user = get_user_model()(
-                email=row["email"],
-                phone_no=row["phone_no"],
-                name=row["name"],
-                position=row["position"],
-            )
-            users.append(user)
-    except Exception as e:
-        messages.error(request, f"Error reading CSV file: {e}")
-        return redirect("/dashboard/")
-    get_user_model().objects.bulk_create(users)
-    messages.success(request, "Users imported successfully.")
-    return redirect("/dashboard/")
-
+"""
 @staff_member_required
 def successful_order_csv(request, id):
-    if request.method == "POST":
+    if request.method == "GET":
+        raise Http404
+    
+    product = Product.objects.filter(id=id).first()
+    
+    if product is None:
+        raise Http404
+    item = OrderItem.objects.filter(product=product, order__is_verified=True).all()
+    rows = []
+    first_row = ["Name", "Email Id", "Phone Number", "Position", "Quantity"]
+    if product.is_size_required:
+        first_row.append("Size")
+    if product.is_name_required:
+        first_row.append("Printing Name")
+    if product.is_image_required:
+        first_row.append("Image URL")
+    rows.append(first_row)
+    
+    user = item.order.user
+    row = [user.name, user.email, user.phone_no, user.position]
+    row.append(item.product.name)
+    row.append(item.product.pk)
+    row.append(item.quantity)
+    row.append(item.size)
+    row.append(item.printing_name)
+    row.append(item.image_url)
+    rows.append(row)
+    
+    pseudo_buffers = Echo()
+    writer = csv.writer(pseudo_buffers)
+    return StreamingHttpResponse(
+        (writer.writerow(row) for row in rows),
+        content_type="text/csv",
+        headers={"Content-Disposition": f'attachment; filename="{item.product.name}_{item.product.pk}_successful_orders.csv"'},
+    )
+       """
+        
+@staff_member_required
+def successful_order_csv(request, id):
+    products = OrderItem.objects.values_list('product__name', flat=True).distinct()
+    
+    for product in products:
+        # Create the HttpResponse object with the appropriate CSV header.
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = f'attachment; filename="{product}_orders.csv"'
 
-        item = OrderItem.objects.filter(order__is_verified=True, pk=id).first()
-            
-        rows = []
-        first_row = ["Name", "Email Id", "Phone Number", "Position", "Product Name", "Product ID", "Quantity", "Size", "Printing Name", "Image URL"]
-        
-        rows.append(first_row)
-        
-        user = item.order.user
-        row = [user.name, user.email, user.phone_no, user.position]
-        row.append(item.product.name)
-        row.append(item.product.pk)
-        row.append(item.quantity)
-        row.append(item.size)
-        row.append(item.printing_name)
-        row.append(item.image_url)
-        rows.append(row)
-        
-        pseudo_buffers = Echo()
-        writer = csv.writer(pseudo_buffers)
-        return StreamingHttpResponse(
-            (writer.writerow(row) for row in rows),
-            content_type="text/csv",
-            headers={"Content-Disposition": f'attachment; filename="{item.product.name}_{item.product.pk}_successful_orders.csv"'},
-        )
+        writer = csv.writer(response)
+        writer.writerow(['Name', 'Email Id', 'Phone Number', 'Position', 'Quantity', 'Size', 'Printing Name', 'Image URL'])
+
+        order_items = OrderItem.objects.filter(product__name=product).select_related('order', 'order__user')
+
+        for item in order_items:
+            writer.writerow([
+                item.order.user.name,
+                item.order.user.email,
+                item.order.user.phone_number,
+                item.order.user.position,
+                item.quantity,
+                item.size,
+                item.printing_name,
+                item.image_url
+            ])
+
+        yield response
