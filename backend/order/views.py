@@ -93,6 +93,15 @@ class ApplyDiscount(APIView):
             discount = DiscountCode.objects.get(code=discount_code)
             if discount.is_valid() and user.position in discount.for_user_positions:
                 discount_percentage = discount.discount_percentage
+                if discount_percentage == 100:
+                    return Response(
+                        {
+                            "total_amount": float(total_amount),
+                            "discount_percentage": float(discount_percentage),
+                            "updated_amount": 1.00,
+                        },
+                        status=status.HTTP_200_OK,
+                    )
                 updated_amount = (total_amount) - (total_amount) * (
                     discount_percentage / 100
                 )
@@ -136,7 +145,10 @@ class Checkout(APIView):
                 discount = DiscountCode.objects.get(code=discount_code)
                 if discount.is_valid() and user.position in discount.for_user_positions:
                     discount_percentage = discount.discount_percentage
-                    updated_amount = total_amount - total_amount * (discount_percentage / 100)
+                    if discount_percentage == 100:
+                        updated_amount = 1.00
+                    else:
+                        updated_amount = total_amount - total_amount * (discount_percentage / 100)
                 else:
                     return Response({"detail": "Invalid or expired discount code."}, status=status.HTTP_400_BAD_REQUEST)
             except DiscountCode.DoesNotExist:

@@ -65,7 +65,6 @@ class SSOAuthenticationBackend(BaseBackend):
 
         try:
             payload = jwt.decode(sso_token, jwt_secret, algorithms=["HS256"])
-            print(payload["ex"])
             decrypted_data = decrypt(payload["ex"], jwt_secret)
 
             logger.debug(f"JWT payload: {payload}")
