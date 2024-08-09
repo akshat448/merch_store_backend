@@ -3544,3 +3544,431 @@ Traceback (most recent call last):
            ^^^^^^^^^^
 AttributeError: 'QuerySet' object has no attribute 'order'. Did you mean: 'ordered'?
 [05/Aug/2024 22:05:50] ERROR [django.server:212] "POST /export_csv/1 HTTP/1.1" 500 79090
+[09/Aug/2024 10:28:34] ERROR [django.request:241] Internal Server Error: /auth/login/
+Traceback (most recent call last):
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\backend\login\views.py", line 21, in post
+    user = authenticate(request, sso_token=sso_token)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\decorators\debug.py", line 42, in sensitive_variables_wrapper
+    return func(*func_args, **func_kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\contrib\auth\__init__.py", line 77, in authenticate
+    user = backend.authenticate(request, **credentials)
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 18, in authenticate
+    user_info = self.validate_sso_token(sso_token)
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 55, in validate_sso_token
+    decrypted_data = decrypt(sso_token, settings.JWT_SECRET_KEY)
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 75, in decrypt
+    iv = bytes.fromhex(encrypted_data[:32])  # First 32 hex characters correspond to the 16 bytes IV
+ValueError: non-hexadecimal number found in fromhex() arg at position 1
+[09/Aug/2024 10:28:34] ERROR [django.server:212] "POST /auth/login/ HTTP/1.1" 500 129635
+[09/Aug/2024 10:28:54] ERROR [django.request:241] Internal Server Error: /auth/login/
+Traceback (most recent call last):
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\backend\login\views.py", line 21, in post
+    user = authenticate(request, sso_token=sso_token)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\decorators\debug.py", line 42, in sensitive_variables_wrapper
+    return func(*func_args, **func_kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\contrib\auth\__init__.py", line 77, in authenticate
+    user = backend.authenticate(request, **credentials)
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 18, in authenticate
+    user_info = self.validate_sso_token(sso_token)
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 55, in validate_sso_token
+    decrypted_data = decrypt(sso_token, settings.JWT_SECRET_KEY)
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 75, in decrypt
+    iv = bytes.fromhex(encrypted_data[:32])  # First 32 hex characters correspond to the 16 bytes IV
+ValueError: non-hexadecimal number found in fromhex() arg at position 1
+[09/Aug/2024 10:28:54] ERROR [django.server:212] "POST /auth/login/ HTTP/1.1" 500 129635
+[09/Aug/2024 10:29:41] ERROR [django.request:241] Internal Server Error: /auth/login/
+Traceback (most recent call last):
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\backend\login\views.py", line 21, in post
+    user = authenticate(request, sso_token=sso_token)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\decorators\debug.py", line 42, in sensitive_variables_wrapper
+    return func(*func_args, **func_kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\contrib\auth\__init__.py", line 77, in authenticate
+    user = backend.authenticate(request, **credentials)
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 18, in authenticate
+    user_info = self.validate_sso_token(sso_token)
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 55, in validate_sso_token
+    decrypted_data = decrypt(sso_token, settings.JWT_SECRET_KEY)
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 75, in decrypt
+    iv = bytes.fromhex(encrypted_data[:32])  # First 32 hex characters correspond to the 16 bytes IV
+ValueError: non-hexadecimal number found in fromhex() arg at position 1
+[09/Aug/2024 10:29:41] ERROR [django.server:212] "POST /auth/login/ HTTP/1.1" 500 129635
+[09/Aug/2024 10:31:23] ERROR [django.request:241] Internal Server Error: /auth/login/
+Traceback (most recent call last):
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\backend\login\views.py", line 21, in post
+    user = authenticate(request, sso_token=sso_token)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\decorators\debug.py", line 42, in sensitive_variables_wrapper
+    return func(*func_args, **func_kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\contrib\auth\__init__.py", line 77, in authenticate
+    user = backend.authenticate(request, **credentials)
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 18, in authenticate
+    user_info = self.validate_sso_token(sso_token)
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 55, in validate_sso_token
+    decrypted_data = decrypt(sso_token, settings.JWT_SECRET_KEY)
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 75, in decrypt
+    iv = bytes.fromhex(encrypted_data[:32])  # First 32 hex characters correspond to the 16 bytes IV
+ValueError: non-hexadecimal number found in fromhex() arg at position 1
+[09/Aug/2024 10:31:23] ERROR [django.server:212] "POST /auth/login/ HTTP/1.1" 500 128355
+[09/Aug/2024 10:34:21] ERROR [django.request:241] Internal Server Error: /auth/login/
+Traceback (most recent call last):
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\backend\login\views.py", line 21, in post
+    user = authenticate(request, sso_token=sso_token)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\decorators\debug.py", line 42, in sensitive_variables_wrapper
+    return func(*func_args, **func_kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\contrib\auth\__init__.py", line 77, in authenticate
+    user = backend.authenticate(request, **credentials)
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 18, in authenticate
+    user_info = self.validate_sso_token(sso_token)
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 59, in validate_sso_token
+    decrypted_data = decrypt(sso_token, settings.JWT_SECRET_KEY)
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 74, in decrypt
+    iv = bytes.fromhex(encrypted_data[:32])  # First 32 hex characters correspond to the 16 bytes IV
+ValueError: non-hexadecimal number found in fromhex() arg at position 1
+[09/Aug/2024 10:34:21] ERROR [django.server:212] "POST /auth/login/ HTTP/1.1" 500 128759
+[09/Aug/2024 10:37:33] ERROR [django.request:241] Internal Server Error: /auth/login/
+Traceback (most recent call last):
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\backend\login\views.py", line 21, in post
+    user = authenticate(request, sso_token=sso_token)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\decorators\debug.py", line 42, in sensitive_variables_wrapper
+    return func(*func_args, **func_kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\contrib\auth\__init__.py", line 77, in authenticate
+    user = backend.authenticate(request, **credentials)
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 18, in authenticate
+    user_info = self.validate_sso_token(sso_token)
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 59, in validate_sso_token
+    decrypted_data = decrypt(sso_token, settings.JWT_SECRET_KEY)
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 74, in decrypt
+    iv = bytes.fromhex(encrypted_data[:32])  # First 32 hex characters correspond to the 16 bytes IV
+ValueError: non-hexadecimal number found in fromhex() arg at position 1
+[09/Aug/2024 10:37:33] ERROR [django.server:212] "POST /auth/login/ HTTP/1.1" 500 128759
+[09/Aug/2024 10:40:33] ERROR [django.request:241] Internal Server Error: /auth/login/
+Traceback (most recent call last):
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\backend\login\views.py", line 21, in post
+    user = authenticate(request, sso_token=sso_token)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\decorators\debug.py", line 42, in sensitive_variables_wrapper
+    return func(*func_args, **func_kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\contrib\auth\__init__.py", line 77, in authenticate
+    user = backend.authenticate(request, **credentials)
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 22, in authenticate
+    user_info = self.validate_sso_token(sso_token)
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 64, in validate_sso_token
+    decrypted_data = decrypt(sso_token, jwt_secret)
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 81, in decrypt
+    iv = bytes.fromhex(encrypted_data[:32])
+ValueError: non-hexadecimal number found in fromhex() arg at position 1
+[09/Aug/2024 10:40:33] ERROR [django.server:212] "POST /auth/login/ HTTP/1.1" 500 128764
+[09/Aug/2024 10:45:12] ERROR [django.request:241] Internal Server Error: /auth/login/
+Traceback (most recent call last):
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 89, in decrypt
+    iv = bytes.fromhex(encrypted_data[:32])  # First 32 hex characters correspond to the 16 bytes IV
+ValueError: non-hexadecimal number found in fromhex() arg at position 1
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\backend\login\views.py", line 21, in post
+    user = authenticate(request, sso_token=sso_token)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\decorators\debug.py", line 42, in sensitive_variables_wrapper
+    return func(*func_args, **func_kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\contrib\auth\__init__.py", line 77, in authenticate
+    user = backend.authenticate(request, **credentials)
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 23, in authenticate
+    user_info = self.validate_sso_token(sso_token)
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 65, in validate_sso_token
+    decrypted_data = decrypt(sso_token, jwt_secret)
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 108, in decrypt
+    raise ValueError('Decryption failed or invalid data format')
+ValueError: Decryption failed or invalid data format
+[09/Aug/2024 10:45:12] ERROR [django.server:212] "POST /auth/login/ HTTP/1.1" 500 133676
+[09/Aug/2024 10:51:36] ERROR [django.request:241] Internal Server Error: /auth/login/
+Traceback (most recent call last):
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 95, in decrypt
+    raise ValueError("Encrypted data contains non-hexadecimal characters")
+ValueError: Encrypted data contains non-hexadecimal characters
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\backend\login\views.py", line 21, in post
+    user = authenticate(request, sso_token=sso_token)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\decorators\debug.py", line 42, in sensitive_variables_wrapper
+    return func(*func_args, **func_kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\contrib\auth\__init__.py", line 77, in authenticate
+    user = backend.authenticate(request, **credentials)
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 23, in authenticate
+    user_info = self.validate_sso_token(sso_token)
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 65, in validate_sso_token
+    decrypted_data = decrypt(sso_token, jwt_secret)
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 117, in decrypt
+    raise ValueError('Decryption failed or invalid data format')
+ValueError: Decryption failed or invalid data format
+[09/Aug/2024 10:51:36] ERROR [django.server:212] "POST /auth/login/ HTTP/1.1" 500 133648
+[09/Aug/2024 17:49:00] ERROR [django.request:241] Internal Server Error: /auth/login
+Traceback (most recent call last):
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\utils\deprecation.py", line 136, in __call__
+    response = self.process_response(request, response)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\middleware\common.py", line 108, in process_response
+    return self.response_redirect_class(self.get_full_path_with_slash(request))
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\middleware\common.py", line 87, in get_full_path_with_slash
+    raise RuntimeError(
+RuntimeError: You called this URL via POST, but the URL doesn't end in a slash and you have APPEND_SLASH set. Django can't redirect to the slash URL while maintaining POST data. Change your form to point to localhost:8000/auth/login/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleCI6IjYzMzAzMzM3MzYzNTM5MzkzNDYxNjEzMTYyMzYzNTM1M2Y4MjY2NDUyM2UwMzQ4ZWIwYWE2NDUwYjE5ZjAwYmExYzBjMDlmMmJlYmY0M2I2NjAzZTZmOTQ2YTFlNTJkODZkYWU1YWRhM2JmY2JkOWE3MzQ4NWMzOGZhNjI0ZWY4NTYwYmQxMjY1NmNkZTk4MjcyOGNjNDhlZDlkZGE1MDBiYmQyOTYwZTFiNjM3ZDc5MDRhOGMxZWJmMGI3Nzk5ODE4OTA0MTU4MWRhYmYzMmVjMzMzMjQwMDM3NGUwMWVlNDExZGQ3ZDFiZTBjZTMwYzM2NWJhMmJjZjViNGI3MGQwZjRkZTI5YWQ2ZTkxZDEyM2JmZmU1N2JmZWZiYmI4ZmUzM2Y1NjE0OWM4NWZkYjZmMTVhZmUzNjYwZDVkZDlkZDY5MTY1M2JkMDQwYTYxN2I2MzUxOWQxNzU3NzgzMDNkZTY1MWYwMzRmMWU0YzkyNGQ0YjIyYjJlMmNiMWUxNmUzZTQ0OWFmOTM4NWZhZTdhNDQ3YmQ1OTA0Y2FjZjZjZmMzNDhkNTQ1ZmQzODVjMTAwNTZkYWYxNTUwZGZlOGNhMGM1NjEyMmQxNTUxYmM3MDgwM2Y0NjM2MjRhY2YzZjFmNjUxYWQ2ZDhjMWFhNjJhOTc3NDYzYTI4MDYyOGRlNWJmMDcyMmFhMTM5OGExNzI1MjM5Yjk3OWNlOWM2ZDc0OWVhOTYxMGQxMWVkMDRiY2Q3NDgxZjNlMzlhM2U1NGJjOTYxMWZmZjU2M2I0ODFjNmY4MzZlMzgwYjRjODM4ZGM5ZTMwMDk2MDcyMGFmYzRiMGJhYWY4MDU4ODg2MGZlYjI0YzNmMTVhMWY4YmZiMzI4MzIxODZhNjVjMjRjYjQxNDY5NzYxMGMyYWVhNmQ0MzMwY2E5ZDM4ZGJkNmZjZDZjYjU5MDlhNjk3M2Y3YWRiMDUxMWJkNGExMzgzZDk0ZGViZDBmM2E1MzdlNDAxY2EzNGVhNzIyM2YwYzI3YjdhMzQ5MjAyNDM3MjkyNTI0NzYxZDcwNWE3NzFjZTE1ZjMzY2IyYmI2ZmQxMzY5ZmFhNDJhYTdhODAyNWQ3ZDcwYTdkNzhhZTVjYTYzZmY5NjAwMjA2NWMyNjA1NmI0ZWJiMDkwZjc3MmQwODFkOTdhNTQxOTM2YzZkOWNmZjYxOWYwZDUwODFlNjY4ZDc0OTc0M2VmYzhkNmY5NTU3YmVmOTg1OWE5MDk5MDJhYzI0YzM0Y2RiN2JmZmJmM2Y1M2FjY2E1NTc2ODViZTc1ZTQ1OGQ5NmMzNzVjNDFmYWVlY2FkNDY2OGVlY2QzNmRhM2IwYmNmNmE1MjVmMjhlOGIiLCJpYXQiOjE3MjMyMDU1OTcsImV4cCI6MTcyMzIyNzE5N30.xRQsqjDjcMPpfrsDwYBUQlJjZhHxydNueL4TW8gvoWs (note the trailing slash), or set APPEND_SLASH=False in your Django settings.
+[09/Aug/2024 17:49:00] ERROR [django.server:212] "POST /auth/login?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleCI6IjYzMzAzMzM3MzYzNTM5MzkzNDYxNjEzMTYyMzYzNTM1M2Y4MjY2NDUyM2UwMzQ4ZWIwYWE2NDUwYjE5ZjAwYmExYzBjMDlmMmJlYmY0M2I2NjAzZTZmOTQ2YTFlNTJkODZkYWU1YWRhM2JmY2JkOWE3MzQ4NWMzOGZhNjI0ZWY4NTYwYmQxMjY1NmNkZTk4MjcyOGNjNDhlZDlkZGE1MDBiYmQyOTYwZTFiNjM3ZDc5MDRhOGMxZWJmMGI3Nzk5ODE4OTA0MTU4MWRhYmYzMmVjMzMzMjQwMDM3NGUwMWVlNDExZGQ3ZDFiZTBjZTMwYzM2NWJhMmJjZjViNGI3MGQwZjRkZTI5YWQ2ZTkxZDEyM2JmZmU1N2JmZWZiYmI4ZmUzM2Y1NjE0OWM4NWZkYjZmMTVhZmUzNjYwZDVkZDlkZDY5MTY1M2JkMDQwYTYxN2I2MzUxOWQxNzU3NzgzMDNkZTY1MWYwMzRmMWU0YzkyNGQ0YjIyYjJlMmNiMWUxNmUzZTQ0OWFmOTM4NWZhZTdhNDQ3YmQ1OTA0Y2FjZjZjZmMzNDhkNTQ1ZmQzODVjMTAwNTZkYWYxNTUwZGZlOGNhMGM1NjEyMmQxNTUxYmM3MDgwM2Y0NjM2MjRhY2YzZjFmNjUxYWQ2ZDhjMWFhNjJhOTc3NDYzYTI4MDYyOGRlNWJmMDcyMmFhMTM5OGExNzI1MjM5Yjk3OWNlOWM2ZDc0OWVhOTYxMGQxMWVkMDRiY2Q3NDgxZjNlMzlhM2U1NGJjOTYxMWZmZjU2M2I0ODFjNmY4MzZlMzgwYjRjODM4ZGM5ZTMwMDk2MDcyMGFmYzRiMGJhYWY4MDU4ODg2MGZlYjI0YzNmMTVhMWY4YmZiMzI4MzIxODZhNjVjMjRjYjQxNDY5NzYxMGMyYWVhNmQ0MzMwY2E5ZDM4ZGJkNmZjZDZjYjU5MDlhNjk3M2Y3YWRiMDUxMWJkNGExMzgzZDk0ZGViZDBmM2E1MzdlNDAxY2EzNGVhNzIyM2YwYzI3YjdhMzQ5MjAyNDM3MjkyNTI0NzYxZDcwNWE3NzFjZTE1ZjMzY2IyYmI2ZmQxMzY5ZmFhNDJhYTdhODAyNWQ3ZDcwYTdkNzhhZTVjYTYzZmY5NjAwMjA2NWMyNjA1NmI0ZWJiMDkwZjc3MmQwODFkOTdhNTQxOTM2YzZkOWNmZjYxOWYwZDUwODFlNjY4ZDc0OTc0M2VmYzhkNmY5NTU3YmVmOTg1OWE5MDk5MDJhYzI0YzM0Y2RiN2JmZmJmM2Y1M2FjY2E1NTc2ODViZTc1ZTQ1OGQ5NmMzNzVjNDFmYWVlY2FkNDY2OGVlY2QzNmRhM2IwYmNmNmE1MjVmMjhlOGIiLCJpYXQiOjE3MjMyMDU1OTcsImV4cCI6MTcyMzIyNzE5N30.xRQsqjDjcMPpfrsDwYBUQlJjZhHxydNueL4TW8gvoWs HTTP/1.1" 500 97320
+[09/Aug/2024 18:06:39] ERROR [django.request:241] Internal Server Error: /auth/login/
+Traceback (most recent call last):
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 117, in decrypt
+    decrypted_json = json.loads(decrypted_data.decode('utf-8'))
+  File "C:\Users\aksha\.pyenv\pyenv-win\versions\3.9.13\lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "C:\Users\aksha\.pyenv\pyenv-win\versions\3.9.13\lib\json\decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 1 column 496 (char 495)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\backend\login\views.py", line 21, in post
+    user = authenticate(request, sso_token=sso_token)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\decorators\debug.py", line 42, in sensitive_variables_wrapper
+    return func(*func_args, **func_kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\contrib\auth\__init__.py", line 77, in authenticate
+    user = backend.authenticate(request, **credentials)
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 23, in authenticate
+    user_info = self.validate_sso_token(sso_token)
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 71, in validate_sso_token
+    decrypted_data = decrypt(payload['ex'], jwt_secret)
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 122, in decrypt
+    raise ValueError('Decryption failed or invalid data format')
+ValueError: Decryption failed or invalid data format
+[09/Aug/2024 18:06:39] ERROR [django.server:212] "POST /auth/login/ HTTP/1.1" 500 149472
+[09/Aug/2024 18:07:49] ERROR [django.request:241] Internal Server Error: /auth/login/
+Traceback (most recent call last):
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 113, in decrypt
+    decrypted_json = json.loads(decrypted_data.decode('utf-8'))
+  File "C:\Users\aksha\.pyenv\pyenv-win\versions\3.9.13\lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "C:\Users\aksha\.pyenv\pyenv-win\versions\3.9.13\lib\json\decoder.py", line 340, in decode
+    raise JSONDecodeError("Extra data", s, end)
+json.decoder.JSONDecodeError: Extra data: line 1 column 496 (char 495)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\backend\login\views.py", line 21, in post
+    user = authenticate(request, sso_token=sso_token)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\decorators\debug.py", line 42, in sensitive_variables_wrapper
+    return func(*func_args, **func_kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\contrib\auth\__init__.py", line 77, in authenticate
+    user = backend.authenticate(request, **credentials)
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 23, in authenticate
+    user_info = self.validate_sso_token(sso_token)
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 67, in validate_sso_token
+    decrypted_data = decrypt(payload['ex'], jwt_secret)
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 118, in decrypt
+    raise ValueError('Decryption failed or invalid data format')
+ValueError: Decryption failed or invalid data format
+[09/Aug/2024 18:07:49] ERROR [django.server:212] "POST /auth/login/ HTTP/1.1" 500 149217
+[09/Aug/2024 18:14:33] ERROR [django.request:241] Internal Server Error: /auth/login/
+Traceback (most recent call last):
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\generic\base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\rest_framework\views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "C:\Users\aksha\code\merchstore\backend\login\views.py", line 21, in post
+    user = authenticate(request, sso_token=sso_token)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\views\decorators\debug.py", line 42, in sensitive_variables_wrapper
+    return func(*func_args, **func_kwargs)
+  File "C:\Users\aksha\code\merchstore\venv\lib\site-packages\django\contrib\auth\__init__.py", line 77, in authenticate
+    user = backend.authenticate(request, **credentials)
+  File "C:\Users\aksha\code\merchstore\backend\login\backend.py", line 27, in authenticate
+    user = User.objects.get(email=user_info['email'])
+KeyError: 'email'
+[09/Aug/2024 18:14:33] ERROR [django.server:212] "POST /auth/login/ HTTP/1.1" 500 117346
