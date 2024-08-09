@@ -19,6 +19,7 @@ from .utils import get_for_user_positions
 
 import csv
 
+
 class ListItem:
     def __init__(self, id, name, price, orders_count):
         self.id = id
@@ -26,7 +27,9 @@ class ListItem:
         self.price = price
         self.orders_count = orders_count
 
+
 # Create your views here.
+
 
 @staff_member_required
 def dashboard(request):
@@ -38,8 +41,10 @@ def dashboard(request):
     )
     unsuccessful_orders = Order.objects.filter(is_verified=False).count()
     pending_orders = Order.objects.filter(is_verified=None).count()
-    items_ordered = OrderItem.objects.all().aggregate(total=Sum('quantity'))['total'] or 0
-    #items_ordered = 0
+    items_ordered = (
+        OrderItem.objects.all().aggregate(total=Sum("quantity"))["total"] or 0
+    )
+    # items_ordered = 0
 
     items = []
     products = Product.objects.all()
@@ -47,9 +52,12 @@ def dashboard(request):
         orders_count = OrderItem.objects.filter(
             product=product, order__is_verified=True
         ).count()
-        quantity_count = OrderItem.objects.filter(
-            product=product, order__is_verified=True
-        ).aggregate(total=Sum('quantity'))['total'] or 0
+        quantity_count = (
+            OrderItem.objects.filter(
+                product=product, order__is_verified=True
+            ).aggregate(total=Sum("quantity"))["total"]
+            or 0
+        )
         item = {
             "id": product.id,
             "name": product.name,
@@ -306,70 +314,40 @@ def scan_qr(request):
             return response
     # return render(request, 'dashboard/scan_qr.html')
 
-"""
+
 @staff_member_required
 def successful_order_csv(request, id):
     if request.method == "GET":
         raise Http404
-    
-    product = Product.objects.filter(id=id).first()
-    
-    if product is None:
-        raise Http404
-    item = OrderItem.objects.filter(product=product, order__is_verified=True).all()
-    rows = []
+
+    item = OrderItem.objects.filter(pk=id, order__is_verified=True).first()
+    if not item:
+        raise Http404("OrderItem not found.")
+
     first_row = ["Name", "Email Id", "Phone Number", "Position", "Quantity"]
-    if product.is_size_required:
-        first_row.append("Size")
-    if product.is_name_required:
-        first_row.append("Printing Name")
-    if product.is_image_required:
-        first_row.append("Image URL")
-    rows.append(first_row)
-    
+    rows = [first_row]
+
     user = item.order.user
-    row = [user.name, user.email, user.phone_no, user.position]
-    row.append(item.product.name)
-    row.append(item.product.pk)
-    row.append(item.quantity)
-    row.append(item.size)
-    row.append(item.printing_name)
-    row.append(item.image_url)
+    row = [user.name, user.email, user.phone_no, user.position, item.quantity]
+
+    if item.product.is_size_required:
+        first_row.append("Size")
+        row.append(item.size)
+    if item.product.is_name_required:
+        first_row.append("Printing Name")
+        row.append(item.printing_name)
+    if item.product.is_image_required:
+        first_row.append("Image URL")
+        row.append(item.image_url)
+
     rows.append(row)
-    
+
     pseudo_buffers = Echo()
     writer = csv.writer(pseudo_buffers)
     return StreamingHttpResponse(
         (writer.writerow(row) for row in rows),
         content_type="text/csv",
-        headers={"Content-Disposition": f'attachment; filename="{item.product.name}_{item.product.pk}_successful_orders.csv"'},
+        headers={
+            "Content-Disposition": f'attachment; filename="{item.product.name}_{item.product.pk}_successful_orders.csv"'
+        },
     )
-       """
-        
-@staff_member_required
-def successful_order_csv(request, id):
-    products = OrderItem.objects.values_list('product__name', flat=True).distinct()
-    
-    for product in products:
-        # Create the HttpResponse object with the appropriate CSV header.
-        response = HttpResponse(content_type='text/csv')
-        response['Content-Disposition'] = f'attachment; filename="{product}_orders.csv"'
-
-        writer = csv.writer(response)
-        writer.writerow(['Name', 'Email Id', 'Phone Number', 'Position', 'Quantity', 'Size', 'Printing Name', 'Image URL'])
-
-        order_items = OrderItem.objects.filter(product__name=product).select_related('order', 'order__user')
-
-        for item in order_items:
-            writer.writerow([
-                item.order.user.name,
-                item.order.user.email,
-                item.order.user.phone_number,
-                item.order.user.position,
-                item.quantity,
-                item.size,
-                item.printing_name,
-                item.image_url
-            ])
-
-        yield response
