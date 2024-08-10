@@ -2,9 +2,11 @@
 <html lang="en">
 
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CCS Merch Store</title>
+
     <style>
         body {
             font-size: large;
@@ -18,69 +20,51 @@
             align-items: center;
             min-height: 100vh;
         }
-
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            max-width: 550px;
-            padding: 20px
-        }
-
-        .inner_container {
-            width: 100%;
-            background-color: rgb(248, 248, 248);
-            padding: 20px;
-            box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.1) 0px 4px 6px -4px;
-            border-radius: 8px;
-            border: 1.6px solid rgb(229, 231, 235);
-        }
-
-        .header {
-            text-align: center;
-            padding: 10px 0;
-        }
-
-        .header h1 {
-            font-weight: bold;
-            margin: 0;
-        }
-
-        .content {
-            padding: 0 10px;
-        }
-
-        .footer {
-            text-align: center;
-            font-size: 0.8rem;
-            margin-top: auto;
-        }
-
-        p {
-            margin: 0;
-        }
     </style>
 </head>
 
-<body>
-    <div class="container">
-        <div class="inner_container">
-            <div class="header">
+<body
+    style='font-size: large; font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol, "Noto Color Emoji"; width: 100%; height: 100%; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; margin: 0; padding: 0;'
+    bgcolor="#ffffff">
+    <div style="max-width: 600px; width: 100%; box-sizing: border-box; margin: 0 auto; padding: 20px;">
+        <div
+            style="background-color: #f8f8f8; box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.1) 0px 4px 6px -4px; border-radius: 8px; box-sizing: border-box; padding: 20px; border: 1.6px solid #e5e7eb;">
+            <div>
                 <img src="https://merch.ccstiet.com/assets/CCS_Bulb-D6h_BMnQ.png" alt="CCS Merch Store"
-                    style="display: block; margin: 0 auto; width: 80px;">
-                <h1>CCS Merch Store</h1>
+                    style="display: block; width: 80px; margin: 0 auto 10px;">
+                <h1 style="font-weight: bold; font-size: 24px; color: #333; margin: 0;" align="center">CCS Merch Store
+                </h1>
             </div>
 
-            <div class="content">
+            <div>
                 <br>
-
-                <p>Hi <b>{{ name }}</b></p>
+                <p style="font-size: 16px; color: #353831; line-height: 1.5; margin: 0; padding: 0;">
+                    Hi <b>{{ name }}</b></p>
                 <br>
-                <p>Your order with Order ID: <b>{{ order_id }}</b> has been successfully delivered to you. Thank you for
-                    shopping with us!</p>
+                <p style="font-size: 16px; color: #353831; line-height: 1.5; margin: 0; padding: 0;">
+                    Your order with
+                    Transaction ID: <b>{{ txn_id }}</b> has been successfully delivered to you. Thank you
+                    for
+                    shopping with us!
+                </p>
                 <br>
-                <p class="footer">Thank you for shopping with us!</p>
+                <p style="font-size: 16px; color: #353831; line-height: 1.5; margin: 0; padding: 0;"><b>Amount Paid:</b>
+                    ₹{{ total }}</p>
+                <div>
+                    <p style="font-size: 16px; color: #353831; line-height: 1.5; margin: 0; padding: 0;"><b>Items
+                            Ordered:</b></p>
+                    <ul
+                        style="list-style-type: disc; font-size: 16px; color: #353831; margin: 10px 0 0 20px; padding: 0;">
+                        {% for item in items %}
+                        <li style="margin: 5px 0;">{{ item.name }} x{{ item.quantity }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <br>
+                <p style="font-size: 12px; color: #353831; line-height: 1.5; margin: 0; padding: 0;" align="center">
+                    <span style="display: none;">{{txn_id}}</span>
+                    Thank you for shopping with us!
+                </p>
             </div>
         </div>
     </div>

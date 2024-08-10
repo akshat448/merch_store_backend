@@ -17,7 +17,7 @@ from login.models import CustomUser
 from discounts.models import DiscountCode
 from .utils import get_for_user_positions
 
-from .tasks import send_order_completion_email
+from .tasks import send_order_completion_email_async
 
 import csv
 
@@ -238,7 +238,6 @@ def create_product(request):
 def edit_product(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     if request.method == "POST":
-        print(request.POST)
         product.name = request.POST.get("name")
         product.price = request.POST.get("price")
         product.max_quantity = request.POST.get("max_quantity")
@@ -275,7 +274,6 @@ def render_qr_page(request):
 def scan_qr(request):
     if request.method == "POST":
         scanned_qr_code = request.POST.get("scanned_qr_code")
-        print(scanned_qr_code)
         try:
             order_id, txnid = scanned_qr_code.split("|")
             order = Order.objects.get(pk=order_id)
@@ -296,8 +294,21 @@ def scan_qr(request):
                     f"Order ID: {order.id}, User ID: {order.user.id}, Name: {order.user.name}, Order Amount: {order.total_amount}, Order Status: {status}",
                 )
                 response.status_code = 200
-                send_order_completion_email(
-                    order.id, order.user.name, order.user.email
+                order_items = OrderItem.objects.filter(order=payment.order).all()
+                prod_list = []
+                for item in order_items:
+                    prod_list.append(
+                        {
+                            "name": item.product.name,
+                            "quantity": item.quantity,
+                        }
+                    )
+                send_order_completion_email_async(
+                    payment.transaction_id,
+                    order.user.name,
+                    order.updated_amount,
+                    prod_list,
+                    order.user.email,
                 )
                 return response
 

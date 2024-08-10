@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG")
-ALLOWED_HOSTS = ['api.merch.ccstiet.com', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ["api.merch.ccstiet.com", "127.0.0.1", "localhost"]
 
 JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
 
@@ -155,24 +155,27 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CELERY_RESULT_BACKEND = "django-db"
 
-CORS_ALLOWED_ORIGINS = [
-    "https://merch.ccstiet.com",
-    "http://localhost:3000"
-]
+CORS_ALLOWED_ORIGINS = ["https://merch.ccstiet.com", "http://localhost:3000"]
+
+# check for this
+CORS_ALLOW_HEADERS = ["*"]
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = False
+
 
 PAYU_MERCHANT_KEY = os.getenv("PAYU_MERCHANT_KEY")
 PAYU_MERCHANT_SALT = os.getenv("PAYU_MERCHANT_SALT")
-PAYU_SUCCESS_URL = 'http://localhost:8000/payment/success/'
-PAYU_FAILURE_URL = 'http://localhost:8000/payment/failure/'
+PAYU_SUCCESS_URL = "http://localhost:8000/payment/success/"
+PAYU_FAILURE_URL = "http://localhost:8000/payment/failure/"
 
-#gmail_send/settings.py
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'yoorusername@gmail.com'
-EMAIL_HOST_PASSWORD = 'key' #past the key or password app here
+# gmail_send/settings.py
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = os.getenv("EMAIL")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_PASSWORD")
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'default from email'
 
 LOGS_ROOT = os.path.join(BASE_DIR, "logs")
 

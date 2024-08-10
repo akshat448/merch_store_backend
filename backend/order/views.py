@@ -14,7 +14,7 @@ from .utils import generate_qr_code
 from discounts.models import DiscountCode
 from products.models import CartItem
 
-from .tasks import send_order_success_email
+from .tasks import send_order_success_email_async
 
 
 def generateHash(params, salt):
@@ -301,18 +301,19 @@ class PaymentSuccessView(APIView):
                     )
 
                 # Generate and save QR code
-                generate_qr_code(payment.order)
+                qr_data = generate_qr_code(payment.order)
 
-                send_order_success_email(
-                    payment.order.id,
+                send_order_success_email_async(
+                    payment.transaction_id,
                     payment.order.updated_amount,
                     prod_list,
                     payment.order.user.name,
-                    payment.order.qr_code_data,
+                    qr_data,
                     payment.order.user.email,
                 )
 
-                redirect_url = f"https://merch.ccstiet.com/payment-status/{txnid}"
+                redirect_url = f"http://localhost:3000/payment-status/{txnid}"
+                # redirect_url = f"https://merch.ccstiet.com/payment-status/{txnid}"
                 return redirect(redirect_url)
 
         except Payment.DoesNotExist:
@@ -339,7 +340,8 @@ class PaymentFailureView(APIView):
             if status == "failure":
                 payment.order.is_verified = False
                 payment.order.save()
-                redirect_url = f"https://merch.ccstiet.com/payment-status/{txnid}"
+                redirect_url = f"http://localhost:3000/payment-status/{txnid}"
+                # redirect_url = f"https://merch.ccstiet.com/payment-status/{txnid}"
                 return redirect(redirect_url)
 
         except Payment.DoesNotExist:
