@@ -21,13 +21,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG")
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(",")
+ALLOWED_HOSTS = ['api.merch.ccstiet.com', '127.0.0.1', 'localhost']
 
 JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
-
-SECRET_KEY = "django-insecure-%yh*4ox!m*+q8+ig6drp!ip@=cnrs8u!=5qj1p61s51o8hq7u#"
-DEBUG = True
-ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -65,11 +61,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-
-CSRF_TRUSTED_ORIGINS = [
-    "https://1c3f-104-28-254-179.ngrok-free.app"
-]
-
 
 ROOT_URLCONF = "backend.urls"
 
@@ -154,11 +145,6 @@ USE_TZ = True
 STATIC_URL = "static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
-"""
-MEDIA_URL = dotenv('MEDIA_URL', default='media/')
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-"""
 MEDIA_URL = "media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
@@ -169,23 +155,24 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CELERY_RESULT_BACKEND = "django-db"
 
-
-CORS_ALLOWED_ALL_ORIGINS = True
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_HEADERS = ["*"]
-# CORS_ALLOWED_ORIGINS = [
-#     "http://localhost:8000",
-#     # "https://afdf4f9210fa6944a341186299ea9128.serveo.net",
-#     # "http://127.0.0.1:3000",
-#     "http://localhost:3000",
-# ]
-
+CORS_ALLOWED_ORIGINS = [
+    "https://merch.ccstiet.com",
+    "http://localhost:3000"
+]
 
 PAYU_MERCHANT_KEY = os.getenv("PAYU_MERCHANT_KEY")
 PAYU_MERCHANT_SALT = os.getenv("PAYU_MERCHANT_SALT")
 PAYU_SUCCESS_URL = 'http://localhost:8000/payment/success/'
 PAYU_FAILURE_URL = 'http://localhost:8000/payment/failure/'
 
+#gmail_send/settings.py
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'yoorusername@gmail.com'
+EMAIL_HOST_PASSWORD = 'key' #past the key or password app here
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'default from email'
 
 LOGS_ROOT = os.path.join(BASE_DIR, "logs")
 

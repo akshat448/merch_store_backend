@@ -312,7 +312,7 @@ class PaymentSuccessView(APIView):
                     payment.order.user.email,
                 )
 
-                redirect_url = f"http://localhost:3000/payment-status/{txnid}"
+                redirect_url = f"https://merch.ccstiet.com/payment-status/{txnid}"
                 return redirect(redirect_url)
 
         except Payment.DoesNotExist:
@@ -339,7 +339,7 @@ class PaymentFailureView(APIView):
             if status == "failure":
                 payment.order.is_verified = False
                 payment.order.save()
-                redirect_url = f"http://localhost:3000/payment-status/{txnid}"
+                redirect_url = f"https://merch.ccstiet.com/payment-status/{txnid}"
                 return redirect(redirect_url)
 
         except Payment.DoesNotExist:
