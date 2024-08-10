@@ -155,14 +155,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CELERY_RESULT_BACKEND = "django-db"
 
+
 CORS_ALLOWED_ORIGINS = ["https://merch.ccstiet.com", "http://localhost:3000"]
-
-# check for this
-CORS_ALLOW_HEADERS = ["*"]
-
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_CREDENTIALS = False
-
+#CORS_ALLOW_HEADERS = ["Content-Type", "Authorization","Accept", "Origin", "Connection", "Host", "User-Agent", "Referer", "Accept-Encoding", "Accept-Language","Sec-Fetch-Dest", "Sec-Fetch-Mode", "Sec-Fetch-Site","Sec-Ch-Ua", "Sec-Ch-Ua-Platform"]
 
 PAYU_MERCHANT_KEY = os.getenv("PAYU_MERCHANT_KEY")
 PAYU_MERCHANT_SALT = os.getenv("PAYU_MERCHANT_SALT")
