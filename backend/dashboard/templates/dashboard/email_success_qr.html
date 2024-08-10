@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CCS Merch Store</title>
+    <style>
+        body {
+            font-size: large;
+            font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", Segoe UI Symbol, "Noto Color Emoji";
+            background-color: #ffffff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            color: rgb(53, 56, 49);
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 550px;
+            padding: 20px
+        }
+
+        .inner_container {
+            width: 100%;
+            background-color: rgb(248, 248, 248);
+            padding: 20px;
+            box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.1) 0px 4px 6px -4px;
+            border-radius: 8px;
+            border: 1.6px solid rgb(229, 231, 235);
+        }
+
+        .header {
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .header h1 {
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .content {
+            padding: 0 10px;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 0.8rem;
+            margin-top: auto;
+        }
+
+        p {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="inner_container">
+            <div class="header">
+                <img src="https://merch.ccstiet.com/assets/CCS_Bulb-D6h_BMnQ.png" alt="CCS Merch Store"
+                    style="display: block; margin: 0 auto; width: 80px;">
+                <h1>CCS Merch Store</h1>
+            </div>
+
+            <div class="content">
+                <br>
+
+                <p>Hi <b>{{ name }}</b></p>
+                <br>
+                <p>Your order has been successfully placed. Please find the Order QR code below.
+                    Show this at the time of
+                    collection to claim your order. You can also find this QR code in the Orders section of CCS
+                    Merch Store.
+                </p>
+                <br>
+                <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code" style="display: block; margin: 0 auto;">
+                <br>
+                <p><b>Order ID:</b> {{ order_id }}</p>
+                <p><b>Amount Paid:</b> ₹{{ total }}</p>
+                <div>
+                    <b>Items Ordered:</b>
+                    <ul>
+                        {% for item in items %}
+                        <li>{{ item.name }} x{{ item.quantity }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <p class="footer">Thank you for shopping with us!</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

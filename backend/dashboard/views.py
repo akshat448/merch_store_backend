@@ -17,6 +17,8 @@ from login.models import CustomUser
 from discounts.models import DiscountCode
 from .utils import get_for_user_positions
 
+from .tasks import send_order_completion_email
+
 import csv
 
 
@@ -294,6 +296,9 @@ def scan_qr(request):
                     f"Order ID: {order.id}, User ID: {order.user.id}, Name: {order.user.name}, Order Amount: {order.total_amount}, Order Status: {status}",
                 )
                 response.status_code = 200
+                send_order_completion_email(
+                    order.id, order.user.name, order.user.email
+                )
                 return response
 
             response = HttpResponse("QR code already used or order not verified")
