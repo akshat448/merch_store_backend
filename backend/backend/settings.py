@@ -170,6 +170,8 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 LOGS_ROOT = os.path.join(BASE_DIR, "logs")
+if not os.path.exists(LOGS_ROOT):
+    os.makedirs(LOGS_ROOT)
 
 LOGGING = {
     "version": 1,
