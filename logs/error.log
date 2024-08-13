@@ -1,0 +1,184 @@
+[13/Aug/2024 00:08:59] ERROR [django.request:241] Internal Server Error: /admin/login/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.9/site-packages/django/utils/decorators.py", line 46, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "/usr/local/lib/python3.9/site-packages/django/views/decorators/cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/admin/sites.py", line 422, in login
+    **self.each_context(request),
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/admin/sites.py", line 337, in each_context
+    "available_apps": self.get_app_list(request),
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/admin/sites.py", line 536, in get_app_list
+    app_dict = self._build_app_dict(request, app_label)
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/admin/sites.py", line 478, in _build_app_dict
+    has_module_perms = model_admin.has_module_permission(request)
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/admin/options.py", line 611, in has_module_permission
+    return request.user.has_module_perms(self.opts.app_label)
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/auth/models.py", line 488, in has_module_perms
+    return _user_has_module_perms(self, module)
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/auth/models.py", line 231, in _user_has_module_perms
+    for backend in auth.get_backends():
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/auth/__init__.py", line 38, in get_backends
+    return _get_backends(return_tuples=False)
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/auth/__init__.py", line 27, in _get_backends
+    backend = load_backend(backend_path)
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/auth/__init__.py", line 21, in load_backend
+    return import_string(path)()
+  File "/usr/local/lib/python3.9/site-packages/django/utils/module_loading.py", line 30, in import_string
+    return cached_import(module_path, class_name)
+  File "/usr/local/lib/python3.9/site-packages/django/utils/module_loading.py", line 15, in cached_import
+    module = import_module(module_path)
+  File "/usr/local/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 986, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 850, in exec_module
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "/app/backend/login/backend.py", line 2, in <module>
+    from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
+ImportError: cannot import name 'ExpiredSignatureError' from 'jwt.exceptions' (/usr/local/lib/python3.9/site-packages/jwt/exceptions.py)
+[13/Aug/2024 00:08:59] ERROR [django.server:212] "GET /admin/login/?next=/dashboard/ HTTP/1.1" 500 149722
+[13/Aug/2024 00:09:49] ERROR [django.request:241] Internal Server Error: /admin/login/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.9/site-packages/django/utils/decorators.py", line 46, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "/usr/local/lib/python3.9/site-packages/django/views/decorators/cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/admin/sites.py", line 422, in login
+    **self.each_context(request),
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/admin/sites.py", line 337, in each_context
+    "available_apps": self.get_app_list(request),
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/admin/sites.py", line 536, in get_app_list
+    app_dict = self._build_app_dict(request, app_label)
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/admin/sites.py", line 478, in _build_app_dict
+    has_module_perms = model_admin.has_module_permission(request)
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/admin/options.py", line 611, in has_module_permission
+    return request.user.has_module_perms(self.opts.app_label)
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/auth/models.py", line 488, in has_module_perms
+    return _user_has_module_perms(self, module)
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/auth/models.py", line 231, in _user_has_module_perms
+    for backend in auth.get_backends():
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/auth/__init__.py", line 38, in get_backends
+    return _get_backends(return_tuples=False)
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/auth/__init__.py", line 27, in _get_backends
+    backend = load_backend(backend_path)
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/auth/__init__.py", line 21, in load_backend
+    return import_string(path)()
+  File "/usr/local/lib/python3.9/site-packages/django/utils/module_loading.py", line 30, in import_string
+    return cached_import(module_path, class_name)
+  File "/usr/local/lib/python3.9/site-packages/django/utils/module_loading.py", line 15, in cached_import
+    module = import_module(module_path)
+  File "/usr/local/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 986, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 850, in exec_module
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "/app/backend/login/backend.py", line 2, in <module>
+    from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
+ImportError: cannot import name 'ExpiredSignatureError' from 'jwt.exceptions' (/usr/local/lib/python3.9/site-packages/jwt/exceptions.py)
+[13/Aug/2024 00:09:49] ERROR [django.server:212] "GET /admin/login/?next=/dashboard/ HTTP/1.1" 500 149722
+[13/Aug/2024 00:12:06] ERROR [django.request:241] Internal Server Error: /admin/login/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.9/site-packages/django/utils/decorators.py", line 46, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "/usr/local/lib/python3.9/site-packages/django/views/decorators/cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/admin/sites.py", line 422, in login
+    **self.each_context(request),
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/admin/sites.py", line 337, in each_context
+    "available_apps": self.get_app_list(request),
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/admin/sites.py", line 536, in get_app_list
+    app_dict = self._build_app_dict(request, app_label)
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/admin/sites.py", line 478, in _build_app_dict
+    has_module_perms = model_admin.has_module_permission(request)
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/admin/options.py", line 611, in has_module_permission
+    return request.user.has_module_perms(self.opts.app_label)
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/auth/models.py", line 488, in has_module_perms
+    return _user_has_module_perms(self, module)
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/auth/models.py", line 231, in _user_has_module_perms
+    for backend in auth.get_backends():
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/auth/__init__.py", line 38, in get_backends
+    return _get_backends(return_tuples=False)
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/auth/__init__.py", line 27, in _get_backends
+    backend = load_backend(backend_path)
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/auth/__init__.py", line 21, in load_backend
+    return import_string(path)()
+  File "/usr/local/lib/python3.9/site-packages/django/utils/module_loading.py", line 30, in import_string
+    return cached_import(module_path, class_name)
+  File "/usr/local/lib/python3.9/site-packages/django/utils/module_loading.py", line 15, in cached_import
+    module = import_module(module_path)
+  File "/usr/local/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 986, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 850, in exec_module
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "/app/backend/login/backend.py", line 2, in <module>
+    from jwt import ExpiredSignatureError, InvalidTokenError
+ImportError: cannot import name 'ExpiredSignatureError' from 'jwt' (/usr/local/lib/python3.9/site-packages/jwt/__init__.py)
+[13/Aug/2024 00:12:06] ERROR [django.server:212] "GET /admin/login/?next=/dashboard/ HTTP/1.1" 500 149785
+[13/Aug/2024 00:14:05] ERROR [django.request:241] Internal Server Error: /admin/login/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.9/site-packages/django/utils/decorators.py", line 46, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "/usr/local/lib/python3.9/site-packages/django/views/decorators/cache.py", line 62, in _wrapper_view_func
+    response = view_func(request, *args, **kwargs)
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/admin/sites.py", line 422, in login
+    **self.each_context(request),
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/admin/sites.py", line 337, in each_context
+    "available_apps": self.get_app_list(request),
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/admin/sites.py", line 536, in get_app_list
+    app_dict = self._build_app_dict(request, app_label)
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/admin/sites.py", line 478, in _build_app_dict
+    has_module_perms = model_admin.has_module_permission(request)
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/admin/options.py", line 611, in has_module_permission
+    return request.user.has_module_perms(self.opts.app_label)
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/auth/models.py", line 488, in has_module_perms
+    return _user_has_module_perms(self, module)
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/auth/models.py", line 231, in _user_has_module_perms
+    for backend in auth.get_backends():
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/auth/__init__.py", line 38, in get_backends
+    return _get_backends(return_tuples=False)
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/auth/__init__.py", line 27, in _get_backends
+    backend = load_backend(backend_path)
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/auth/__init__.py", line 21, in load_backend
+    return import_string(path)()
+  File "/usr/local/lib/python3.9/site-packages/django/utils/module_loading.py", line 30, in import_string
+    return cached_import(module_path, class_name)
+  File "/usr/local/lib/python3.9/site-packages/django/utils/module_loading.py", line 15, in cached_import
+    module = import_module(module_path)
+  File "/usr/local/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 986, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 850, in exec_module
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "/app/backend/login/backend.py", line 2, in <module>
+    from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
+ImportError: cannot import name 'ExpiredSignatureError' from 'jwt.exceptions' (/usr/local/lib/python3.9/site-packages/jwt/exceptions.py)
+[13/Aug/2024 00:14:05] ERROR [django.server:212] "GET /admin/login/?next=/dashboard/ HTTP/1.1" 500 149859

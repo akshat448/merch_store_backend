@@ -98,13 +98,13 @@ AUTH_USER_MODEL = "login.CustomUser"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("POSTGRES_NAME"),
-        "USER": os.getenv("POSTGRES_USER"),
-        "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
-        "HOST": os.getenv("POSTGRES_HOST"),
-        "PORT": os.getenv("POSTGRES_PORT"),
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('POSTGRES_DB'),
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'HOST': os.getenv('DATABASE_HOST', 'localhost'),
+        'PORT': os.getenv('DATABASE_PORT', '5432'),
     }
 }
 
@@ -153,11 +153,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-CELERY_RESULT_BACKEND = "django-db"
-
-
 CORS_ALLOWED_ORIGINS = ["https://merch.ccstiet.com", "http://localhost:3000"]
-#CORS_ALLOW_HEADERS = ["Content-Type", "Authorization","Accept", "Origin", "Connection", "Host", "User-Agent", "Referer", "Accept-Encoding", "Accept-Language","Sec-Fetch-Dest", "Sec-Fetch-Mode", "Sec-Fetch-Site","Sec-Ch-Ua", "Sec-Ch-Ua-Platform"]
+CORS_ALLOW_HEADERS = ["Content-Type", "Authorization","Accept", "Origin", "Connection", "Host", "User-Agent", "Referer", "Accept-Encoding", "Accept-Language","Sec-Fetch-Dest", "Sec-Fetch-Mode", "Sec-Fetch-Site","Sec-Ch-Ua", "Sec-Ch-Ua-Platform"]
 
 PAYU_MERCHANT_KEY = os.getenv("PAYU_MERCHANT_KEY")
 PAYU_MERCHANT_SALT = os.getenv("PAYU_MERCHANT_SALT")
