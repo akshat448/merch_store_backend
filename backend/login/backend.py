@@ -114,7 +114,6 @@ def decrypt(encrypted_data, key):
 
         # Decode and strip any excessive whitespace
         decoded_string = decrypted_data.decode("utf-8")
-        print(decoded_string)
 
         # Convert to JSON
         json_object = json.loads(decoded_string)
