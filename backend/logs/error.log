@@ -50,3 +50,175 @@ Traceback (most recent call last):
   File "/usr/local/lib/python3.9/site-packages/django/contrib/staticfiles/utils.py", line 49, in check_settings
     raise ImproperlyConfigured(
 django.core.exceptions.ImproperlyConfigured: You're using the staticfiles app without having set the required STATIC_URL setting.
+[14/Aug/2024 13:04:56] ERROR [django.request:241] Internal Server Error: /auth/login/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.9/site-packages/django/views/decorators/csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.9/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.9/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.9/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.9/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.9/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/backend/login/views.py", line 21, in post
+    user = authenticate(request, sso_token=sso_token)
+  File "/usr/local/lib/python3.9/site-packages/django/views/decorators/debug.py", line 42, in sensitive_variables_wrapper
+    return func(*func_args, **func_kwargs)
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/auth/__init__.py", line 68, in authenticate
+    for backend, backend_path in _get_backends(return_tuples=True):
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/auth/__init__.py", line 27, in _get_backends
+    backend = load_backend(backend_path)
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/auth/__init__.py", line 21, in load_backend
+    return import_string(path)()
+  File "/usr/local/lib/python3.9/site-packages/django/utils/module_loading.py", line 30, in import_string
+    return cached_import(module_path, class_name)
+  File "/usr/local/lib/python3.9/site-packages/django/utils/module_loading.py", line 15, in cached_import
+    module = import_module(module_path)
+  File "/usr/local/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 986, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 850, in exec_module
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "/app/backend/login/backend.py", line 2, in <module>
+    from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
+ImportError: cannot import name 'ExpiredSignatureError' from 'jwt.exceptions' (/usr/local/lib/python3.9/site-packages/jwt/exceptions.py)
+[14/Aug/2024 13:13:31] ERROR [django.request:241] Internal Server Error: /auth/login/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.9/site-packages/django/views/decorators/csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.9/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.9/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.9/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.9/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.9/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/backend/login/views.py", line 21, in post
+    user = authenticate(request, sso_token=sso_token)
+  File "/usr/local/lib/python3.9/site-packages/django/views/decorators/debug.py", line 42, in sensitive_variables_wrapper
+    return func(*func_args, **func_kwargs)
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/auth/__init__.py", line 68, in authenticate
+    for backend, backend_path in _get_backends(return_tuples=True):
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/auth/__init__.py", line 27, in _get_backends
+    backend = load_backend(backend_path)
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/auth/__init__.py", line 21, in load_backend
+    return import_string(path)()
+  File "/usr/local/lib/python3.9/site-packages/django/utils/module_loading.py", line 30, in import_string
+    return cached_import(module_path, class_name)
+  File "/usr/local/lib/python3.9/site-packages/django/utils/module_loading.py", line 15, in cached_import
+    module = import_module(module_path)
+  File "/usr/local/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 986, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 850, in exec_module
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "/app/backend/login/backend.py", line 2, in <module>
+    from jwt import ExpiredSignatureError, InvalidTokenError
+ImportError: cannot import name 'ExpiredSignatureError' from 'jwt' (/usr/local/lib/python3.9/site-packages/jwt/__init__.py)
+[14/Aug/2024 13:13:52] ERROR [django.request:241] Internal Server Error: /auth/login/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.9/site-packages/django/views/decorators/csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.9/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.9/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.9/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.9/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.9/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/backend/login/views.py", line 21, in post
+    user = authenticate(request, sso_token=sso_token)
+  File "/usr/local/lib/python3.9/site-packages/django/views/decorators/debug.py", line 42, in sensitive_variables_wrapper
+    return func(*func_args, **func_kwargs)
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/auth/__init__.py", line 68, in authenticate
+    for backend, backend_path in _get_backends(return_tuples=True):
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/auth/__init__.py", line 27, in _get_backends
+    backend = load_backend(backend_path)
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/auth/__init__.py", line 21, in load_backend
+    return import_string(path)()
+  File "/usr/local/lib/python3.9/site-packages/django/utils/module_loading.py", line 30, in import_string
+    return cached_import(module_path, class_name)
+  File "/usr/local/lib/python3.9/site-packages/django/utils/module_loading.py", line 15, in cached_import
+    module = import_module(module_path)
+  File "/usr/local/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 986, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 850, in exec_module
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "/app/backend/login/backend.py", line 2, in <module>
+    from jwt import ExpiredSignatureError, InvalidTokenError
+ImportError: cannot import name 'ExpiredSignatureError' from 'jwt' (/usr/local/lib/python3.9/site-packages/jwt/__init__.py)
+[14/Aug/2024 13:24:59] ERROR [django.request:241] Internal Server Error: /auth/login/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/usr/local/lib/python3.9/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/usr/local/lib/python3.9/site-packages/django/views/decorators/csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+  File "/usr/local/lib/python3.9/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/usr/local/lib/python3.9/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/usr/local/lib/python3.9/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.9/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.9/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/backend/login/views.py", line 21, in post
+    user = authenticate(request, sso_token=sso_token)
+  File "/usr/local/lib/python3.9/site-packages/django/views/decorators/debug.py", line 42, in sensitive_variables_wrapper
+    return func(*func_args, **func_kwargs)
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/auth/__init__.py", line 68, in authenticate
+    for backend, backend_path in _get_backends(return_tuples=True):
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/auth/__init__.py", line 27, in _get_backends
+    backend = load_backend(backend_path)
+  File "/usr/local/lib/python3.9/site-packages/django/contrib/auth/__init__.py", line 21, in load_backend
+    return import_string(path)()
+  File "/usr/local/lib/python3.9/site-packages/django/utils/module_loading.py", line 30, in import_string
+    return cached_import(module_path, class_name)
+  File "/usr/local/lib/python3.9/site-packages/django/utils/module_loading.py", line 15, in cached_import
+    module = import_module(module_path)
+  File "/usr/local/lib/python3.9/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 986, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 850, in exec_module
+  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
+  File "/app/backend/login/backend.py", line 2, in <module>
+    from jwt.exceptions import ExpiredSignatureError, InvalidTokenError
+ImportError: cannot import name 'ExpiredSignatureError' from 'jwt.exceptions' (/usr/local/lib/python3.9/site-packages/jwt/exceptions.py)
