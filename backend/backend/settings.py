@@ -158,8 +158,8 @@ CORS_ALLOW_HEADERS = ["Content-Type", "Authorization","Accept", "Origin", "Conne
 
 PAYU_MERCHANT_KEY = os.getenv("PAYU_MERCHANT_KEY")
 PAYU_MERCHANT_SALT = os.getenv("PAYU_MERCHANT_SALT")
-PAYU_SUCCESS_URL = "http://localhost:8000/payment/success/"
-PAYU_FAILURE_URL = "http://localhost:8000/payment/failure/"
+PAYU_SUCCESS_URL = "https://api.merch.ccstiet.com/payment/success/"
+PAYU_FAILURE_URL = "https://api.merch.ccstiet.com/payment/failure/"
 
 # gmail_send/settings.py
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
