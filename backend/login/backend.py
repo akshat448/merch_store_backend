@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from .models import CustomUser as User
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import padding
 import json
 import logging
 import string
@@ -82,14 +83,11 @@ class SSOAuthenticationBackend(BaseBackend):
 
 
 def decrypt(encrypted_data, key):
-    # Ensure the key is 96 characters long
     if len(key) != 96:
         raise ValueError("Key must be exactly 96 characters long")
 
-    # Log the encrypted data before decryption attempt
     logging.debug(f"Encrypted data received for decryption: {encrypted_data}")
 
-    # Check if the encrypted_data has a valid length for IV and encrypted data
     if len(encrypted_data) < 32:
         logging.error(
             "Encrypted data is too short to contain a valid IV and ciphertext"
@@ -99,35 +97,27 @@ def decrypt(encrypted_data, key):
         )
 
     try:
-        # Split the IV and the encrypted data
-        iv = bytes.fromhex(
-            encrypted_data[:32]
-        )  # First 32 hex characters correspond to the 16 bytes IV
+        iv = bytes.fromhex(encrypted_data[:32])
         encrypted_data = bytes.fromhex(encrypted_data[32:])
-
-        # Extract the encryption key (first 32 characters)
         encryption_key = key[:32].encode("utf-8")
 
-        # Create a Cipher object using AES-256-CBC
         cipher = Cipher(
             algorithms.AES(encryption_key), modes.CBC(iv), backend=default_backend()
         )
         decryptor = cipher.decryptor()
 
-        # Decrypt the data
         decrypted_data = decryptor.update(encrypted_data) + decryptor.finalize()
 
-        # Decode to a string
+        # Remove padding if necessary
+        unpadder = padding.PKCS7(algorithms.AES.block_size).unpadder()
+        decrypted_data = unpadder.update(decrypted_data) + unpadder.finalize()
+
+        # Decode and strip any excessive whitespace
         decoded_string = decrypted_data.decode("utf-8")
+        print(decoded_string)
 
-        # Define a set of allowed characters (printable characters)
-        allowed_chars = set(string.printable)
-
-        # Strip out any non-printable or unwanted characters
-        cleaned_string = "".join(filter(lambda x: x in allowed_chars, decoded_string))
-
-        # Convert cleaned string to JSON object
-        json_object = json.loads(cleaned_string)
+        # Convert to JSON
+        json_object = json.loads(decoded_string)
 
         return json_object
 
