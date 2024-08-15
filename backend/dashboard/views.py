@@ -110,7 +110,7 @@ def create_discount_code(request):
         for_user_positions = get_for_user_positions(for_user_positions)
 
         discount_code = DiscountCode(
-            code=code,
+            code=code if custom else None,
             discount_percentage=discount_percentage,
             max_uses=max_uses,
             expiry_date=expiry_date,

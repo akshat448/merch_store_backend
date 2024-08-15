@@ -103,8 +103,8 @@ DATABASES = {
         'NAME': os.getenv('POSTGRES_DB'),
         'USER': os.getenv('POSTGRES_USER'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-        'HOST': os.getenv('DATABASE_HOST', 'localhost'),
-        'PORT': os.getenv('DATABASE_PORT', '5432'),
+        'HOST': os.getenv('DATABASE_HOST'),
+        'PORT': os.getenv('DATABASE_PORT'),
     }
 }
 
@@ -153,8 +153,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-CORS_ALLOWED_ORIGINS = ["https://merch.ccstiet.com", "http://localhost:3000"]
-CORS_ALLOW_HEADERS = ["Content-Type", "Authorization","Accept", "Origin", "Connection", "Host", "User-Agent", "Referer", "Accept-Encoding", "Accept-Language","Sec-Fetch-Dest", "Sec-Fetch-Mode", "Sec-Fetch-Site","Sec-Ch-Ua", "Sec-Ch-Ua-Platform"]
+CORS_ALLOWED_ORIGINS = ["https://merch.ccstiet.com","https://api.merch.ccstiet.com","http://localhost:3000"]
+CORS_ALLOW_HEADERS = ["*"]
+CSRF_TRUSTED_ORIGINS = ["https://merch.ccstiet.com", "https://api.merch.ccstiet.com", "http://localhost:3000"]
 
 PAYU_MERCHANT_KEY = os.getenv("PAYU_MERCHANT_KEY")
 PAYU_MERCHANT_SALT = os.getenv("PAYU_MERCHANT_SALT")

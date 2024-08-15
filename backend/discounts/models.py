@@ -23,7 +23,7 @@ class DiscountCode(models.Model):
         return True
 
     def save(self, *args, **kwargs):
-        if not self.custom and self.code == "custom":
+        if not self.custom and not self.code:
             self.code = self.generate_random_code()
         super().save(*args, **kwargs)
 
